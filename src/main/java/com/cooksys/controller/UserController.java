@@ -1,9 +1,12 @@
 package com.cooksys.controller;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.CredentialsProfileDto;
 import com.cooksys.dto.UserAccountDto;
+import com.cooksys.entity.Credentials;
 import com.cooksys.entity.UserAccount;
 import com.cooksys.service.UserService;
 
@@ -74,7 +78,7 @@ public class UserController {
 		
 		if (uADto == null)
 		{
-			
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 		else
 		{
@@ -84,4 +88,20 @@ public class UserController {
 		return uADto;
 	}
 
+	@DeleteMapping("@{username}")
+	public UserAccountDto deleteUser(@PathVariable String username, @RequestBody Credentials credentials, HttpServletResponse response)
+	{
+		UserAccountDto uADto = userService.deleteUser(username, credentials);
+		
+		if (uADto == null)
+		{
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		else
+		{
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
+		
+		return uADto;
+	}
 }

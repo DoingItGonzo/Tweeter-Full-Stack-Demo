@@ -2,13 +2,18 @@ package com.cooksys.service;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.CredentialsProfileDto;
 import com.cooksys.dto.UserAccountDto;
+import com.cooksys.entity.Credentials;
 import com.cooksys.entity.UserAccount;
 import com.cooksys.mapper.UserMapper;
 import com.cooksys.repository.UserRepository;
@@ -37,6 +42,7 @@ public class UserService {
 		userAccount.setProfile(credentialsProfileDto.getProfile());
 		userAccount.setCredentials(credentialsProfileDto.getCredentials());
 		userAccount.setJoined(new Timestamp(System.currentTimeMillis()));
+		userAccount.setActive(true);
 		try {
 			userRepository.save(userAccount);
 		} catch (RuntimeException e) {
@@ -76,6 +82,24 @@ public class UserService {
 
 	public UserAccountDto getUser(String username) {
 		return userMapper.toDto(userRepository.findByCredentialsUsername(username));
+	}
+
+	public UserAccountDto deleteUser(String username, Credentials credentials) {
+		UserAccount userAccount = userRepository.findByCredentialsUsername(username);
+		// Allow user to delete profile only if they have right password
+		// Allow user to edit profile only if they have right password
+		if (userAccount == null || 
+				credentials.getPassword() == null || 
+				!credentials.getPassword().equals(userAccount.getCredentials().getPassword()))
+		{
+			return null;
+		}
+		else
+		{
+			userAccount.setActive(false);
+			userRepository.save(userAccount);
+			return userMapper.toDto(userAccount);
+		}
 	}
 
 }

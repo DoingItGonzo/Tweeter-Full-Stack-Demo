@@ -23,6 +23,9 @@ public class UserAccount {
 	
 	@Column(nullable=false)
 	private Timestamp joined;
+	
+	@Column(nullable=false)
+	private boolean active;
 
 	public Integer getId() {
 		return id;
@@ -54,6 +57,14 @@ public class UserAccount {
 
 	public void setJoined(Timestamp joined) {
 		this.joined = joined;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override
