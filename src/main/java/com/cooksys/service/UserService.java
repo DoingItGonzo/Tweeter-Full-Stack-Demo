@@ -89,7 +89,7 @@ public class UserService {
 	}
 
 	public UserAccountDto deleteUser(String username, Credentials credentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsername(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
 		// Allow user to delete profile only if they have right password
 		// Allow user to edit profile only if they have right password
 		if (userAccount == null || 
