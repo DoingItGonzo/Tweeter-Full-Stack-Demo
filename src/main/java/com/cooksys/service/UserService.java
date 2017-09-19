@@ -55,8 +55,8 @@ public class UserService {
 		return userMapper.toDto(userAccount);
 	}
 
-	public UserAccountDto updateProfile(CredentialsProfileDto credentialsProfileDto) {
-		UserAccount userAccount = userRepository.findByCredentialsUsername(credentialsProfileDto.getCredentials().getUsername());
+	public UserAccountDto updateProfile(String username, CredentialsProfileDto credentialsProfileDto) {
+		UserAccount userAccount = userRepository.findByCredentialsUsername(username);
 		
 		// Allow user to edit profile only if they have right password
 		if (userAccount == null || 
@@ -72,6 +72,10 @@ public class UserService {
 			return userMapper.toDto(userAccount);
 		}
 		
+	}
+
+	public UserAccountDto getUser(String username) {
+		return userMapper.toDto(userRepository.findByCredentialsUsername(username));
 	}
 
 }
