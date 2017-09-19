@@ -1,12 +1,14 @@
 package com.cooksys.entity;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class UserAccount {
@@ -26,6 +28,9 @@ public class UserAccount {
 	
 	@Column(nullable=false)
 	private boolean active;
+	
+	@ManyToMany
+	private Set<UserAccount> followers;
 
 	public Integer getId() {
 		return id;
@@ -65,6 +70,14 @@ public class UserAccount {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	public Set<UserAccount> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(Set<UserAccount> followers) {
+		this.followers = followers;
 	}
 
 	@Override

@@ -104,4 +104,16 @@ public class UserController {
 		
 		return uADto;
 	}
+	
+	@PostMapping("@{username}/follow")
+	public void followUser(@PathVariable String username, @RequestBody Credentials credentialsOfFollower, HttpServletResponse response)
+	{
+		response.setStatus(userService.followUser(username, credentialsOfFollower) ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+	}
+	
+	@PostMapping("@{username}/unfollow")
+	public void unfollowUser(@PathVariable String username, @RequestBody Credentials credentialsOfFollower, HttpServletResponse response)
+	{
+		response.setStatus(userService.unfollowUser(username, credentialsOfFollower) ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+	}
 }

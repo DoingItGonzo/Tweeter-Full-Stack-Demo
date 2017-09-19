@@ -106,4 +106,46 @@ public class UserService {
 		}
 	}
 
+	public boolean followUser(String usernameToFollow, Credentials credentialsOfFollower) {
+		UserAccount userToFollow = userRepository.findByCredentialsUsernameAndActiveTrue(usernameToFollow);
+		UserAccount follower = userRepository.findByCredentialsUsernameAndActiveTrue(credentialsOfFollower.getUsername());
+		
+		// If either user doesnt exist or the follower doesnt have the right password or the follower already follows the user 
+		if (userToFollow == null || follower == null 
+				|| !credentialsOfFollower.getPassword().equals(follower.getCredentials().getPassword()) ||
+				userToFollow.getFollowers().contains(follower))
+		{
+			return false;
+		}
+		else
+		{
+			userToFollow.getFollowers().add(follower);
+			userRepository.save(userToFollow);
+			return true;
+		}
+	}
+
+	public boolean unfollowUser(String usernameToFollow, Credentials credentialsOfFollower) {
+		UserAccount userToUnfollow = userRepository.findByCredentialsUsernameAndActiveTrue(usernameToFollow);
+		UserAccount unfollower = userRepository.findByCredentialsUsernameAndActiveTrue(credentialsOfFollower.getUsername());
+		
+		// If either user doesnt exist or the unfollower doesnt have the right password or the unfollower doesnt follow the user 
+		if (userToUnfollow == null || unfollower == null 
+				|| !credentialsOfFollower.getPassword().equals(unfollower.getCredentials().getPassword()) ||
+				!userToUnfollow.getFollowers().contains(unfollower))
+		{
+			return false;
+		}
+		else
+		{
+			userToUnfollow.getFollowers().remove(unfollower);
+			userRepository.save(userToUnfollow);
+			return true;
+		}
+	}
+	
+	
+	
+	
+
 }
