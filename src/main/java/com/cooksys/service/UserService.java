@@ -1,14 +1,7 @@
 package com.cooksys.service;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.CredentialsProfileDto;
@@ -25,7 +18,6 @@ public class UserService {
 
 	private UserRepository userRepository;
 	private UserMapper userMapper;
-	private final String SQL_UNIQUE_DUPLICATE = "23505";
 
 	public UserService(UserRepository userRepository, UserMapper userMapper)
 	{
@@ -34,7 +26,7 @@ public class UserService {
 	}
 	
 	public Set<UserAccountDto> getUsers() {
-		return userMapper.toDtoSet(userMapper.toSetFromList(userRepository.findAll()));
+		return userMapper.toDtoSet(userRepository.findByActiveTrue());
 	}
 
 	public UserAccountDto createUser(CredentialsProfileDto credentialsProfileDto) {
@@ -51,15 +43,6 @@ public class UserService {
 			try {
 				userRepository.save(userAccount);
 			} catch (RuntimeException e) {
-				/*Throwable cause = e.getCause();
-				if (cause instanceof ConstraintViolationException)
-				{
-					ConstraintViolationException cve = (ConstraintViolationException) cause;
-					if (cve.getSQLState().equals(SQL_UNIQUE_DUPLICATE))
-					{
-						return null;
-					}
-				}*/
 				return null;
 			}
 		}
@@ -75,6 +58,7 @@ public class UserService {
 			else
 			{
 				userAccount.setActive(true);
+				userRepository.save(userAccount);
 			}
 		}
 		
