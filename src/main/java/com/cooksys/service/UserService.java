@@ -38,25 +38,47 @@ public class UserService {
 	}
 
 	public UserAccountDto createUser(CredentialsProfileDto credentialsProfileDto) {
-		UserAccount userAccount = new UserAccount();
-		userAccount.setProfile(credentialsProfileDto.getProfile());
-		userAccount.setCredentials(credentialsProfileDto.getCredentials());
-		userAccount.setJoined(new Timestamp(System.currentTimeMillis()));
-		userAccount.setActive(true);
-		try {
-			userRepository.save(userAccount);
-		} catch (RuntimeException e) {
-			/*Throwable cause = e.getCause();
-			if (cause instanceof ConstraintViolationException)
-			{
-				ConstraintViolationException cve = (ConstraintViolationException) cause;
-				if (cve.getSQLState().equals(SQL_UNIQUE_DUPLICATE))
+		UserAccount userAccount = userRepository.findByCredentialsUsername(credentialsProfileDto.getCredentials().getUsername());
+		
+		// No user with that username
+		if (userAccount == null)
+		{
+			userAccount = new UserAccount();
+			userAccount.setProfile(credentialsProfileDto.getProfile());
+			userAccount.setCredentials(credentialsProfileDto.getCredentials());
+			userAccount.setJoined(new Timestamp(System.currentTimeMillis()));
+			userAccount.setActive(true);
+			try {
+				userRepository.save(userAccount);
+			} catch (RuntimeException e) {
+				/*Throwable cause = e.getCause();
+				if (cause instanceof ConstraintViolationException)
 				{
-					return null;
-				}
-			}*/
-			return null;
+					ConstraintViolationException cve = (ConstraintViolationException) cause;
+					if (cve.getSQLState().equals(SQL_UNIQUE_DUPLICATE))
+					{
+						return null;
+					}
+				}*/
+				return null;
+			}
 		}
+		// User reactivated account
+		else
+		{
+			// User trying to take other person's account name
+			if (userAccount.isActive())
+			{
+				return null;
+			}
+			// User reactivating account
+			else
+			{
+				userAccount.setActive(true);
+			}
+		}
+		
+	
 		
 		return userMapper.toDto(userAccount);
 	}
