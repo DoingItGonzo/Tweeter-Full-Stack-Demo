@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,24 @@ public class UserController {
 		{
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
+		
+		return uADto;
+	}
+	
+	@PatchMapping("{username}")
+	public UserAccountDto updateProfile(@RequestBody CredentialsProfileDto credentialsProfileDto, HttpServletResponse response)
+	{
+		UserAccountDto uADto = userService.updateProfile(credentialsProfileDto);
+		
+		if (uADto == null)
+		{
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		else
+		{
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
+		
 		
 		return uADto;
 	}

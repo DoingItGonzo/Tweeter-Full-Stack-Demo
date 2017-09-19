@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.postgresql.util.PSQLException;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.CredentialsProfileDto;
@@ -54,6 +53,25 @@ public class UserService {
 		}
 		
 		return userMapper.toDto(userAccount);
+	}
+
+	public UserAccountDto updateProfile(CredentialsProfileDto credentialsProfileDto) {
+		UserAccount userAccount = userRepository.findByCredentialsUsername(credentialsProfileDto.getCredentials().getUsername());
+		
+		// Allow user to edit profile only if they have right password
+		if (userAccount == null || 
+				credentialsProfileDto.getCredentials().getPassword() == null || 
+				!credentialsProfileDto.getCredentials().getPassword().equals(userAccount.getCredentials().getPassword()))
+		{
+			return null;
+		}
+		else
+		{
+			userMapper.updateProfile(credentialsProfileDto.getProfile(), userAccount.getProfile());
+			userRepository.save(userAccount);
+			return userMapper.toDto(userAccount);
+		}
+		
 	}
 
 }

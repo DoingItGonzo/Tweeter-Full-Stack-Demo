@@ -7,4 +7,5 @@ import com.cooksys.entity.UserAccount;
 
 public interface UserRepository extends JpaRepository<UserAccount, Integer>{
 
+	UserAccount findByCredentialsUsername(String username);
 }
