@@ -46,7 +46,7 @@ public class UserService {
 				return null;
 			}
 		}
-		// User reactivated account
+		// User reactivating account
 		else
 		{
 			// User trying to take other person's account name
@@ -61,8 +61,6 @@ public class UserService {
 				userRepository.save(userAccount);
 			}
 		}
-		
-	
 		
 		return userMapper.toDto(userAccount);
 	}
@@ -87,7 +85,7 @@ public class UserService {
 	}
 
 	public UserAccountDto getUser(String username) {
-		return userMapper.toDto(userRepository.findByCredentialsUsername(username));
+		return userMapper.toDto(userRepository.findByCredentialsUsernameAndActiveTrue(username));
 	}
 
 	public UserAccountDto deleteUser(String username, Credentials credentials) {
