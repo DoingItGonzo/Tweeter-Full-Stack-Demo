@@ -66,7 +66,7 @@ public class UserService {
 	}
 
 	public UserAccountDto updateProfile(String username, CredentialsProfileDto credentialsProfileDto) {
-		UserAccount userAccount = userRepository.findByCredentialsUsername(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
 		
 		// Allow user to edit profile only if they have right password
 		if (userAccount == null || 
