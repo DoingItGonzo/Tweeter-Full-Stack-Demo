@@ -50,19 +50,19 @@ public class UserService {
 		// User reactivating account
 		else
 		{
-			// User trying to take other person's account name
-			if (userAccount.isActive())
+			// User trying to take other person's account name or they dont have the right password
+			if (userAccount.isActive() || credentialsProfileDto.getCredentials().getPassword() == null || 
+					!credentialsProfileDto.getCredentials().getPassword().equals(userAccount.getCredentials().getPassword()))
 			{
 				return null;
 			}
 			// User reactivating account
-			else
+			else 
 			{
 				userAccount.setActive(true);
 				userRepository.save(userAccount);
 			}
 		}
-		
 		return userMapper.toDto(userAccount);
 	}
 

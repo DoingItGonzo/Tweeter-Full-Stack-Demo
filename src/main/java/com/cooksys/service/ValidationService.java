@@ -1,4 +1,4 @@
-package com.cooksys.controller;
+package com.cooksys.service;
 
 import org.springframework.stereotype.Service;
 

@@ -7,10 +7,10 @@ import javax.persistence.Embeddable;
 public class Credentials {
 	
 	@Column(unique=true, nullable=false)
-	String username;
+	private String username;
 	
 	@Column(nullable=false)
-	String password;
+	private String password;
 
 	public String getUsername() {
 		return username;

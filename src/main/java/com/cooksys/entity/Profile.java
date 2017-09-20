@@ -6,14 +6,14 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Profile {
 
-	String firstName;
+	private String firstName;
 	
-	String lastName;
+	private String lastName;
 	
 	@Column(nullable=false)
-	String email;
+	private String email;
 	
-	String phone;
+	private String phone;
 
 	public String getFirstName() {
 		return firstName;

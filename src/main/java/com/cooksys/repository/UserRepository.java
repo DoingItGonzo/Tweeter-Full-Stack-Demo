@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<UserAccount, Integer>{
 	UserAccount findByCredentialsUsernameAndActiveTrue(String username);
 	
 	Set<UserAccount> findByActiveTrue();
+	
+	//Finding all active followers, something with join table on user field might work
 }

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class UserAccount {
@@ -34,6 +35,9 @@ public class UserAccount {
 	
 	@ManyToMany(mappedBy="followers")
 	private Set<UserAccount> following;
+	
+	@OneToMany(mappedBy="author")
+	private Set<Tweet> tweets;
 
 	public Integer getId() {
 		return id;
