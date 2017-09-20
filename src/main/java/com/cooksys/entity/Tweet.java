@@ -6,11 +6,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.InheritanceType;
 
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Tweet {
 	
 	@Id
@@ -23,14 +25,6 @@ public class Tweet {
 	
 	@Column(nullable=false)
 	private Timestamp posted;
-
-	private String content;
-	
-	@OneToOne
-	private Tweet inReplyTo;
-	
-	@OneToOne
-	private Tweet repostOf;
 	
 	private boolean active;
 	
@@ -56,30 +50,6 @@ public class Tweet {
 
 	public void setPosted(Timestamp posted) {
 		this.posted = posted;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Tweet getInReplyTo() {
-		return inReplyTo;
-	}
-
-	public void setInReplyTo(Tweet inReplyTo) {
-		this.inReplyTo = inReplyTo;
-	}
-
-	public Tweet getRepostOf() {
-		return repostOf;
-	}
-
-	public void setRepostOf(Tweet repostOf) {
-		this.repostOf = repostOf;
 	}
 
 	public boolean isActive() {

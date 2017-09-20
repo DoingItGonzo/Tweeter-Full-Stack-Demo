@@ -3,8 +3,15 @@ package com.cooksys.mapper;
 import java.util.List;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
+import com.cooksys.dto.ReplyTweetDto;
+import com.cooksys.dto.RepostTweetDto;
+import com.cooksys.dto.SimpleTweetDto;
 import com.cooksys.dto.TweetDto;
+import com.cooksys.entity.ReplyTweet;
+import com.cooksys.entity.RepostTweet;
+import com.cooksys.entity.SimpleTweet;
 import com.cooksys.entity.Tweet;
 
 @Mapper(componentModel="spring", uses=UserMapper.class)
@@ -14,7 +21,52 @@ public interface TweetMapper {
 	
 	List<Tweet> fromDtos(List<TweetDto> tweetDtos);
 	
-	Tweet fromDto(TweetDto tweetDto);
+	default Tweet fromDto(TweetDto tweetDto)
+	{
+		if (tweetDto instanceof SimpleTweetDto)
+		{
+			return fromDtoSimple((SimpleTweetDto) tweetDto);
+		}
+		else if (tweetDto instanceof RepostTweetDto)
+		{
+			return fromDtoRepost((RepostTweetDto) tweetDto);
+		}
+		else if (tweetDto instanceof ReplyTweetDto)
+		{
+			return fromDtoReply((ReplyTweetDto) tweetDto);
+		}
+		return null;
+	}
 	
-	TweetDto toDto(Tweet tweet);
+	default TweetDto toDto(Tweet tweet)
+	{
+		if (tweet.isActive())
+		{
+			if (tweet instanceof SimpleTweet)
+			{
+				return toDtoSimple((SimpleTweet) tweet);
+			}
+			else if (tweet instanceof RepostTweet)
+			{
+				return toDtoRepost((RepostTweet) tweet);
+			}
+			else if (tweet instanceof ReplyTweet)
+			{
+				return toDtoReply((ReplyTweet) tweet);
+			}
+		}
+		return null;
+	}
+	
+	SimpleTweet fromDtoSimple(SimpleTweetDto simpleTweetDto);
+	
+	SimpleTweetDto toDtoSimple(SimpleTweet simpleTweet);
+	
+	RepostTweet fromDtoRepost(RepostTweetDto repostTweetDto);
+	
+	RepostTweetDto toDtoRepost(RepostTweet repostTweet);
+	
+	ReplyTweet fromDtoReply(ReplyTweetDto replyTweetDto);
+	
+	ReplyTweetDto toDtoReply(ReplyTweet replyTweet);
 }

@@ -12,8 +12,6 @@ public class TweetDto {
 	private UserAccountDto author;
 	
 	private Timestamp posted;
-	
-	private String content;
 
 	public Integer getId() {
 		return id;
@@ -37,14 +35,6 @@ public class TweetDto {
 
 	public void setPosted(Timestamp posted) {
 		this.posted = posted;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	@Override

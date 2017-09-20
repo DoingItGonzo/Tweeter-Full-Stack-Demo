@@ -7,8 +7,14 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.ContentCredentialDto;
+import com.cooksys.dto.ReplyTweetDto;
+import com.cooksys.dto.RepostTweetDto;
+import com.cooksys.dto.SimpleTweetDto;
 import com.cooksys.dto.TweetDto;
 import com.cooksys.entity.Credentials;
+import com.cooksys.entity.ReplyTweet;
+import com.cooksys.entity.RepostTweet;
+import com.cooksys.entity.SimpleTweet;
 import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
 import com.cooksys.mapper.TweetMapper;
@@ -33,7 +39,7 @@ public class TweetService {
 		return tweetMapper.toDtos(tweetRepository.findByActiveTrueOrderByPostedDesc());
 	}
 
-	public TweetDto createTweet(ContentCredentialDto contentCredentialDto) {
+	public SimpleTweetDto createTweet(ContentCredentialDto contentCredentialDto) {
 		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(contentCredentialDto.getCredentials().getUsername());
 		
 		// Allow user to create tweet only if they have correct password
@@ -45,13 +51,13 @@ public class TweetService {
 		}
 		else
 		{
-			Tweet tweet = new Tweet();
+			SimpleTweet tweet = new SimpleTweet();
 			tweet.setAuthor(userAccount);
 			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
 			tweet.setContent(contentCredentialDto.getContent());
 			tweet.setActive(true);
 			tweetRepository.save(tweet);
-			return tweetMapper.toDto(tweet);
+			return tweetMapper.toDtoSimple(tweet);
 		}
 	}
 
@@ -60,7 +66,6 @@ public class TweetService {
 	}
 
 	public TweetDto deleteTweet(Integer id, Credentials credentials) {
-		//UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(credentials.getUsername());
 		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
 		
 		// Allow user to delete tweet only if they match author credentials
@@ -73,9 +78,59 @@ public class TweetService {
 		} 
 		else
 		{
+			TweetDto tweetDto = tweetMapper.toDto(tweet);
 			tweet.setActive(false);
 			tweetRepository.save(tweet);
-			return tweetMapper.toDto(tweet);
+			return tweetDto;
+		}
+	}
+
+	public RepostTweetDto repostTweet(Integer id, Credentials credentials) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(credentials.getUsername());
+		
+		Tweet tweetToRepost = tweetRepository.findByIdAndActiveTrue(id);
+		
+		// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
+		if (userAccount == null || tweetToRepost == null ||
+				credentials.getPassword() == null || 
+				!credentials.getPassword().equals(userAccount.getCredentials().getPassword()))
+		{
+			return null;
+		}
+		else
+		{
+			RepostTweet tweet = new RepostTweet();
+			tweet.setAuthor(userAccount);
+			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
+			tweet.setRepostOf(tweetToRepost);
+			tweet.setActive(true);
+			tweetRepository.save(tweet);
+			return tweetMapper.toDtoRepost(tweet);
+		}
+	}
+
+	public ReplyTweetDto replyTweet(Integer id, ContentCredentialDto contentCredentials) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(contentCredentials.getCredentials().getUsername());
+		
+		Tweet tweetToReply = tweetRepository.findByIdAndActiveTrue(id);
+		
+		// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
+		if (userAccount == null || tweetToReply == null ||
+				contentCredentials.getCredentials().getPassword() == null || 
+				!contentCredentials.getCredentials().getPassword().equals(userAccount.getCredentials().getPassword()))
+		{
+			return null;
+		}
+		else
+		{
+			ReplyTweet tweet = new ReplyTweet();
+			tweet.setAuthor(userAccount);
+			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
+			tweet.setContent(contentCredentials.getContent());
+			tweet.setInReplyTo(tweetToReply);
+			tweet.setActive(true);
+			tweetRepository.save(tweet);
+			return tweetMapper.toDtoReply(tweet);
 		}
 	}
 

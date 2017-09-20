@@ -13,9 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.ContentCredentialDto;
+import com.cooksys.dto.ReplyTweetDto;
+import com.cooksys.dto.RepostTweetDto;
+import com.cooksys.dto.SimpleTweetDto;
 import com.cooksys.dto.TweetDto;
 import com.cooksys.dto.UserAccountDto;
 import com.cooksys.entity.Credentials;
+import com.cooksys.entity.ReplyTweet;
+import com.cooksys.entity.RepostTweet;
+import com.cooksys.entity.SimpleTweet;
 import com.cooksys.service.TweetService;
 
 @RestController
@@ -38,13 +44,13 @@ public class TweetController {
 	}
 	
 	@PostMapping
-	public TweetDto createTweet(@RequestBody ContentCredentialDto contentCredentialDto, HttpServletResponse response)
+	public SimpleTweetDto createTweet(@RequestBody ContentCredentialDto contentCredentialDto, HttpServletResponse response)
 	{
-		TweetDto tweetDto = tweetService.createTweet(contentCredentialDto);
+		SimpleTweetDto tweetDto = tweetService.createTweet(contentCredentialDto);
 		
 		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
-		return tweetService.createTweet(contentCredentialDto);
+		return tweetDto;
 	}
 	
 	@GetMapping("{id}")
@@ -61,6 +67,26 @@ public class TweetController {
 	public TweetDto deleteTweet(@PathVariable Integer id, @RequestBody Credentials credentials, HttpServletResponse response)
 	{
 		TweetDto tweetDto = tweetService.deleteTweet(id, credentials);
+		
+		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return tweetDto;
+	}
+	
+	@PostMapping("{id}/repost")
+	public RepostTweetDto repostTweet(@PathVariable Integer id, @RequestBody Credentials credentials, HttpServletResponse response)
+	{
+		RepostTweetDto tweetDto = tweetService.repostTweet(id, credentials);
+		
+		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return tweetDto;
+	}
+	
+	@PostMapping("{id}/reply")
+	public ReplyTweetDto replyTweet(@PathVariable Integer id, @RequestBody ContentCredentialDto contentCredentials, HttpServletResponse response)
+	{
+		ReplyTweetDto tweetDto = tweetService.replyTweet(id, contentCredentials);
 		
 		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
