@@ -1,6 +1,7 @@
 package com.cooksys.entity;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.InheritanceType;
 
@@ -27,6 +29,9 @@ public class Tweet {
 	private Timestamp posted;
 	
 	private boolean active;
+	
+	@ManyToMany
+	private Set<UserAccount> usersWhoLikeTweet;
 	
 	public Integer getId() {
 		return id;
@@ -58,6 +63,14 @@ public class Tweet {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public Set<UserAccount> getUsersWhoLikeTweet() {
+		return usersWhoLikeTweet;
+	}
+
+	public void setUsersWhoLikeTweet(Set<UserAccount> usersWhoLikeTweet) {
+		this.usersWhoLikeTweet = usersWhoLikeTweet;
 	}
 
 	@Override

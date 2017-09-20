@@ -11,6 +11,7 @@ import com.cooksys.dto.ReplyTweetDto;
 import com.cooksys.dto.RepostTweetDto;
 import com.cooksys.dto.SimpleTweetDto;
 import com.cooksys.dto.TweetDto;
+import com.cooksys.dto.UserAccountDto;
 import com.cooksys.entity.Credentials;
 import com.cooksys.entity.ReplyTweet;
 import com.cooksys.entity.RepostTweet;
@@ -18,6 +19,7 @@ import com.cooksys.entity.SimpleTweet;
 import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
 import com.cooksys.mapper.TweetMapper;
+import com.cooksys.mapper.UserMapper;
 import com.cooksys.repository.TweetRepoistory;
 import com.cooksys.repository.UserRepository;
 
@@ -27,12 +29,14 @@ public class TweetService {
 	private TweetRepoistory tweetRepository;
 	private TweetMapper tweetMapper;
 	private UserRepository userRepository;
+	private UserMapper userMapper;
 
-	public TweetService(TweetRepoistory tweetRepoistory, TweetMapper tweetMapper, UserRepository userRepository)
+	public TweetService(TweetRepoistory tweetRepoistory, TweetMapper tweetMapper, UserRepository userRepository, UserMapper userMapper)
 	{
 		this.tweetRepository = tweetRepoistory;
 		this.tweetMapper = tweetMapper;
 		this.userRepository = userRepository;
+		this.userMapper = userMapper;
 	}
 	
 	public List<TweetDto> getTweets() {
@@ -131,6 +135,39 @@ public class TweetService {
 			tweet.setActive(true);
 			tweetRepository.save(tweet);
 			return tweetMapper.toDtoReply(tweet);
+		}
+	}
+
+	public boolean likeTweet(Integer id, Credentials credentials) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(credentials.getUsername());
+		
+		Tweet tweetToLike = tweetRepository.findByIdAndActiveTrue(id);
+		
+		// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
+		if (userAccount == null || tweetToLike == null ||
+				credentials.getPassword() == null || 
+				!credentials.getPassword().equals(userAccount.getCredentials().getPassword()))
+		{
+			return false;
+		}
+		else
+		{
+			tweetToLike.getUsersWhoLikeTweet().add(userAccount);
+			tweetRepository.save(tweetToLike);
+			return true;
+		}
+	}
+
+	public Set<UserAccountDto> getUsersWhoLiked(Integer id) {
+		Tweet tweetLiked = tweetRepository.findByIdAndActiveTrue(id);
+		
+		if (tweetLiked == null)
+		{
+			return null;
+		}
+		else
+		{
+			return userMapper.toDtoSet(tweetLiked.getUsersWhoLikeTweet());
 		}
 	}
 

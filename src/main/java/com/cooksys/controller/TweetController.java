@@ -1,6 +1,7 @@
 package com.cooksys.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,6 +23,7 @@ import com.cooksys.entity.Credentials;
 import com.cooksys.entity.ReplyTweet;
 import com.cooksys.entity.RepostTweet;
 import com.cooksys.entity.SimpleTweet;
+import com.cooksys.entity.UserAccount;
 import com.cooksys.service.TweetService;
 
 @RestController
@@ -91,6 +93,24 @@ public class TweetController {
 		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return tweetDto;
+	}
+	
+	@GetMapping("{id}/likes")
+	public Set<UserAccountDto> getUsersWhoLiked(@PathVariable Integer id, HttpServletResponse response)
+	{
+		Set<UserAccountDto> usersWhoLiked = tweetService.getUsersWhoLiked(id);
+		
+		response.setStatus(usersWhoLiked != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return usersWhoLiked;
+	}
+	
+	@PostMapping("{id}/like")
+	public void likeTweet(@PathVariable Integer id, @RequestBody Credentials credentials, HttpServletResponse response)
+	{
+		boolean success = tweetService.likeTweet(id, credentials);
+		
+		response.setStatus(success ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 }
