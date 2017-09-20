@@ -123,5 +123,15 @@ public class UserController {
 		return getTweets;
 	}
 	
+	@GetMapping("@{username}/feed")
+	public List<TweetDto> getFeed(@PathVariable String username, HttpServletResponse response)
+	{
+		List<TweetDto> getFeed = userService.getFeed(username);
+		
+		response.setStatus(getFeed != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return getFeed;
+	}
+	
 	
 }

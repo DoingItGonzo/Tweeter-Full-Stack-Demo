@@ -225,6 +225,47 @@ public class UserService {
 		
 		return tweets;
 	}
+
+	public List<TweetDto> getFeed(String username) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		
+		if (userAccount == null)
+		{
+			return null;
+		}
+		
+		List<TweetDto> tweets = new ArrayList<TweetDto>();
+		
+		for(Tweet tweet : userAccount.getTweets())
+		{
+			if (tweet.isActive())
+			{
+				tweets.add(tweetMapper.toDto(tweet));
+			}
+		}
+		
+		for (UserAccount userFollowing : userAccount.getFollowing())
+		{
+			for (Tweet tweetOfUserFollowing : userFollowing.getTweets())
+			{
+				if (tweetOfUserFollowing.isActive())
+				{
+					tweets.add(tweetMapper.toDto(tweetOfUserFollowing));
+				}
+			}
+		}
+		
+		Collections.sort(tweets, new Comparator<TweetDto>() {
+			@Override
+			public int compare(TweetDto o1, TweetDto o2) {
+				return o2.getPosted().compareTo(o1.getPosted());
+			}
+		});
+		
+		return tweets;
+	}
+	
+	
 	
 	
 	
