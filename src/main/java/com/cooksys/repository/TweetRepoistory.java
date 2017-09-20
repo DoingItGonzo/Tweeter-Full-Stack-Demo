@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.cooksys.entity.ReplyTweet;
 import com.cooksys.entity.RepostTweet;
 import com.cooksys.entity.Tweet;
 
@@ -16,5 +17,7 @@ public interface TweetRepoistory extends JpaRepository<Tweet, Integer>{
 	List<Tweet> findByActiveTrueOrderByPostedDesc();
 	
 	Set<RepostTweet> findAllByRepostOfId(Integer id);
+
+	Set<ReplyTweet> findAllByInReplyToId(Integer id);
 	
 }

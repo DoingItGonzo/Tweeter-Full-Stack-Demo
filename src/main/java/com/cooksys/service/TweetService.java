@@ -195,4 +195,25 @@ public class TweetService {
 		
 	}
 
+	public Set<ReplyTweetDto> getDirectReplies(Integer id) {
+		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
+
+		if (tweet == null)
+		{
+			return null;
+		}
+		
+		Set<ReplyTweet> replyTweets = new HashSet<ReplyTweet>();
+		
+		for (ReplyTweet reply : tweetRepository.findAllByInReplyToId(tweet.getId()))
+		{
+			if (reply.isActive())
+			{
+				replyTweets.add(reply);
+			}
+		}
+		
+		return tweetMapper.toDtosReply(replyTweets);
+	}
+
 }

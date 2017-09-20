@@ -123,6 +123,16 @@ public class TweetController {
 		return directReposts;
 	}
 	
+	@GetMapping("{id}/replies")
+	public Set<ReplyTweetDto> getDirectReplies(@PathVariable Integer id, HttpServletResponse response)
+	{
+		Set<ReplyTweetDto> direcReplies = tweetService.getDirectReplies(id);
+		
+		response.setStatus(direcReplies != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return direcReplies;
+	}
+	
 	
 
 }
