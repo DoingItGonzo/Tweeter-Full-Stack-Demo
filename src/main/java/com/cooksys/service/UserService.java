@@ -1,6 +1,7 @@
 package com.cooksys.service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -143,6 +144,53 @@ public class UserService {
 			return true;
 		}
 	}
+
+	public Set<UserAccountDto> getFollowers(String username) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		
+		if (userAccount == null)
+		{
+			return null;
+		}
+		
+		Set<UserAccountDto> followersDto = new HashSet<UserAccountDto>();
+		
+		for (UserAccount follower : userAccount.getFollowers())
+		{
+			if (follower.isActive())
+			{
+				followersDto.add(userMapper.toDto(follower));
+			}
+		}
+		
+		return followersDto;
+	}
+
+	public Set<UserAccountDto> getFollowing(String username) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		System.out.println(username);
+		
+		if (userAccount == null)
+		{
+			return null;
+		}
+		
+		
+		
+		Set<UserAccountDto> usersFollowingDto = new HashSet<UserAccountDto>();
+		
+		for (UserAccount userFollowing : userAccount.getFollowing())
+		{
+			if (userFollowing.isActive())
+			{
+				usersFollowingDto.add(userMapper.toDto(userFollowing));
+			}
+		}
+		
+		return usersFollowingDto;
+	}
+	
+	
 	
 	
 	

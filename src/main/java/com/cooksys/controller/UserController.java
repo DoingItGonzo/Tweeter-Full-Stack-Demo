@@ -42,14 +42,8 @@ public class UserController {
 	public UserAccountDto createUser(@RequestBody CredentialsProfileDto credentialsProfileDto, HttpServletResponse response)
 	{
 		UserAccountDto uADto = userService.createUser(credentialsProfileDto);
-		if (uADto == null)
-		{
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		}
-		else
-		{
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
+		
+		response.setStatus(uADto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return uADto;
 	}
@@ -59,14 +53,7 @@ public class UserController {
 	{
 		UserAccountDto uADto = userService.updateProfile(username, credentialsProfileDto);
 		
-		if (uADto == null)
-		{
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		}
-		else
-		{
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
+		response.setStatus(uADto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return uADto;
 	}
@@ -76,14 +63,7 @@ public class UserController {
 	{
 		UserAccountDto uADto = userService.getUser(username);
 		
-		if (uADto == null)
-		{
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-		}
-		else
-		{
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
+		response.setStatus(uADto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return uADto;
 	}
@@ -93,14 +73,7 @@ public class UserController {
 	{
 		UserAccountDto uADto = userService.deleteUser(username, credentials);
 		
-		if (uADto == null)
-		{
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		}
-		else
-		{
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
+		response.setStatus(uADto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return uADto;
 	}
@@ -116,4 +89,26 @@ public class UserController {
 	{
 		response.setStatus(userService.unfollowUser(username, credentialsOfFollower) ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 	}
+	
+	@GetMapping("@{username}/followers")
+	public Set<UserAccountDto> getFollowers(@PathVariable String username, HttpServletResponse response)
+	{
+		Set<UserAccountDto> uADtos = userService.getFollowers(username);
+		
+		response.setStatus(uADtos != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return uADtos;
+	}
+	
+	@GetMapping("@{username}/following")
+	public Set<UserAccountDto> getFollowing(@PathVariable String username, HttpServletResponse response)
+	{
+		Set<UserAccountDto> uADtos = userService.getFollowing(username);
+		
+		response.setStatus(uADtos != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return uADtos;
+	}
+	
+	
 }

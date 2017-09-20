@@ -31,6 +31,9 @@ public class UserAccount {
 	
 	@ManyToMany
 	private Set<UserAccount> followers;
+	
+	@ManyToMany(mappedBy="followers")
+	private Set<UserAccount> following;
 
 	public Integer getId() {
 		return id;
@@ -78,6 +81,14 @@ public class UserAccount {
 
 	public void setFollowers(Set<UserAccount> followers) {
 		this.followers = followers;
+	}
+	
+	public Set<UserAccount> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(Set<UserAccount> following) {
+		this.following = following;
 	}
 
 	@Override
