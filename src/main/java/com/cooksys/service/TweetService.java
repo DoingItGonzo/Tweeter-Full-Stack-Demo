@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
@@ -61,6 +63,19 @@ public class TweetService {
 			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
 			tweet.setContent(contentCredentialDto.getContent());
 			tweet.setActive(true);
+			Pattern p = Pattern.compile("@(\\S)+");
+	        Matcher m = p.matcher(tweet.getContent());
+	        Set<UserAccount> peopleMentioned = new HashSet<UserAccount>();
+	        while (m.find())
+	        {
+	        	UserAccount mentionedUser = userRepository.findByCredentialsUsername(m.group().substring(1));
+	        	if (mentionedUser != null)
+	        	{
+	        		System.out.println(mentionedUser.getId());
+	        		peopleMentioned.add(mentionedUser);
+	        	}
+	        }
+	        tweet.setMentions(peopleMentioned);
 			tweetRepository.save(tweet);
 			return tweetMapper.toDtoSimple(tweet);
 		}
@@ -214,6 +229,27 @@ public class TweetService {
 		}
 		
 		return tweetMapper.toDtosReply(replyTweets);
+	}
+
+	public Set<UserAccountDto> getMentionedUsers(Integer id) {
+		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
+
+		if (tweet == null)
+		{
+			return null;
+		}
+		
+		Set<UserAccount> mentionedUsers = new HashSet<UserAccount>();
+		
+		for (UserAccount mentioned : tweet.getMentions())
+		{
+			if (mentioned.isActive())
+			{
+				mentionedUsers.add(mentioned);
+			}
+		}
+		
+		return userMapper.toDtoSet(mentionedUsers);
 	}
 
 }

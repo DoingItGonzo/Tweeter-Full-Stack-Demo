@@ -264,6 +264,34 @@ public class UserService {
 		
 		return tweets;
 	}
+
+	public List<TweetDto> getTweetsMentionedIn(String username) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		
+		if (userAccount == null)
+		{
+			return null;
+		}
+		
+		List<TweetDto> tweets = new ArrayList<TweetDto>();
+		
+		for(Tweet tweet : userAccount.getMentionedIn())
+		{
+			if (tweet.isActive())
+			{
+				tweets.add(tweetMapper.toDto(tweet));
+			}
+		}
+		
+		Collections.sort(tweets, new Comparator<TweetDto>() {
+			@Override
+			public int compare(TweetDto o1, TweetDto o2) {
+				return o2.getPosted().compareTo(o1.getPosted());
+			}
+		});
+		
+		return tweets;
+	}
 	
 	
 	

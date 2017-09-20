@@ -133,5 +133,15 @@ public class UserController {
 		return getFeed;
 	}
 	
+	@GetMapping("@{username}/mentions")
+	public List<TweetDto> getTweetsMentionedIn(@PathVariable String username, HttpServletResponse response)
+	{
+		List<TweetDto> tweetsMentionedIn = userService.getTweetsMentionedIn(username);
+		
+		response.setStatus(tweetsMentionedIn != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return tweetsMentionedIn;
+	}
+	
 	
 }

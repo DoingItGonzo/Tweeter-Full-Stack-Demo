@@ -38,6 +38,9 @@ public class UserAccount {
 	
 	@OneToMany(mappedBy="author")
 	private Set<Tweet> tweets;
+	
+	@ManyToMany(mappedBy="mentions")
+	private Set<Tweet> mentionedIn;
 
 	public Integer getId() {
 		return id;
@@ -101,6 +104,14 @@ public class UserAccount {
 
 	public void setTweets(Set<Tweet> tweets) {
 		this.tweets = tweets;
+	}
+	
+	public Set<Tweet> getMentionedIn() {
+		return mentionedIn;
+	}
+
+	public void setMentionedIn(Set<Tweet> mentionedIn) {
+		this.mentionedIn = mentionedIn;
 	}
 
 	@Override

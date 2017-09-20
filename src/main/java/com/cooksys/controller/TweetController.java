@@ -133,6 +133,16 @@ public class TweetController {
 		return direcReplies;
 	}
 	
+	@GetMapping("{id}/mentions")
+	public Set<UserAccountDto> getMentionedUsers(@PathVariable Integer id, HttpServletResponse response)
+	{
+		Set<UserAccountDto> mentionedUsers = tweetService.getMentionedUsers(id);
+		
+		response.setStatus(mentionedUsers != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return mentionedUsers;
+	}
+	
 	
 
 }

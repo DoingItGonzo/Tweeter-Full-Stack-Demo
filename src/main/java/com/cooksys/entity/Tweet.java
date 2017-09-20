@@ -28,6 +28,9 @@ public class Tweet {
 	@Column(nullable=false)
 	private Timestamp posted;
 	
+	@ManyToMany
+	private Set<UserAccount> mentions;
+
 	private boolean active;
 	
 	@ManyToMany
@@ -55,6 +58,14 @@ public class Tweet {
 
 	public void setPosted(Timestamp posted) {
 		this.posted = posted;
+	}
+	
+	public Set<UserAccount> getMentions() {
+		return mentions;
+	}
+
+	public void setMentions(Set<UserAccount> mentions) {
+		this.mentions = mentions;
 	}
 
 	public boolean isActive() {
