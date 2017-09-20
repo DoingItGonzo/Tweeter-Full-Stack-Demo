@@ -1,10 +1,13 @@
 package com.cooksys.entity;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Hashtag {
@@ -13,11 +16,17 @@ public class Hashtag {
 	@GeneratedValue
 	private Integer id;
 	
+	@Column(unique=true, nullable=false)
 	private String label;
 	
+	@Column(nullable=false)
 	private Timestamp firstUsed;
 	
+	@Column(nullable=false)
 	private Timestamp lastUsed;
+	
+	@ManyToMany
+	private Set<Tweet> tweetsWithTag;
 
 	public Integer getId() {
 		return id;
@@ -49,6 +58,14 @@ public class Hashtag {
 
 	public void setLastUsed(Timestamp lastUsed) {
 		this.lastUsed = lastUsed;
+	}
+
+	public Set<Tweet> getTweetsWithTag() {
+		return tweetsWithTag;
+	}
+
+	public void setTweetsWithTag(Set<Tweet> tweetsWithTag) {
+		this.tweetsWithTag = tweetsWithTag;
 	}
 
 	@Override

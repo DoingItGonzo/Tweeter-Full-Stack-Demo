@@ -36,6 +36,9 @@ public class Tweet {
 	@ManyToMany
 	private Set<UserAccount> usersWhoLikeTweet;
 	
+	@ManyToMany
+	private Set<Hashtag> hashtagsUsed;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -82,6 +85,14 @@ public class Tweet {
 
 	public void setUsersWhoLikeTweet(Set<UserAccount> usersWhoLikeTweet) {
 		this.usersWhoLikeTweet = usersWhoLikeTweet;
+	}
+
+	public Set<Hashtag> getHashtagsUsed() {
+		return hashtagsUsed;
+	}
+
+	public void setHashtagsUsed(Set<Hashtag> hashtagsUsed) {
+		this.hashtagsUsed = hashtagsUsed;
 	}
 
 	@Override

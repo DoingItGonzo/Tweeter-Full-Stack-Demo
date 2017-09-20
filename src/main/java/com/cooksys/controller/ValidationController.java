@@ -29,5 +29,11 @@ public class ValidationController {
 	{
 		return validationService.checkUsernameExists(username);
 	}
+	
+	@GetMapping("tag/exists/{label}")
+	public boolean checkHashtagExists(@PathVariable String label)
+	{
+		return validationService.checkHashTagExists(label);
+	}
 
 }
