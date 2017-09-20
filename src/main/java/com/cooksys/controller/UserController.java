@@ -1,5 +1,6 @@
 package com.cooksys.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.CredentialsProfileDto;
+import com.cooksys.dto.TweetDto;
 import com.cooksys.dto.UserAccountDto;
 import com.cooksys.entity.Credentials;
+import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
 import com.cooksys.service.UserService;
 
@@ -108,6 +111,16 @@ public class UserController {
 		response.setStatus(uADtos != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return uADtos;
+	}
+	
+	@GetMapping("@{username}/tweets")
+	public List<TweetDto> getTweets(@PathVariable String username, HttpServletResponse response)
+	{
+		List<TweetDto> getTweets = userService.getTweets(username);
+		
+		response.setStatus(getTweets != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return getTweets;
 	}
 	
 	

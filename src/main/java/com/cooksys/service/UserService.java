@@ -1,14 +1,21 @@
 package com.cooksys.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.CredentialsProfileDto;
+import com.cooksys.dto.TweetDto;
 import com.cooksys.dto.UserAccountDto;
 import com.cooksys.entity.Credentials;
+import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
+import com.cooksys.mapper.TweetMapper;
 import com.cooksys.mapper.UserMapper;
 import com.cooksys.repository.UserRepository;
 
@@ -19,11 +26,13 @@ public class UserService {
 
 	private UserRepository userRepository;
 	private UserMapper userMapper;
+	private TweetMapper tweetMapper;
 
-	public UserService(UserRepository userRepository, UserMapper userMapper)
+	public UserService(UserRepository userRepository, UserMapper userMapper, TweetMapper tweetMapper)
 	{
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
+		this.tweetMapper = tweetMapper;
 	}
 	
 	public Set<UserAccountDto> getUsers() {
@@ -168,7 +177,6 @@ public class UserService {
 
 	public Set<UserAccountDto> getFollowing(String username) {
 		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
-		System.out.println(username);
 		
 		if (userAccount == null)
 		{
@@ -188,6 +196,34 @@ public class UserService {
 		}
 		
 		return usersFollowingDto;
+	}
+
+	public List<TweetDto> getTweets(String username) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		
+		if (userAccount == null)
+		{
+			return null;
+		}
+		
+		List<TweetDto> tweets = new ArrayList<TweetDto>();
+		
+		for(Tweet tweet : userAccount.getTweets())
+		{
+			if (tweet.isActive())
+			{
+				tweets.add(tweetMapper.toDto(tweet));
+			}
+		}
+		
+		Collections.sort(tweets, new Comparator<TweetDto>() {
+			@Override
+			public int compare(TweetDto o1, TweetDto o2) {
+				return o2.getPosted().compareTo(o1.getPosted());
+			}
+		});
+		
+		return tweets;
 	}
 	
 	
