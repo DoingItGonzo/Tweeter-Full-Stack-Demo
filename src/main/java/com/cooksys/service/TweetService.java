@@ -1,6 +1,7 @@
 package com.cooksys.service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -169,6 +170,29 @@ public class TweetService {
 		{
 			return userMapper.toDtoSet(tweetLiked.getUsersWhoLikeTweet());
 		}
+	}
+
+	public Set<RepostTweetDto> getDirectReposts(Integer id) {
+		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
+
+		if (tweet == null)
+		{
+			return null;
+		}
+		
+		Set<RepostTweet> repostTweets = new HashSet<RepostTweet>();
+		
+		for (RepostTweet repost : tweetRepository.findAllByRepostOfId(tweet.getId()))
+		{
+			if (repost.isActive())
+			{
+				repostTweets.add(repost);
+			}
+		}
+		
+		return tweetMapper.toDtosRepost(repostTweets);
+		
+		
 	}
 
 }

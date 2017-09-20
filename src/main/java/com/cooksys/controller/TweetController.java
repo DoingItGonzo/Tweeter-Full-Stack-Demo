@@ -113,6 +113,16 @@ public class TweetController {
 		response.setStatus(success ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
+	@GetMapping("{id}/reposts")
+	public Set<RepostTweetDto> getDirectReposts(@PathVariable Integer id, HttpServletResponse response)
+	{
+		Set<RepostTweetDto> directReposts = tweetService.getDirectReposts(id);
+		
+		response.setStatus(directReposts != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return directReposts;
+	}
+	
 	
 
 }

@@ -1,6 +1,7 @@
 package com.cooksys.mapper;
 
 import java.util.List;
+import java.util.Set;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +21,8 @@ public interface TweetMapper {
 	List<TweetDto> toDtos(List<Tweet> tweets);
 	
 	List<Tweet> fromDtos(List<TweetDto> tweetDtos);
+	
+	
 	
 	default Tweet fromDto(TweetDto tweetDto)
 	{
@@ -69,4 +72,17 @@ public interface TweetMapper {
 	ReplyTweet fromDtoReply(ReplyTweetDto replyTweetDto);
 	
 	ReplyTweetDto toDtoReply(ReplyTweet replyTweet);
+	
+	Set<RepostTweetDto> toDtosRepost(Set<RepostTweet> tweets);
+	
+	Set<RepostTweet> fromDtosRepost(Set<RepostTweetDto> tweetDtos);
+	
+	Set<ReplyTweetDto> toDtosReply(Set<ReplyTweet> tweets);
+	
+	Set<ReplyTweet> fromDtosReply(Set<ReplyTweetDto> tweetDtos);
+	
+	Set<SimpleTweetDto> toDtosSimple(Set<SimpleTweet> tweets);
+	
+	Set<SimpleTweet> fromDtosSimple(Set<SimpleTweetDto> tweetDtos);
+
 }
