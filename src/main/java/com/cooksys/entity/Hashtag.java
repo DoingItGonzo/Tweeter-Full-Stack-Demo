@@ -25,7 +25,7 @@ public class Hashtag {
 	@Column(nullable=false)
 	private Timestamp lastUsed;
 	
-	@ManyToMany
+	@ManyToMany(mappedBy="hashtagsUsed")
 	private Set<Tweet> tweetsWithTag;
 
 	public Integer getId() {

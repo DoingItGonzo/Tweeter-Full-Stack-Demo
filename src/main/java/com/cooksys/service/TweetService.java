@@ -16,6 +16,7 @@ import com.cooksys.dto.SimpleTweetDto;
 import com.cooksys.dto.TweetDto;
 import com.cooksys.dto.UserAccountDto;
 import com.cooksys.entity.Credentials;
+import com.cooksys.entity.Hashtag;
 import com.cooksys.entity.ReplyTweet;
 import com.cooksys.entity.RepostTweet;
 import com.cooksys.entity.SimpleTweet;
@@ -23,6 +24,7 @@ import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
 import com.cooksys.mapper.TweetMapper;
 import com.cooksys.mapper.UserMapper;
+import com.cooksys.repository.HashtagRepository;
 import com.cooksys.repository.TweetRepoistory;
 import com.cooksys.repository.UserRepository;
 
@@ -33,13 +35,17 @@ public class TweetService {
 	private TweetMapper tweetMapper;
 	private UserRepository userRepository;
 	private UserMapper userMapper;
+	private HashtagRepository hashtagRepository;
 
-	public TweetService(TweetRepoistory tweetRepoistory, TweetMapper tweetMapper, UserRepository userRepository, UserMapper userMapper)
+	public TweetService(TweetRepoistory tweetRepoistory, TweetMapper tweetMapper, 
+			UserRepository userRepository, UserMapper userMapper, 
+			HashtagRepository hashtagRepository)
 	{
 		this.tweetRepository = tweetRepoistory;
 		this.tweetMapper = tweetMapper;
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
+		this.hashtagRepository = hashtagRepository;
 	}
 	
 	public List<TweetDto> getTweets() {
@@ -63,19 +69,8 @@ public class TweetService {
 			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
 			tweet.setContent(contentCredentialDto.getContent());
 			tweet.setActive(true);
-			Pattern p = Pattern.compile("@(\\S)+");
-	        Matcher m = p.matcher(tweet.getContent());
-	        Set<UserAccount> peopleMentioned = new HashSet<UserAccount>();
-	        while (m.find())
-	        {
-	        	UserAccount mentionedUser = userRepository.findByCredentialsUsername(m.group().substring(1));
-	        	if (mentionedUser != null)
-	        	{
-	        		System.out.println(mentionedUser.getId());
-	        		peopleMentioned.add(mentionedUser);
-	        	}
-	        }
-	        tweet.setMentions(peopleMentioned);
+	        tweet.setMentions(extractMentions(tweet.getContent()));
+	        tweet.setHashtagsUsed(extractHashtags(tweet.getContent(), tweet.getPosted()));
 			tweetRepository.save(tweet);
 			return tweetMapper.toDtoSimple(tweet);
 		}
@@ -149,6 +144,8 @@ public class TweetService {
 			tweet.setContent(contentCredentials.getContent());
 			tweet.setInReplyTo(tweetToReply);
 			tweet.setActive(true);
+			tweet.setMentions(extractMentions(tweet.getContent()));
+			tweet.setHashtagsUsed(extractHashtags(tweet.getContent(), tweet.getPosted()));
 			tweetRepository.save(tweet);
 			return tweetMapper.toDtoReply(tweet);
 		}
@@ -250,6 +247,45 @@ public class TweetService {
 		}
 		
 		return userMapper.toDtoSet(mentionedUsers);
+	}
+	
+	private Set<UserAccount> extractMentions(String content)
+	{
+		Pattern mentionPattern = Pattern.compile("@(\\S)+");
+        Matcher mentionMatcher = mentionPattern.matcher(content);
+        Set<UserAccount> peopleMentioned = new HashSet<UserAccount>();
+        while (mentionMatcher.find())
+        {
+        	UserAccount mentionedUser = userRepository.findByCredentialsUsername(mentionMatcher.group().substring(1));
+        	if (mentionedUser != null)
+        	{
+        		peopleMentioned.add(mentionedUser);
+        	}
+        }
+        return peopleMentioned;
+	}
+	
+	private Set<Hashtag> extractHashtags(String content, Timestamp timeUsed)
+	{
+		Pattern p = Pattern.compile("#(\\S)+");
+		Matcher m = p.matcher(content);
+		Set<Hashtag> hashtags = new HashSet<Hashtag>();
+		while(m.find())
+		{
+			Hashtag hashtag = hashtagRepository.findByLabel(m.group().substring(1));
+			// Hashtag has not been seen before so we need to create it
+			if (hashtag == null)
+			{
+				hashtag = new Hashtag();
+				hashtag.setLabel(m.group().substring(1));
+				hashtag.setFirstUsed(timeUsed);
+			}
+			hashtag.setLastUsed(timeUsed);
+			hashtagRepository.save(hashtag);
+			hashtags.add(hashtag);
+		}
+		
+		return hashtags;
 	}
 
 }

@@ -31,6 +31,7 @@ public class Tweet {
 	@ManyToMany
 	private Set<UserAccount> mentions;
 
+	@Column(nullable=false)
 	private boolean active;
 	
 	@ManyToMany
