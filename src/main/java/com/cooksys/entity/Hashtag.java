@@ -19,7 +19,7 @@ public class Hashtag {
 	@Column(unique=true, nullable=false)
 	private String label;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, updatable=false)
 	private Timestamp firstUsed;
 	
 	@Column(nullable=false)

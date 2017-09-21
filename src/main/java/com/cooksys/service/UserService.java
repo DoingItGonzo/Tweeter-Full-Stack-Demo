@@ -52,6 +52,7 @@ public class UserService {
 			userAccount.setActive(true);
 			try {
 				userRepository.save(userAccount);
+			// Exception will when a user is trying to use a username that is already in the database
 			} catch (RuntimeException e) {
 				return null;
 			}

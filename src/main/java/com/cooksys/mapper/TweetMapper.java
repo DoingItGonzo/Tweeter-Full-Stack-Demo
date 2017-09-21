@@ -26,17 +26,17 @@ public interface TweetMapper {
 	
 	default Tweet fromDto(TweetDto tweetDto)
 	{
-		if (tweetDto instanceof SimpleTweetDto)
+		if (tweetDto instanceof ReplyTweetDto)
 		{
-			return fromDtoSimple((SimpleTweetDto) tweetDto);
+			return fromDtoReply((ReplyTweetDto) tweetDto);
 		}
 		else if (tweetDto instanceof RepostTweetDto)
 		{
 			return fromDtoRepost((RepostTweetDto) tweetDto);
 		}
-		else if (tweetDto instanceof ReplyTweetDto)
+		else if (tweetDto instanceof SimpleTweetDto)
 		{
-			return fromDtoReply((ReplyTweetDto) tweetDto);
+			return fromDtoSimple((SimpleTweetDto) tweetDto);
 		}
 		return null;
 	}
@@ -45,17 +45,17 @@ public interface TweetMapper {
 	{
 		if (tweet.isActive())
 		{
-			if (tweet instanceof SimpleTweet)
+			if (tweet instanceof ReplyTweet)
 			{
-				return toDtoSimple((SimpleTweet) tweet);
+				return toDtoReply((ReplyTweet) tweet);
 			}
 			else if (tweet instanceof RepostTweet)
 			{
 				return toDtoRepost((RepostTweet) tweet);
 			}
-			else if (tweet instanceof ReplyTweet)
+			else if (tweet instanceof SimpleTweet)
 			{
-				return toDtoReply((ReplyTweet) tweet);
+				return toDtoSimple((SimpleTweet) tweet);
 			}
 		}
 		return null;

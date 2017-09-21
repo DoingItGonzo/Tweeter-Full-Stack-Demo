@@ -1,19 +1,9 @@
 package com.cooksys.dto;
 
 
-public class ReplyTweetDto  extends TweetDto {
-
-private String content;
+public class ReplyTweetDto  extends SimpleTweetDto {
 	
 	private TweetDto inReplyTo;
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 	public TweetDto getInReplyTo() {
 		return inReplyTo;

@@ -4,20 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Entity
-public class ReplyTweet extends Tweet {
-	
-	private String content;
+public class ReplyTweet extends SimpleTweet {
 	
 	@OneToOne
 	private Tweet inReplyTo;
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 	public Tweet getInReplyTo() {
 		return inReplyTo;

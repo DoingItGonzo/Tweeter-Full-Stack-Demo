@@ -24,7 +24,7 @@ public class UserAccount {
 	@Embedded
 	private Profile profile;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, updatable=false)
 	private Timestamp joined;
 	
 	@Column(nullable=false)
