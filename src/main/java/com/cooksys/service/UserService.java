@@ -292,13 +292,4 @@ public class UserService {
 		
 		return tweets;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
 }
