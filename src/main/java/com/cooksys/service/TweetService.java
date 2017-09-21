@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.ContentCredentialDto;
+import com.cooksys.dto.HashtagDto;
 import com.cooksys.dto.ReplyTweetDto;
 import com.cooksys.dto.RepostTweetDto;
 import com.cooksys.dto.SimpleTweetDto;
@@ -22,6 +23,7 @@ import com.cooksys.entity.RepostTweet;
 import com.cooksys.entity.SimpleTweet;
 import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
+import com.cooksys.mapper.HashtagMapper;
 import com.cooksys.mapper.TweetMapper;
 import com.cooksys.mapper.UserMapper;
 import com.cooksys.repository.HashtagRepository;
@@ -36,16 +38,18 @@ public class TweetService {
 	private UserRepository userRepository;
 	private UserMapper userMapper;
 	private HashtagRepository hashtagRepository;
+	private HashtagMapper hashtagMapper;
 
 	public TweetService(TweetRepoistory tweetRepoistory, TweetMapper tweetMapper, 
 			UserRepository userRepository, UserMapper userMapper, 
-			HashtagRepository hashtagRepository)
+			HashtagRepository hashtagRepository, HashtagMapper hashtagMapper)
 	{
 		this.tweetRepository = tweetRepoistory;
 		this.tweetMapper = tweetMapper;
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 		this.hashtagRepository = hashtagRepository;
+		this.hashtagMapper = hashtagMapper;
 	}
 	
 	public List<TweetDto> getTweets() {
@@ -249,6 +253,18 @@ public class TweetService {
 		return mentionedUsersDtos;
 	}
 	
+	public Set<HashtagDto> getTagsInTweet(Integer id) {
+		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
+		
+		if (tweet == null)
+		{
+			return null;
+		}
+		
+		return hashtagMapper.toDtos(tweet.getHashtagsUsed());
+		
+	}
+	
 	private Set<UserAccount> extractMentions(String content)
 	{
 		Pattern mentionPattern = Pattern.compile("@(\\S)+");
@@ -287,5 +303,7 @@ public class TweetService {
 		
 		return hashtags;
 	}
+
+	
 
 }

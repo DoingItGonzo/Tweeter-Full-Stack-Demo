@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.ContentCredentialDto;
+import com.cooksys.dto.HashtagDto;
 import com.cooksys.dto.ReplyTweetDto;
 import com.cooksys.dto.RepostTweetDto;
 import com.cooksys.dto.SimpleTweetDto;
@@ -141,6 +142,16 @@ public class TweetController {
 		response.setStatus(mentionedUsers != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return mentionedUsers;
+	}
+	
+	@GetMapping("{id}/tags")
+	public Set<HashtagDto> getTagsInTweet(@PathVariable Integer id, HttpServletResponse response)
+	{
+		Set<HashtagDto> tagsInTweet = tweetService.getTagsInTweet(id);
+		
+		response.setStatus(tagsInTweet != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return tagsInTweet;
 	}
 	
 	
