@@ -381,7 +381,7 @@ public class TweetService {
 		Set<Hashtag> hashtags = new HashSet<Hashtag>();
 		while(m.find())
 		{
-			Hashtag hashtag = hashtagRepository.findByLabel(m.group().substring(1));
+			Hashtag hashtag = hashtagRepository.findByLabelIgnoreCase(m.group().substring(1));
 			// Hashtag has not been seen before so we need to create it
 			if (hashtag == null)
 			{

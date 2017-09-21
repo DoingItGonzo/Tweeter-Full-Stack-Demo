@@ -26,7 +26,7 @@ public class ValidationService {
 	}
 
 	public boolean checkHashTagExists(String label) {
-		return hashtagRepository.findByLabel(label) != null ? true : false;
+		return hashtagRepository.findByLabelIgnoreCase(label) != null ? true : false;
 	}
 	
 

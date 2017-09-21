@@ -35,7 +35,7 @@ public class HashtagService {
 	}
 
 	public List<TweetDto> getTaggedTweets(String label) {
-		Hashtag hashtag = hashtagRepository.findByLabel(label);
+		Hashtag hashtag = hashtagRepository.findByLabelIgnoreCase(label);
 		
 		if (hashtag == null)
 		{
