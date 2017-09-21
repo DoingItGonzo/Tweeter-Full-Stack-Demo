@@ -1,19 +1,17 @@
 package com.cooksys.repository;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.cooksys.entity.Tweet;
 import com.cooksys.entity.UserAccount;
 
 
 public interface UserRepository extends JpaRepository<UserAccount, Integer>{
 
-	UserAccount findByCredentialsUsername(String username);
+	UserAccount findByCredentialsUsernameIgnoreCase(String username);
 	
-	UserAccount findByCredentialsUsernameAndActiveTrue(String username);
+	UserAccount findByCredentialsUsernameIgnoreCaseAndActiveTrue(String username);
 	
 	Set<UserAccount> findByActiveTrue();
 	

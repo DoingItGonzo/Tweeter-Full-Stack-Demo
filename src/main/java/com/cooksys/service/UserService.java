@@ -40,7 +40,7 @@ public class UserService {
 	}
 
 	public UserAccountDto createUser(CredentialsProfileDto credentialsProfileDto) {
-		UserAccount userAccount = userRepository.findByCredentialsUsername(credentialsProfileDto.getCredentials().getUsername());
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCase(credentialsProfileDto.getCredentials().getUsername());
 		
 		// No user with that username
 		if (userAccount == null)
@@ -76,7 +76,7 @@ public class UserService {
 	}
 
 	public UserAccountDto updateProfile(String username, CredentialsProfileDto credentialsProfileDto) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		
 		// Allow user to edit profile only if they have right password
 		if (userAccount == null || 
@@ -95,11 +95,11 @@ public class UserService {
 	}
 
 	public UserAccountDto getUser(String username) {
-		return userMapper.toDto(userRepository.findByCredentialsUsernameAndActiveTrue(username));
+		return userMapper.toDto(userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username));
 	}
 
 	public UserAccountDto deleteUser(String username, Credentials credentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		// Allow user to delete profile only if they have right password
 		// Allow user to edit profile only if they have right password
 		if (userAccount == null || 
@@ -117,8 +117,8 @@ public class UserService {
 	}
 
 	public boolean followUser(String usernameToFollow, Credentials credentialsOfFollower) {
-		UserAccount userToFollow = userRepository.findByCredentialsUsernameAndActiveTrue(usernameToFollow);
-		UserAccount follower = userRepository.findByCredentialsUsernameAndActiveTrue(credentialsOfFollower.getUsername());
+		UserAccount userToFollow = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(usernameToFollow);
+		UserAccount follower = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentialsOfFollower.getUsername());
 		
 		// If either user doesnt exist or the follower doesnt have the right password or the follower already follows the user 
 		if (userToFollow == null || follower == null 
@@ -136,8 +136,8 @@ public class UserService {
 	}
 
 	public boolean unfollowUser(String usernameToFollow, Credentials credentialsOfFollower) {
-		UserAccount userToUnfollow = userRepository.findByCredentialsUsernameAndActiveTrue(usernameToFollow);
-		UserAccount unfollower = userRepository.findByCredentialsUsernameAndActiveTrue(credentialsOfFollower.getUsername());
+		UserAccount userToUnfollow = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(usernameToFollow);
+		UserAccount unfollower = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentialsOfFollower.getUsername());
 		
 		// If either user doesnt exist or the unfollower doesnt have the right password or the unfollower doesnt follow the user 
 		if (userToUnfollow == null || unfollower == null 
@@ -155,7 +155,7 @@ public class UserService {
 	}
 
 	public Set<UserAccountDto> getFollowers(String username) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		
 		if (userAccount == null)
 		{
@@ -176,7 +176,7 @@ public class UserService {
 	}
 
 	public Set<UserAccountDto> getFollowing(String username) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		
 		if (userAccount == null)
 		{
@@ -199,7 +199,7 @@ public class UserService {
 	}
 
 	public List<TweetDto> getTweets(String username) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		
 		if (userAccount == null)
 		{
@@ -227,7 +227,7 @@ public class UserService {
 	}
 
 	public List<TweetDto> getFeed(String username) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		
 		if (userAccount == null)
 		{
@@ -266,7 +266,7 @@ public class UserService {
 	}
 
 	public List<TweetDto> getTweetsMentionedIn(String username) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(username);
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 		
 		if (userAccount == null)
 		{

@@ -63,7 +63,7 @@ public class TweetService {
 	}
 
 	public SimpleTweetDto createTweet(ContentCredentialDto contentCredentialDto) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(contentCredentialDto.getCredentials().getUsername());
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(contentCredentialDto.getCredentials().getUsername());
 		
 		// Allow user to create tweet only if they have correct password
 		if (userAccount == null || 
@@ -111,7 +111,7 @@ public class TweetService {
 	}
 
 	public RepostTweetDto repostTweet(Integer id, Credentials credentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(credentials.getUsername());
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentials.getUsername());
 		
 		Tweet tweetToRepost = tweetRepository.findByIdAndActiveTrue(id);
 		
@@ -135,7 +135,7 @@ public class TweetService {
 	}
 
 	public ReplyTweetDto replyTweet(Integer id, ContentCredentialDto contentCredentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(contentCredentials.getCredentials().getUsername());
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(contentCredentials.getCredentials().getUsername());
 		
 		Tweet tweetToReply = tweetRepository.findByIdAndActiveTrue(id);
 		
@@ -162,7 +162,7 @@ public class TweetService {
 	}
 
 	public boolean likeTweet(Integer id, Credentials credentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameAndActiveTrue(credentials.getUsername());
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentials.getUsername());
 		
 		Tweet tweetToLike = tweetRepository.findByIdAndActiveTrue(id);
 		
@@ -365,7 +365,7 @@ public class TweetService {
         Set<UserAccount> peopleMentioned = new HashSet<UserAccount>();
         while (mentionMatcher.find())
         {
-        	UserAccount mentionedUser = userRepository.findByCredentialsUsername(mentionMatcher.group().substring(1));
+        	UserAccount mentionedUser = userRepository.findByCredentialsUsernameIgnoreCase(mentionMatcher.group().substring(1));
         	if (mentionedUser != null)
         	{
         		peopleMentioned.add(mentionedUser);

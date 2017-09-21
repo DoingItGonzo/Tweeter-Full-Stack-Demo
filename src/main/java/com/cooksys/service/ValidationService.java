@@ -18,11 +18,11 @@ public class ValidationService {
 	}
 	
 	public boolean checkUsernameAvailability(String username) {
-		return userRepository.findByCredentialsUsername(username) == null ? true : false;
+		return userRepository.findByCredentialsUsernameIgnoreCase(username) == null ? true : false;
 	}
 
 	public boolean checkUsernameExists(String username) {
-		return userRepository.findByCredentialsUsernameAndActiveTrue(username) != null ? true : false;
+		return userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username) != null ? true : false;
 	}
 
 	public boolean checkHashTagExists(String label) {
