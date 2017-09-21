@@ -291,7 +291,6 @@ public class TweetService {
 			
 			// Keep going up the chain until we hit a non-replyTweet
 			while (currentBeforeTweet instanceof ReplyTweet) {
-				System.out.println(currentBeforeTweet.getId());
 				if (currentBeforeTweet.isActive())
 				{
 					before.add(tweetMapper.replyToSimpleDto((ReplyTweet) currentBeforeTweet));
