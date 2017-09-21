@@ -73,6 +73,10 @@ public interface TweetMapper {
 	
 	ReplyTweetDto toDtoReply(ReplyTweet replyTweet);
 	
+	ReplyTweet simpleToReply(SimpleTweet tweet);
+	
+	SimpleTweetDto replyToSimpleDto(ReplyTweet tweet);
+	
 	Set<RepostTweetDto> toDtosRepost(Set<RepostTweet> tweets);
 	
 	Set<RepostTweet> fromDtosRepost(Set<RepostTweetDto> tweetDtos);

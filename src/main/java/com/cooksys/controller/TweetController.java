@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.ContentCredentialDto;
+import com.cooksys.dto.ContextDto;
 import com.cooksys.dto.HashtagDto;
 import com.cooksys.dto.ReplyTweetDto;
 import com.cooksys.dto.RepostTweetDto;
@@ -152,6 +153,16 @@ public class TweetController {
 		response.setStatus(tagsInTweet != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
 		
 		return tagsInTweet;
+	}
+	
+	@GetMapping("{id}/context")
+	public ContextDto getContext(@PathVariable Integer id, HttpServletResponse response)
+	{
+		ContextDto context = tweetService.getContext(id);
+		
+		response.setStatus(context != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return context;
 	}
 	
 	

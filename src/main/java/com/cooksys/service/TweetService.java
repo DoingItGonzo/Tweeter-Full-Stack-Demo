@@ -1,8 +1,13 @@
 package com.cooksys.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +15,7 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 import com.cooksys.dto.ContentCredentialDto;
+import com.cooksys.dto.ContextDto;
 import com.cooksys.dto.HashtagDto;
 import com.cooksys.dto.ReplyTweetDto;
 import com.cooksys.dto.RepostTweetDto;
@@ -265,6 +271,93 @@ public class TweetService {
 		
 	}
 	
+	public ContextDto getContext(Integer id) {
+		Tweet targetTweet = tweetRepository.findByIdAndActiveTrue(id);
+		
+		if (targetTweet == null)
+		{
+			return null;
+		}
+		
+		
+		ContextDto contextDto = new ContextDto();
+		
+		List<TweetDto> before = new ArrayList<TweetDto>();
+		//If the tweet is not a replyTweet there is no chain before
+		if (targetTweet instanceof ReplyTweet)
+		{
+			contextDto.setTarget(tweetMapper.replyToSimpleDto((ReplyTweet) targetTweet));
+			Tweet currentBeforeTweet = tweetRepository.findOne(((ReplyTweet) targetTweet).getInReplyTo().getId());
+			
+			// Keep going up the chain until we hit a non-replyTweet
+			while (currentBeforeTweet instanceof ReplyTweet) {
+				System.out.println(currentBeforeTweet.getId());
+				if (currentBeforeTweet.isActive())
+				{
+					before.add(tweetMapper.replyToSimpleDto((ReplyTweet) currentBeforeTweet));
+				}
+				currentBeforeTweet = tweetRepository.findOne(((ReplyTweet) currentBeforeTweet).getInReplyTo().getId());
+			} 
+			
+			before.add(tweetMapper.toDto(currentBeforeTweet));
+			
+			// Sort chronologically
+			Collections.sort(before, new Comparator<TweetDto>() {
+				@Override
+				public int compare(TweetDto o1, TweetDto o2) {
+					return o1.getPosted().compareTo(o2.getPosted());
+				}
+			});
+		}
+		else
+		{
+			contextDto.setTarget(tweetMapper.toDto(targetTweet));
+		}
+		
+		contextDto.setBefore(before);
+		
+		List<TweetDto> after = new ArrayList<TweetDto>();
+		
+		Queue<Tweet> tweetRepliesToSearch = new ArrayDeque<Tweet>();
+		
+		Tweet currentAfterTweet;
+		
+		tweetRepliesToSearch.add(targetTweet);
+			
+		// Do a breadth search through the tree of replies
+		while(!tweetRepliesToSearch.isEmpty())
+		{
+			currentAfterTweet = tweetRepliesToSearch.poll();
+			for (Tweet reply : tweetRepository.findAllByInReplyToId(currentAfterTweet.getId()))
+			{
+				if (reply.isActive())
+				{
+					if (reply instanceof ReplyTweet)
+					{
+						after.add(tweetMapper.replyToSimpleDto((ReplyTweet) reply));
+					}
+					else
+					{
+						after.add(tweetMapper.toDto(reply));
+					}
+				}
+				tweetRepliesToSearch.add(reply);
+			}
+			
+		} 
+		
+		Collections.sort(after, new Comparator<TweetDto>() {
+			@Override
+			public int compare(TweetDto o1, TweetDto o2) {
+				return o1.getPosted().compareTo(o2.getPosted());
+			}
+		});
+		
+		contextDto.setAfter(after);
+		
+		return contextDto;
+	}
+	
 	private Set<UserAccount> extractMentions(String content)
 	{
 		Pattern mentionPattern = Pattern.compile("@(\\S)+");
@@ -303,6 +396,8 @@ public class TweetService {
 		
 		return hashtags;
 	}
+
+	
 
 	
 
