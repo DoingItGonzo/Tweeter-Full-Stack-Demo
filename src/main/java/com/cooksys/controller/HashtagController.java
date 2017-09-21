@@ -1,12 +1,17 @@
 package com.cooksys.controller;
 
+import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cooksys.dto.HashtagDto;
+import com.cooksys.dto.TweetDto;
 import com.cooksys.service.HashtagService;
 
 
@@ -24,6 +29,16 @@ public class HashtagController {
 	public Set<HashtagDto> getTags()
 	{
 		return hashtagService.getTags();
+	}
+	
+	@GetMapping("{label}")
+	public List<TweetDto> getTaggedTweets(@PathVariable String label, HttpServletResponse response)
+	{
+		List<TweetDto> taggedTweets = hashtagService.getTaggedTweets(label);
+		
+		response.setStatus(taggedTweets != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		
+		return taggedTweets;
 	}
 
 }

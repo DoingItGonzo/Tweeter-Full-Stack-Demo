@@ -192,17 +192,17 @@ public class TweetService {
 			return null;
 		}
 		
-		Set<RepostTweet> repostTweets = new HashSet<RepostTweet>();
+		Set<RepostTweetDto> repostTweetDtos = new HashSet<RepostTweetDto>();
 		
 		for (RepostTweet repost : tweetRepository.findAllByRepostOfId(tweet.getId()))
 		{
 			if (repost.isActive())
 			{
-				repostTweets.add(repost);
+				repostTweetDtos.add(tweetMapper.toDtoRepost(repost));
 			}
 		}
 		
-		return tweetMapper.toDtosRepost(repostTweets);
+		return repostTweetDtos;
 		
 		
 	}
@@ -215,17 +215,17 @@ public class TweetService {
 			return null;
 		}
 		
-		Set<ReplyTweet> replyTweets = new HashSet<ReplyTweet>();
+		Set<ReplyTweetDto> replyTweetDtos = new HashSet<ReplyTweetDto>();
 		
 		for (ReplyTweet reply : tweetRepository.findAllByInReplyToId(tweet.getId()))
 		{
 			if (reply.isActive())
 			{
-				replyTweets.add(reply);
+				replyTweetDtos.add(tweetMapper.toDtoReply(reply));
 			}
 		}
 		
-		return tweetMapper.toDtosReply(replyTweets);
+		return replyTweetDtos;
 	}
 
 	public Set<UserAccountDto> getMentionedUsers(Integer id) {
@@ -236,17 +236,17 @@ public class TweetService {
 			return null;
 		}
 		
-		Set<UserAccount> mentionedUsers = new HashSet<UserAccount>();
+		Set<UserAccountDto> mentionedUsersDtos = new HashSet<UserAccountDto>();
 		
 		for (UserAccount mentioned : tweet.getMentions())
 		{
 			if (mentioned.isActive())
 			{
-				mentionedUsers.add(mentioned);
+				mentionedUsersDtos.add(userMapper.toDto(mentioned));
 			}
 		}
 		
-		return userMapper.toDtoSet(mentionedUsers);
+		return mentionedUsersDtos;
 	}
 	
 	private Set<UserAccount> extractMentions(String content)
