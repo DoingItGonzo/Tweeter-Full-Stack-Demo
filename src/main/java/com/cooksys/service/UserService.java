@@ -45,26 +45,23 @@ public class UserService {
 					.findByCredentialsUsernameIgnoreCase(credentialsProfileDto.getCredentials().getUsername());
 
 			// No user with that username
-			if (userAccount == null) {
-				// Need this check since the email cannot be null
-				if (credentialsProfileDto.getProfile() != null
-						&& credentialsProfileDto.getProfile().getEmail() != null) {
-					// Create a user and save them to the database
-					userAccount = new UserAccount();
-					userAccount.setProfile(credentialsProfileDto.getProfile());
-					userAccount.setCredentials(credentialsProfileDto.getCredentials());
-					userAccount.setJoined(new Timestamp(System.currentTimeMillis()));
-					userAccount.setActive(true);
-					userRepository.save(userAccount);
-					return userMapper.toDto(userAccount);
-				}
+			if (userAccount == null && credentialsProfileDto.getProfile() != null
+					&& credentialsProfileDto.getProfile().getEmail() != null) {
+				// Create a user and save them to the database
+				userAccount = new UserAccount();
+				userAccount.setProfile(credentialsProfileDto.getProfile());
+				userAccount.setCredentials(credentialsProfileDto.getCredentials());
+				userAccount.setJoined(new Timestamp(System.currentTimeMillis()));
+				userAccount.setActive(true);
+				userRepository.save(userAccount);
+				return userMapper.toDto(userAccount);
 			}
 			// User reactivating account or someone trying to use a username
 			// that is already active
 			else {
 				// User reactivating account
-				if (!userAccount.isActive()
-						&& doesUserHaveCorrectCredentials(userAccount, credentialsProfileDto.getCredentials())) {
+				if (doesUserHaveCorrectCredentials(userAccount, credentialsProfileDto.getCredentials())
+						&& !userAccount.isActive()) {
 					userAccount.setActive(true);
 					userRepository.save(userAccount);
 					return userMapper.toDto(userAccount);
@@ -111,15 +108,15 @@ public class UserService {
 	public boolean followUser(String usernameToFollow, Credentials credentialsOfFollower) {
 		boolean ableToFollow = false;
 		// Continue only if the credentials password and username are there
-		if (credentialsOfFollower != null && credentialsOfFollower.getUsername() != null) {
+		if (credentialsOfFollower != null) {
 			UserAccount userToFollow = userRepository
 					.findByCredentialsUsernameIgnoreCaseAndActiveTrue(usernameToFollow);
 			UserAccount follower = userRepository
 					.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentialsOfFollower.getUsername());
 
 			// If either user doesnt exist or the follower doesnt have the right
-			// password
-			if (userToFollow != null && doesUserHaveCorrectCredentials(follower, credentialsOfFollower)) {
+			// password and user is not trying to follow themself
+			if (userToFollow != null && doesUserHaveCorrectCredentials(follower, credentialsOfFollower) && userToFollow != follower) {
 				ableToFollow = userToFollow.getFollowers().add(follower);
 				userRepository.save(userToFollow);
 			}
@@ -131,7 +128,7 @@ public class UserService {
 	public boolean unfollowUser(String usernameToFollow, Credentials credentialsOfFollower) {
 		boolean ableToUnfollow = false;
 		// Continue only if the credentials password and username are there
-		if (credentialsOfFollower != null && credentialsOfFollower.getUsername() != null) {
+		if (credentialsOfFollower != null) {
 			UserAccount userToUnfollow = userRepository
 					.findByCredentialsUsernameIgnoreCaseAndActiveTrue(usernameToFollow);
 			UserAccount unfollower = userRepository
@@ -164,7 +161,7 @@ public class UserService {
 	public Set<UserAccountDto> getFollowing(String username) {
 		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
 
-		Set<UserAccountDto> usersFollowingDto = new HashSet<UserAccountDto>();
+		Set<UserAccountDto> usersFollowingDto = null;
 
 		if (userAccount != null) {
 			usersFollowingDto = getActiveUserDtos(userAccount.getFollowing());
@@ -196,7 +193,10 @@ public class UserService {
 			tweets = getActiveTweetDtos(userAccount.getTweets());
 
 			for (UserAccount userFollowing : userAccount.getFollowing()) {
-				tweets.addAll(getActiveTweetDtos(userFollowing.getTweets()));
+				if (userFollowing.isActive())
+				{
+					tweets.addAll(getActiveTweetDtos(userFollowing.getTweets()));
+				}
 			}
 
 			sortTweets(tweets);

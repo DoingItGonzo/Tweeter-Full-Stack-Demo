@@ -62,7 +62,7 @@ public class TweetController {
 	{
 		TweetDto tweetDto = tweetService.getTweet(id);
 		
-		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(tweetDto != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return tweetDto;
 	}
@@ -102,7 +102,7 @@ public class TweetController {
 	{
 		Set<UserAccountDto> usersWhoLiked = tweetService.getUsersWhoLiked(id);
 		
-		response.setStatus(usersWhoLiked != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(usersWhoLiked != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return usersWhoLiked;
 	}
@@ -120,7 +120,7 @@ public class TweetController {
 	{
 		Set<RepostTweetDto> directReposts = tweetService.getDirectReposts(id);
 		
-		response.setStatus(directReposts != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(directReposts != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return directReposts;
 	}
@@ -130,7 +130,7 @@ public class TweetController {
 	{
 		Set<ReplyTweetDto> direcReplies = tweetService.getDirectReplies(id);
 		
-		response.setStatus(direcReplies != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(direcReplies != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return direcReplies;
 	}
@@ -140,7 +140,7 @@ public class TweetController {
 	{
 		Set<UserAccountDto> mentionedUsers = tweetService.getMentionedUsers(id);
 		
-		response.setStatus(mentionedUsers != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(mentionedUsers != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return mentionedUsers;
 	}
@@ -150,7 +150,7 @@ public class TweetController {
 	{
 		Set<HashtagDto> tagsInTweet = tweetService.getTagsInTweet(id);
 		
-		response.setStatus(tagsInTweet != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(tagsInTweet != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return tagsInTweet;
 	}
@@ -160,7 +160,7 @@ public class TweetController {
 	{
 		ContextDto context = tweetService.getContext(id);
 		
-		response.setStatus(context != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(context != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return context;
 	}

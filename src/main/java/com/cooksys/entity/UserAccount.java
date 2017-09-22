@@ -27,7 +27,6 @@ public class UserAccount {
 	@Column(nullable=false, updatable=false)
 	private Timestamp joined;
 	
-	@Column(nullable=false)
 	private boolean active;
 	
 	@ManyToMany

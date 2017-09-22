@@ -63,27 +63,29 @@ public class TweetService {
 	}
 
 	public SimpleTweetDto createTweet(ContentCredentialDto contentCredentialDto) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(contentCredentialDto.getCredentials().getUsername());
+		// Continue only if the credentials username
+		if (contentCredentialDto != null && contentCredentialDto.getCredentials() != null)
+		{
+			UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(contentCredentialDto.getCredentials().getUsername());
+			
+			// Allow user to create tweet only if they have correct password and have content
+			if (userAccount != null && contentCredentialDto.getContent() != null &&
+					contentCredentialDto.getCredentials().getPassword() != null && 
+					contentCredentialDto.getCredentials().getPassword().equals(userAccount.getCredentials().getPassword()))
+			{
+				SimpleTweet tweet = new SimpleTweet();
+				tweet.setAuthor(userAccount);
+				tweet.setPosted(new Timestamp(System.currentTimeMillis()));
+				tweet.setContent(contentCredentialDto.getContent());
+				tweet.setActive(true);
+		        tweet.setMentions(extractMentions(tweet.getContent()));
+		        tweet.setHashtagsUsed(extractHashtags(tweet.getContent(), tweet.getPosted()));
+				tweetRepository.save(tweet);
+				return tweetMapper.toDtoSimple(tweet);
+			}
+		}
 		
-		// Allow user to create tweet only if they have correct password
-		if (userAccount == null || 
-				contentCredentialDto.getCredentials().getPassword() == null || 
-				!contentCredentialDto.getCredentials().getPassword().equals(userAccount.getCredentials().getPassword()))
-		{
-			return null;
-		}
-		else
-		{
-			SimpleTweet tweet = new SimpleTweet();
-			tweet.setAuthor(userAccount);
-			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
-			tweet.setContent(contentCredentialDto.getContent());
-			tweet.setActive(true);
-	        tweet.setMentions(extractMentions(tweet.getContent()));
-	        tweet.setHashtagsUsed(extractHashtags(tweet.getContent(), tweet.getPosted()));
-			tweetRepository.save(tweet);
-			return tweetMapper.toDtoSimple(tweet);
-		}
+		return null;
 	}
 
 	public TweetDto getTweet(Integer id) {
@@ -94,269 +96,274 @@ public class TweetService {
 		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
 		
 		// Allow user to delete tweet only if they match author credentials
-		if (tweet == null ||
-				credentials.getPassword() == null || credentials.getUsername() == null ||
-				!credentials.getPassword().equals(tweet.getAuthor().getCredentials().getPassword()) || 
-				!credentials.getUsername().equals(tweet.getAuthor().getCredentials().getUsername()))
-		{
-			return null;
-		} 
-		else
+		if (tweet != null && checkTweetAndUser(tweet, tweet.getAuthor(), credentials))
 		{
 			TweetDto tweetDto = tweetMapper.toDto(tweet);
 			tweet.setActive(false);
 			tweetRepository.save(tweet);
 			return tweetDto;
 		}
+		
+		return null;
 	}
 
 	public RepostTweetDto repostTweet(Integer id, Credentials credentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentials.getUsername());
-		
-		Tweet tweetToRepost = tweetRepository.findByIdAndActiveTrue(id);
-		
-		// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
-		if (userAccount == null || tweetToRepost == null ||
-				credentials.getPassword() == null || 
-				!credentials.getPassword().equals(userAccount.getCredentials().getPassword()))
+		if (credentials != null)
 		{
-			return null;
+			UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentials.getUsername());
+			
+			Tweet tweetToRepost = tweetRepository.findByIdAndActiveTrue(id);
+			
+			// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
+			if (checkTweetAndUser(tweetToRepost, userAccount, credentials))
+			{
+				RepostTweet tweet = new RepostTweet();
+				tweet.setAuthor(userAccount);
+				tweet.setPosted(new Timestamp(System.currentTimeMillis()));
+				tweet.setRepostOf(tweetToRepost);
+				tweet.setActive(true);
+				tweetRepository.save(tweet);
+				return tweetMapper.toDtoRepost(tweet);
+			}
 		}
-		else
-		{
-			RepostTweet tweet = new RepostTweet();
-			tweet.setAuthor(userAccount);
-			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
-			tweet.setRepostOf(tweetToRepost);
-			tweet.setActive(true);
-			tweetRepository.save(tweet);
-			return tweetMapper.toDtoRepost(tweet);
-		}
+		
+		return null;
 	}
 
-	public ReplyTweetDto replyTweet(Integer id, ContentCredentialDto contentCredentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(contentCredentials.getCredentials().getUsername());
-		
-		Tweet tweetToReply = tweetRepository.findByIdAndActiveTrue(id);
-		
-		// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
-		if (userAccount == null || tweetToReply == null ||
-				contentCredentials.getCredentials().getPassword() == null || 
-				!contentCredentials.getCredentials().getPassword().equals(userAccount.getCredentials().getPassword()))
+	public ReplyTweetDto replyTweet(Integer id, ContentCredentialDto contentCredentialsDto) {
+		if (contentCredentialsDto != null && contentCredentialsDto.getCredentials() != null)
 		{
-			return null;
+			UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(contentCredentialsDto.getCredentials().getUsername());
+			
+			Tweet tweetToReply = tweetRepository.findByIdAndActiveTrue(id);
+			
+			// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
+			if (contentCredentialsDto.getContent() != null 
+					&& checkTweetAndUser(tweetToReply, userAccount, contentCredentialsDto.getCredentials()))
+			{
+				ReplyTweet tweet = new ReplyTweet();
+				tweet.setAuthor(userAccount);
+				tweet.setPosted(new Timestamp(System.currentTimeMillis()));
+				tweet.setContent(contentCredentialsDto.getContent());
+				tweet.setInReplyTo(tweetToReply);
+				tweet.setActive(true);
+				tweet.setMentions(extractMentions(tweet.getContent()));
+				tweet.setHashtagsUsed(extractHashtags(tweet.getContent(), tweet.getPosted()));
+				tweetRepository.save(tweet);
+				return tweetMapper.toDtoReply(tweet);
+			}
 		}
-		else
-		{
-			ReplyTweet tweet = new ReplyTweet();
-			tweet.setAuthor(userAccount);
-			tweet.setPosted(new Timestamp(System.currentTimeMillis()));
-			tweet.setContent(contentCredentials.getContent());
-			tweet.setInReplyTo(tweetToReply);
-			tweet.setActive(true);
-			tweet.setMentions(extractMentions(tweet.getContent()));
-			tweet.setHashtagsUsed(extractHashtags(tweet.getContent(), tweet.getPosted()));
-			tweetRepository.save(tweet);
-			return tweetMapper.toDtoReply(tweet);
-		}
+
+		return null;
 	}
 
 	public boolean likeTweet(Integer id, Credentials credentials) {
-		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentials.getUsername());
-		
-		Tweet tweetToLike = tweetRepository.findByIdAndActiveTrue(id);
-		
-		// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
-		if (userAccount == null || tweetToLike == null ||
-				credentials.getPassword() == null || 
-				!credentials.getPassword().equals(userAccount.getCredentials().getPassword()))
+		if (credentials != null)
 		{
-			return false;
+			UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(credentials.getUsername());
+			
+			Tweet tweetToLike = tweetRepository.findByIdAndActiveTrue(id);
+			
+			// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
+			if (checkTweetAndUser(tweetToLike, userAccount, credentials))
+			{
+				tweetToLike.getUsersWhoLikeTweet().add(userAccount);
+				tweetRepository.save(tweetToLike);
+				return true;
+			}
 		}
-		else
-		{
-			tweetToLike.getUsersWhoLikeTweet().add(userAccount);
-			tweetRepository.save(tweetToLike);
-			return true;
-		}
+		
+		return false;
 	}
 
 	public Set<UserAccountDto> getUsersWhoLiked(Integer id) {
 		Tweet tweetLiked = tweetRepository.findByIdAndActiveTrue(id);
 		
-		if (tweetLiked == null)
+		Set<UserAccountDto> usersWhoLiked = null;
+		
+		if (tweetLiked != null)
 		{
-			return null;
+			usersWhoLiked = new HashSet<UserAccountDto>();
+			
+			for (UserAccount user : tweetLiked.getUsersWhoLikeTweet())
+			{
+				if (user.isActive())
+				{
+					usersWhoLiked.add(userMapper.toDto(user));
+				}
+			}
 		}
-		else
-		{
-			return userMapper.toDtoSet(tweetLiked.getUsersWhoLikeTweet());
-		}
+
+		return usersWhoLiked;
 	}
 
 	public Set<RepostTweetDto> getDirectReposts(Integer id) {
 		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
 
-		if (tweet == null)
-		{
-			return null;
-		}
+		Set<RepostTweetDto> repostTweetDtos = null;
 		
-		Set<RepostTweetDto> repostTweetDtos = new HashSet<RepostTweetDto>();
-		
-		for (RepostTweet repost : tweetRepository.findAllByRepostOfId(tweet.getId()))
+		if (tweet != null)
 		{
-			if (repost.isActive())
+			repostTweetDtos = new HashSet<RepostTweetDto>();
+			
+			for (RepostTweet repost : tweetRepository.findAllByRepostOfId(tweet.getId()))
 			{
-				repostTweetDtos.add(tweetMapper.toDtoRepost(repost));
+				if (repost.isActive())
+				{
+					repostTweetDtos.add(tweetMapper.toDtoRepost(repost));
+				}
 			}
 		}
 		
-		return repostTweetDtos;
-		
-		
+		return repostTweetDtos;	
 	}
 
 	public Set<ReplyTweetDto> getDirectReplies(Integer id) {
 		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
 
-		if (tweet == null)
+		if (tweet != null)
 		{
-			return null;
-		}
-		
-		Set<ReplyTweetDto> replyTweetDtos = new HashSet<ReplyTweetDto>();
-		
-		for (ReplyTweet reply : tweetRepository.findAllByInReplyToId(tweet.getId()))
-		{
-			if (reply.isActive())
+			Set<ReplyTweetDto> replyTweetDtos = new HashSet<ReplyTweetDto>();
+			
+			for (ReplyTweet reply : tweetRepository.findAllByInReplyToId(tweet.getId()))
 			{
-				replyTweetDtos.add(tweetMapper.toDtoReply(reply));
+				if (reply.isActive())
+				{
+					replyTweetDtos.add(tweetMapper.toDtoReply(reply));
+				}
 			}
+			
+			return replyTweetDtos;
 		}
 		
-		return replyTweetDtos;
+		return null;
 	}
 
 	public Set<UserAccountDto> getMentionedUsers(Integer id) {
 		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
 
-		if (tweet == null)
+		if (tweet != null)
 		{
-			return null;
-		}
-		
-		Set<UserAccountDto> mentionedUsersDtos = new HashSet<UserAccountDto>();
-		
-		for (UserAccount mentioned : tweet.getMentions())
-		{
-			if (mentioned.isActive())
+			Set<UserAccountDto> mentionedUsersDtos = new HashSet<UserAccountDto>();
+			
+			for (UserAccount mentioned : tweet.getMentions())
 			{
-				mentionedUsersDtos.add(userMapper.toDto(mentioned));
+				if (mentioned.isActive())
+				{
+					mentionedUsersDtos.add(userMapper.toDto(mentioned));
+				}
 			}
+			
+			return mentionedUsersDtos;
 		}
 		
-		return mentionedUsersDtos;
+		return null;
 	}
 	
 	public Set<HashtagDto> getTagsInTweet(Integer id) {
 		Tweet tweet = tweetRepository.findByIdAndActiveTrue(id);
 		
-		if (tweet == null)
+		if (tweet != null)
 		{
-			return null;
+			return hashtagMapper.toDtos(tweet.getHashtagsUsed());
 		}
 		
-		return hashtagMapper.toDtos(tweet.getHashtagsUsed());
-		
+		return null;
 	}
 	
 	public ContextDto getContext(Integer id) {
 		Tweet targetTweet = tweetRepository.findByIdAndActiveTrue(id);
 		
-		if (targetTweet == null)
+		ContextDto contextDto = null;
+		
+		if (targetTweet != null)
 		{
-			return null;
-		}
-		
-		
-		ContextDto contextDto = new ContextDto();
-		
-		List<TweetDto> before = new ArrayList<TweetDto>();
-		//If the tweet is not a replyTweet there is no chain before
-		if (targetTweet instanceof ReplyTweet)
-		{
-			contextDto.setTarget(tweetMapper.replyToSimpleDto((ReplyTweet) targetTweet));
-			Tweet currentBeforeTweet = tweetRepository.findOne(((ReplyTweet) targetTweet).getInReplyTo().getId());
+			contextDto = new ContextDto();
 			
-			// Keep going up the chain until we hit a non-replyTweet
-			while (currentBeforeTweet instanceof ReplyTweet) {
+			List<TweetDto> before = new ArrayList<TweetDto>();
+			//If the tweet is not a replyTweet there is no chain before
+			if (targetTweet instanceof ReplyTweet)
+			{
+				contextDto.setTarget(tweetMapper.replyToSimpleDto((ReplyTweet) targetTweet));
+				Tweet currentBeforeTweet = tweetRepository.findOne(((ReplyTweet) targetTweet).getInReplyTo().getId());
+				
+				// Keep going up the chain until we hit a non-replyTweet
+				while (currentBeforeTweet instanceof ReplyTweet) {
+					if (currentBeforeTweet.isActive())
+					{
+						//System.out.println(currentBeforeTweet.getId());
+						before.add(tweetMapper.replyToSimpleDto((ReplyTweet) currentBeforeTweet));
+					}
+					currentBeforeTweet = tweetRepository.findOne(((ReplyTweet) currentBeforeTweet).getInReplyTo().getId());
+				} 
 				if (currentBeforeTweet.isActive())
 				{
-					before.add(tweetMapper.replyToSimpleDto((ReplyTweet) currentBeforeTweet));
+					before.add(tweetMapper.toDto(currentBeforeTweet));
 				}
-				currentBeforeTweet = tweetRepository.findOne(((ReplyTweet) currentBeforeTweet).getInReplyTo().getId());
+				
+				// Sort chronologically
+				Collections.sort(before, new Comparator<TweetDto>() {
+					@Override
+					public int compare(TweetDto o1, TweetDto o2) {
+						return o1.getPosted().compareTo(o2.getPosted());
+					}
+				});
+			}
+			else
+			{
+				contextDto.setTarget(tweetMapper.toDto(targetTweet));
+			}
+			
+			contextDto.setBefore(before);
+			
+			List<TweetDto> after = new ArrayList<TweetDto>();
+			
+			Queue<Tweet> tweetRepliesToSearch = new ArrayDeque<Tweet>();
+			
+			Tweet currentAfterTweet;
+			
+			tweetRepliesToSearch.add(targetTweet);
+				
+			// Do a breadth search through the tree of replies
+			while(!tweetRepliesToSearch.isEmpty())
+			{
+				currentAfterTweet = tweetRepliesToSearch.poll();
+				for (Tweet reply : tweetRepository.findAllByInReplyToId(currentAfterTweet.getId()))
+				{
+					if (reply.isActive())
+					{
+						if (reply instanceof ReplyTweet)
+						{
+							after.add(tweetMapper.replyToSimpleDto((ReplyTweet) reply));
+						}
+						else
+						{
+							after.add(tweetMapper.toDto(reply));
+						}
+					}
+					tweetRepliesToSearch.add(reply);
+				}
+				
 			} 
 			
-			before.add(tweetMapper.toDto(currentBeforeTweet));
-			
-			// Sort chronologically
-			Collections.sort(before, new Comparator<TweetDto>() {
+			Collections.sort(after, new Comparator<TweetDto>() {
 				@Override
 				public int compare(TweetDto o1, TweetDto o2) {
 					return o1.getPosted().compareTo(o2.getPosted());
 				}
 			});
-		}
-		else
-		{
-			contextDto.setTarget(tweetMapper.toDto(targetTweet));
-		}
-		
-		contextDto.setBefore(before);
-		
-		List<TweetDto> after = new ArrayList<TweetDto>();
-		
-		Queue<Tweet> tweetRepliesToSearch = new ArrayDeque<Tweet>();
-		
-		Tweet currentAfterTweet;
-		
-		tweetRepliesToSearch.add(targetTweet);
 			
-		// Do a breadth search through the tree of replies
-		while(!tweetRepliesToSearch.isEmpty())
-		{
-			currentAfterTweet = tweetRepliesToSearch.poll();
-			for (Tweet reply : tweetRepository.findAllByInReplyToId(currentAfterTweet.getId()))
-			{
-				if (reply.isActive())
-				{
-					if (reply instanceof ReplyTweet)
-					{
-						after.add(tweetMapper.replyToSimpleDto((ReplyTweet) reply));
-					}
-					else
-					{
-						after.add(tweetMapper.toDto(reply));
-					}
-				}
-				tweetRepliesToSearch.add(reply);
-			}
-			
-		} 
-		
-		Collections.sort(after, new Comparator<TweetDto>() {
-			@Override
-			public int compare(TweetDto o1, TweetDto o2) {
-				return o1.getPosted().compareTo(o2.getPosted());
-			}
-		});
-		
-		contextDto.setAfter(after);
+			contextDto.setAfter(after);
+		}
 		
 		return contextDto;
 	}
 	
+	/**
+	 * Extract user mentions from a string
+	 * @param content A string to check mentions for
+	 * @return Return the set of user mentions in the content string
+	 */
 	private Set<UserAccount> extractMentions(String content)
 	{
 		Pattern mentionPattern = Pattern.compile("@(\\S)+");
@@ -373,6 +380,12 @@ public class TweetService {
         return peopleMentioned;
 	}
 	
+	/**
+	 * Extract hastags from a string
+	 * @param content A string to check hashtags for
+	 * @param timeUsed The time the tweet that contained the hashtags were posted
+	 * @return Return the set of hashtag in the content string
+	 */
 	private Set<Hashtag> extractHashtags(String content, Timestamp timeUsed)
 	{
 		Pattern p = Pattern.compile("#(\\S)+");
@@ -396,6 +409,27 @@ public class TweetService {
 		return hashtags;
 	}
 
+	
+	/**
+	 * Check if the user is there, the tweet is there, the credentials is there, and the password and username in the credentials matches the users
+	 * @param tweet tweet to check
+	 * @param user user to check
+	 * @param credentials credentials to check
+	 * @return true if the user is there, the tweet is there, the credentials is there, and the password and username in the credentials matches the users
+	 * 		   false otherwise
+	 */
+	private boolean checkTweetAndUser(Tweet tweet, UserAccount user, Credentials credentials)
+	{
+		if (tweet != null && user != null && credentials != null && user.isActive() &&
+				credentials.getPassword() != null && credentials.getUsername() != null &&
+				credentials.getPassword().equals(user.getCredentials().getPassword()) && 
+				credentials.getUsername().equals(user.getCredentials().getUsername()))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	
 
 	

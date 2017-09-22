@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
 
 import com.cooksys.dto.ReplyTweetDto;
 import com.cooksys.dto.RepostTweetDto;
@@ -43,7 +44,7 @@ public interface TweetMapper {
 	
 	default TweetDto toDto(Tweet tweet)
 	{
-		if (tweet.isActive())
+		if (tweet != null && tweet.isActive())
 		{
 			if (tweet instanceof ReplyTweet)
 			{

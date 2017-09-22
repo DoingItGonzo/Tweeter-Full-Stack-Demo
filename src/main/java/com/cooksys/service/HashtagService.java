@@ -37,29 +37,28 @@ public class HashtagService {
 	public List<TweetDto> getTaggedTweets(String label) {
 		Hashtag hashtag = hashtagRepository.findByLabelIgnoreCase(label);
 		
-		if (hashtag == null)
+		if (hashtag != null)
 		{
-			return null;
-		}
-		
-		List<TweetDto> taggedTweets = new ArrayList<TweetDto>();
-		
-		for (Tweet taggedTweet : hashtag.getTweetsWithTag())
-		{
-			if (taggedTweet.isActive())
+			List<TweetDto> taggedTweets = new ArrayList<TweetDto>();
+			
+			for (Tweet taggedTweet : hashtag.getTweetsWithTag())
 			{
-				taggedTweets.add(tweetMapper.toDto(taggedTweet));
+				if (taggedTweet.isActive())
+				{
+					taggedTweets.add(tweetMapper.toDto(taggedTweet));
+				}
 			}
+			
+			Collections.sort(taggedTweets, new Comparator<TweetDto>() {
+				@Override
+				public int compare(TweetDto o1, TweetDto o2) {
+					return o2.getPosted().compareTo(o1.getPosted());
+				}
+			});
+			
+			return taggedTweets;
 		}
 		
-		Collections.sort(taggedTweets, new Comparator<TweetDto>() {
-			@Override
-			public int compare(TweetDto o1, TweetDto o2) {
-				return o2.getPosted().compareTo(o1.getPosted());
-			}
-		});
-		
-		return taggedTweets;	
+		return null;
 	}
-
 }

@@ -36,7 +36,7 @@ public class HashtagController {
 	{
 		List<TweetDto> taggedTweets = hashtagService.getTaggedTweets(label);
 		
-		response.setStatus(taggedTweets != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
+		response.setStatus(taggedTweets != null ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NOT_FOUND);
 		
 		return taggedTweets;
 	}
