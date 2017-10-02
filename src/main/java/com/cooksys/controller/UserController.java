@@ -7,6 +7,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -26,6 +27,7 @@ import com.cooksys.service.UserService;
 
 @RestController
 @RequestMapping("users")
+@CrossOrigin
 public class UserController {
 	
 	private UserService userService;
