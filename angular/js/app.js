@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function(stateProvider, urlRouter) {
     
     const hashtagState = {
@@ -6,23 +6,21 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/tags',
         component: 'hashtagComponent'
     }
-
-    stateProvider.state(hashtagState);
-
-    urlRouter.otherwise('/tags');
-    
-=======
-angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
-
     const testUserState = {
         name: 'testUser',
         url: '/testUser',
         component: 'testUserComponent'
     }
+    const validateState = {
+        name: 'validate',
+        url: '/validate',
+        component: 'validateComponent'
+    }
 
+    stateProvider.state(hashtagState);
     stateProvider.state(testUserState);
+    stateProvider.state(validateState);
 
     urlRouter.otherwise('/testUser');
 
->>>>>>> master
 }]);
