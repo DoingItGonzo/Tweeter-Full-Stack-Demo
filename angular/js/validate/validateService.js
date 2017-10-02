@@ -9,4 +9,7 @@ angular.module('tweetApp').service('validateService', ['$http',function(http) {
     this.getUsernameExists = (username) => {
         return http.get('http://localhost:8888/api/validate/username/exists/@' + username)
     }
+    this.getCheckCredentials = (username, credentials) => {
+        return http.post('http://localhost:8888/api/validate/username/checkCredentials/@' + username, credentials)
+    }
 }])

@@ -3,9 +3,12 @@ package com.cooksys.controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cooksys.entity.Credentials;
 import com.cooksys.service.ValidationService;
 
 @RestController
@@ -36,6 +39,12 @@ public class ValidationController {
 	public boolean checkHashtagExists(@PathVariable String label)
 	{
 		return validationService.checkHashTagExists(label);
+	}
+	
+	@PostMapping("username/checkCredentials/@{username}")
+	public boolean checkCredentials(@PathVariable String username, @RequestBody Credentials credentials)
+	{
+		return validationService.checkCredentials(username, credentials);
 	}
 
 }

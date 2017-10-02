@@ -2,6 +2,8 @@ package com.cooksys.service;
 
 import org.springframework.stereotype.Service;
 
+import com.cooksys.entity.Credentials;
+import com.cooksys.entity.UserAccount;
 import com.cooksys.repository.HashtagRepository;
 import com.cooksys.repository.UserRepository;
 
@@ -27,6 +29,18 @@ public class ValidationService {
 
 	public boolean checkHashTagExists(String label) {
 		return hashtagRepository.findByLabelIgnoreCase(label) != null ? true : false;
+	}
+
+	public boolean checkCredentials(String username, Credentials credentials) {
+		UserAccount userAccount = userRepository.findByCredentialsUsernameIgnoreCaseAndActiveTrue(username);
+		if (credentials != null && userAccount != null && credentials.getPassword() != null
+				&& credentials.getUsername() != null
+				&& credentials.getUsername().equals(userAccount.getCredentials().getUsername())
+				&& credentials.getPassword().equals(userAccount.getCredentials().getPassword())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 
