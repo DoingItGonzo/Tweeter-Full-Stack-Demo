@@ -1,0 +1,52 @@
+<div>
+    <input type="button" value="GET users" ng-click="$ctrl.getAllUsers()"></input>
+</div>
+<div>
+    <input type="button" value="POST users" ng-click="$ctrl.makeUser()"></input>
+</div>
+<div>
+    <input type="button" value="GET users/@{username}" ng-click="$ctrl.getUser()"></input>
+</div>
+<div>
+    <input type="button" value="PATCH users/@{username}" ng-click="$ctrl.editProfile()"></input>
+</div>
+<div>
+    <input type="button" value="DELETE users/@{username}" ng-click="$ctrl.deleteUser()"></input>
+</div>
+<div>
+    <input type="button" value="POST users/@{username}/follow" ng-click="$ctrl.followUser()"></input>
+</div>
+<div>
+    <input type="button" value="POST users/@{username}/unfollow" ng-click="$ctrl.unfollowUser()"></input>
+</div>
+<div>
+    <input type="button" value="GET users/@{username}/feed" ng-click="$ctrl.getFeed()"></input>
+</div>
+<div>
+    <input type="button" value="GET users/@{username}/tweets" ng-click="$ctrl.getTweets()"></input>
+</div>
+<div>
+    <input type="button" value="GET users/@{username}/mentions" ng-click="$ctrl.getMentions()"></input>
+</div>
+<div>
+    <input type="button" value="GET users/@{username}/followers" ng-click="$ctrl.getFollowers()"></input>
+</div>
+<div>
+    <input type="button" value="GET users/@{username}/following" ng-click="$ctrl.getFollowing()"></input>
+</div>
+<div>
+    <p>Username: <input type="text" size="20" ng-model="$ctrl.credentialsProfile.credentials.username"></input>
+    </p>
+    <p>Password: <input type="text" size="20" ng-model="$ctrl.credentialsProfile.credentials.password"></input>
+    </p>
+    <p>Email: <input type="text" size="20" ng-model="$ctrl.credentialsProfile.profile.email"></input>
+    </p>
+    <p>First Name: <input type="text" size="20" ng-model="$ctrl.credentialsProfile.profile.firstName"></input>
+    </p>
+    <p>Last Name: <input type="text" size="20" ng-model="$ctrl.credentialsProfile.profile.lastName"></input>
+    </p>
+    <p>Phone Number: <input type="text" size="20" ng-model="$ctrl.credentialsProfile.profile.phone"></input>
+    </p>
+    <p>Username Follow: <input type="text" size="20" ng-model="$ctrl.userToFollow"></input>
+    </p>
+</div>
