@@ -12,8 +12,29 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'testUserComponent'
     }
 
-    stateProvider.state(hashtagState);
-    stateProvider.state(testUserState);
+    const signInSignUp = {
+        name: 'signInSignUp',
+        url: '/signInSignUp',
+        component: 'signInSignUpComponent'
+    }
 
-    urlRouter.otherwise('/testUser');
+    const signIn = {
+        name: 'signIn',
+        url: '/signIn',
+        component: 'signInComponent'
+    }
+
+    const signUp = {
+        name: 'signUp',
+        url: '/signUp',
+        component: 'signUpComponent'
+    }
+
+    stateProvider.state(hashtagState)
+    stateProvider.state(testUserState)
+    stateProvider.state(signInSignUp)
+    stateProvider.state(signIn)
+    stateProvider.state(signUp)
+
+    urlRouter.otherwise('/signInSignUp')
 }]);
