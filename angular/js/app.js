@@ -1,4 +1,4 @@
-angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function(stateProvider, urlRouter) {
+angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
 
     const hashtagState = {
         name: 'hashtags',
@@ -20,32 +20,41 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/validate',
         component: 'validateComponent'
     }
-
     const signInSignUp = {
         name: 'signInSignUp',
         url: '/signInSignUp',
         component: 'signInSignUpComponent'
     }
-
     const signIn = {
         name: 'signIn',
         url: '/signIn',
         component: 'signInComponent'
     }
-
     const signUp = {
         name: 'signUp',
         url: '/signUp',
         component: 'signUpComponent'
     }
-
+    const settingState = {
+        name: 'settings',
+        url: '/settings',
+        component: 'settingComponent'
+    }
     const tweetState = {
         name: 'tweets',
         url: '/tweets',
         component: 'tweetComponent'
-      }
+    }
+
+    const tweetListState = {
+        name: 'tweetList',
+        url: '/tweetList',
+        component: 'tweetListComponent'
+    }
 
     stateProvider.state(testUserState)
+    stateProvider.state(tweetState)
+    stateProvider.state(settingState)
     stateProvider.state(validateState)
     stateProvider.state(hashtagState) 
     stateProvider.state(hashtagStateFinal) 
@@ -53,6 +62,8 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(signIn)
     stateProvider.state(signUp)
     stateProvider.state(tweetState)
+    stateProvider.state(tweetListState)
 
-    urlRouter.otherwise('/signInSignUp')
+
+    urlRouter.otherwise('/tweetList')
 }])

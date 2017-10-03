@@ -114,6 +114,11 @@ public class TweetService {
 			
 			Tweet tweetToRepost = tweetRepository.findByIdAndActiveTrue(id);
 			
+			if (tweetToRepost instanceof RepostTweet)
+			{
+				tweetToRepost = ((RepostTweet) tweetToRepost).getRepostOf();
+			}
+			
 			// Allow user to repost tweet only if they have the correct password and tweet isnt deleted
 			if (checkTweetAndUser(tweetToRepost, userAccount, credentials))
 			{

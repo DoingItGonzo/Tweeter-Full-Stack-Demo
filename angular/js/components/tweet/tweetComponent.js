@@ -1,7 +1,7 @@
 angular.module('tweetApp').component('tweetComponent', {
-    templateUrl: 'js/Template/tweetTemplate.html',
+    templateUrl: 'js/components/tweet/tweetTemplate.html',
     controller: 'tweetController',
     bindings: {
-        resolvedTweets: '='
+        sentTweet: '='
     }
 })

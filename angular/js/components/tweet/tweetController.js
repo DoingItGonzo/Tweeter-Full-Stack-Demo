@@ -1,5 +1,7 @@
 angular.module('tweetApp').controller('tweetController', ['tweetService', function(tweetService){
     
+        
+
         this.tweetId = "" 
 
         this.tweets = []
@@ -7,6 +9,29 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', functi
         this.users = []
 
         this.tags = []
+
+        if (this.sentTweet.repostOf !== undefined)
+        {
+            this.tweet = {
+                id: this.sentTweet.id,
+                reposter: this.sentTweet.author,
+                author: this.sentTweet.repostOf.author,
+                content: this.sentTweet.repostOf.content,
+                posted: this.sentTweet.repostOf.posted
+            }
+            this.repostTweet = true
+        }
+        else if(this.sentTweet.inReplyTo !== undefined)
+        {
+            this.tweet = this.sentTweet
+            this.tweet.repliedTo = this.tweet.inReplyTo.author
+            this.replyTweet = true
+        }
+        else
+        {
+            this.tweet = this.sentTweet
+        }
+
 
         this.contentCredentials = {
             content:"",
@@ -85,18 +110,14 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', functi
 
         //this.getDirectReplies = tweetService.getDirectReplies
         this.getDirectReplies = () => {
-            return tweetService.getDirectReplies(this.tweetId).then((done) => {
-                this.tweets = done.data
-                this.users = []
-                this.tags = []
+            return tweetService.getDirectReplies(this.tweet.id).then((done) => {
+                return done.data
             })
         }
         //this.getDirectReposts = tweetService.getDirectReposts
         this.getDirectReposts = () => {
-            return tweetService.getDirectReposts(this.tweetId).then((done) => {
-                this.tweets = done.data
-                this.users = []
-                this.tags = []
+            return tweetService.getDirectReposts(this.tweet.id).then((done) => {
+                return done.data
             })
         }
         //this.getContext = tweetService.getContext
@@ -109,7 +130,7 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', functi
         }
 
         this.getUsersWhoLiked = () => {
-            return tweetService.getUsersWhoLiked(this.tweetId).then((done) => {
+            return tweetService.getUsersWhoLiked(this.tweet.id).then((done) => {
                 this.tweets = []
                 this.users = done.data
                 this.tags = []
@@ -117,7 +138,7 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', functi
         }
 
         this.likeTweet = () => {
-            return tweetService.likeTweet(this.tweetId,this.chinCredentials.credentials).then((done) => {
+            return tweetService.likeTweet(this.tweet.id, this.chinCredentials.credentials).then((done) => {
                 this.tweets = []
                 this.users = []
                 this.tags = []

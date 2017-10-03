@@ -1,0 +1,13 @@
+<div>
+    <p ng-hide="!$ctrl.repostTweet">{{ $ctrl.tweet.reposter.profile.firstName }} {{ $ctrl.tweet.reposter.profile.lastName }} reposted:</p>
+    <p ng-hide="!$ctrl.replyTweet">@{{ $ctrl.tweet.repliedTo.profile.firstName }} {{ $ctrl.tweet.repliedTo.profile.lastName }}</p>
+    <p>{{ $ctrl.tweet.author.profile.firstName }} {{ $ctrl.tweet.author.profile.lastName }}</p>
+    <p>{{ $ctrl.tweet.content }}</p>
+    <p>
+        <input type="button" value="Like" ng-click="$ctrl.likeTweet(tweet.id)"></input>
+        {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
+        <input type="button" value="Replies" ng-click="$ctrl.getDirectReplies()"></input>
+        <input type="button" value="Reposts" ng-click="$ctrl.getDirectReposts()"></input>
+        <input type="button" value="Users Who Liked" ng-click="$ctrl.getUsersWhoLiked()"></input>
+    </p>
+</div>
