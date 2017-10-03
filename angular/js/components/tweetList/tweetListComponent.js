@@ -1,4 +1,4 @@
 angular.module('tweetApp').component('tweetListComponent', {
-    templateUrl: 'js/Template/tweetListTemplate.html',
+    templateUrl: 'js/components/tweetList/tweetListTemplate.html',
     controller: 'tweetListController'
 })
