@@ -86,6 +86,13 @@ angular.module('tweetApp').controller('userController', ['userService', function
         })
     }
 
+    this.getFollowers = () => {
+        this.userService.getFollowers(this.credentialsProfile.credentials.username).then((done) => {
+            console.log(done)
+            return done.data
+        })
+    }
+
     this.getFollowing = () => {
         this.userService.getFollowing(this.credentialsProfile.credentials.username).then((done) => {
             console.log(done)

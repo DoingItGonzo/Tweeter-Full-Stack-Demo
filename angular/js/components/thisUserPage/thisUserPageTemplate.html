@@ -1,0 +1,24 @@
+<div>
+    <input type="button" value="Get Jeff" ng-click="$ctrl.getUser($ctrl.username)"></input>
+</div>
+<div>
+    <p>@{{ $ctrl.user.username }} </p>
+    <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
+    <p>Phone: {{ $ctrl.user.profile.phone }}</p>
+    <p>Email: {{ $ctrl.user.profile.email }}</p>
+    <p>
+        <input type="button" value="Followers" ng-click="$ctrl.getFollowers($ctrl.user.username)"></input>
+    </p>
+    <p><input type="button" value="Following" ng-click="$ctrl.getFollowing($ctrl.user.username)"></input>
+    </p>
+    <p><input type="button" value="Mentions" ng-click="$ctrl.getMentions($ctrl.user.username)"></input>
+    </p>
+    <p>
+        <input type="button" value="Tweets" ng-click="$ctrl.getTweets($ctrl.user.username)"></input>
+    </p>
+    <p><input type="button" value="Feed" ng-click="$ctrl.getFeed($ctrl.user.username)"></input>
+    </p>
+</div>
+<div>
+    <ui-view></ui-view>
+</div>
