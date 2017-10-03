@@ -1,4 +1,4 @@
-angular.module('tweetApp').service('globalService', ['userService', function (userService) {
+angular.module('tweetApp').service('globalService', ['userService', '$state', function (userService, state) {
     
 
 this.primaryUser = {}
@@ -25,6 +25,7 @@ this.login = (username) => {
     userService.getUser(username).then((done) => {
         console.log(done)
         this.primaryUser.profile = done.data.profile
+        state.go('thisUserPage')
         return done.data
     })
 }

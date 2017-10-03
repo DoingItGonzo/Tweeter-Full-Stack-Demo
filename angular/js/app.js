@@ -132,5 +132,5 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(contextState)
 
 
-    urlRouter.otherwise('/signIn')
+    urlRouter.otherwise('/signInSignUp')
 }])

@@ -1,4 +1,4 @@
-angular.module('tweetApp').controller('thisUserPageController', ['userService', '$state', function(userService, state){
+angular.module('tweetApp').controller('thisUserPageController', ['userService', '$state', 'globalService', function(userService, state, globalService){
     
     this.getUser = (username) => {
         userService.getUser(username).then((done) => {
@@ -57,11 +57,7 @@ angular.module('tweetApp').controller('thisUserPageController', ['userService', 
     }
 
 
-    // For testing only
-    this.username = 'jeff'
-
-    this.user = this.getUser(this.username)
-
+    this.user = globalService.primaryUser
     
 
 }])
