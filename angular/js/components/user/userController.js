@@ -2,6 +2,8 @@ angular.module('tweetApp').controller('userController', ['userService', function
 
     this.userService = userService
 
+    this.userList = []
+
     this.credentialsProfile = {}
     this.credentialsProfile.credentials = {}
     this.credentialsProfile.profile = {}
@@ -19,6 +21,7 @@ angular.module('tweetApp').controller('userController', ['userService', function
     this.getAllUsers = () => {
         this.userService.getAllUsers().then((done) => {
             console.log(done)
+            this.userList = done.data
             return done.data
         })
     }
