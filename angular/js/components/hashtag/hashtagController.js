@@ -1,5 +1,6 @@
 angular.module('tweetApp').controller('hashtagController', ['hashtagService', function(hashtagService) {
 
+    console.log(this.hashtag)
 
     this.getAllTags = () => {
         hashtagService.getAllTags().then((done) =>{
