@@ -1,14 +1,29 @@
 <!-- NAVIGATION -->
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">
-        <div class="navbar-brand">Tweet App</div>
+        <div class="navbar-brand"><a ui-sref="signInSignUp">Tweet App</a></div>
     </div>
     <ul class="nav navbar-nav">
         <li>
-            <div>Home</div>
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                    Profile
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a ui-sref="settings">Settings</a></li>
+                    <li>Logout</li>
+                    <li>My Page</li>
+                </ul>
+            </div>
         </li>
         <li>
-            <div>About</div>
+            <div class="navbar-brand"><a ui-sref="allTweets">All Tweets</a></div>
+        </li>
+        <li>
+            <div class="navbar-brand"><a ui-sref="allHashTags">All Hashtags</a></div>
+        </li>
+        <li>
+            <div class="navbar-brand"><a ui-sref="allUsers">All Users</a></div>
         </li>
     </ul>
 </nav>
