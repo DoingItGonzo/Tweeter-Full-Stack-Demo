@@ -1,7 +1,5 @@
 angular.module('tweetApp').controller('tweetController', ['tweetService', function(tweetService){
     
-        
-
         this.tweetId = "" 
 
         this.tweets = []
@@ -9,6 +7,9 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', functi
         this.users = []
 
         this.tags = []
+
+        this.beforeContext = []
+        this.afterContext = []
 
         if (this.sentTweet.repostOf !== undefined)
         {
@@ -126,6 +127,9 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', functi
                 this.tweets = done.data.before.concat(done.data.target).concat(done.data.after)
                 this.users = []
                 this.tags = []
+                this.contextTarget = done.data.target
+                this.beforeContext = done.data.before
+                this.afterContext = done.data.after
             })
         }
 
