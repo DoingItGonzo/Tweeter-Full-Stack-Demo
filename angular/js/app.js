@@ -38,7 +38,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     const settingState = {
         name: 'settings',
         url: '/settings',
-        component: 'settingComponent'
+        component: 'settingsComponent'
     }
     const tweetState = {
         name: 'tweets',

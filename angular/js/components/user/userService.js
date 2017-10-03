@@ -13,6 +13,7 @@ angular.module('tweetApp').service('userService', ['$http', function (http) {
     }
 
     this.editProfile = (username, credentialsProfile) => {
+        console.log(username)
         return http.patch('http://localhost:8888/api/users/@' + username, credentialsProfile)
     }
 
