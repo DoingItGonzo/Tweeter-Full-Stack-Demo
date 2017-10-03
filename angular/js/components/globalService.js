@@ -1,4 +1,4 @@
-angular.module('tweetApp').service('globalService', [function () {
+angular.module('tweetApp').service('globalService', ['userService', function (userService) {
     
 
 this.primaryUser = {}
@@ -13,4 +13,12 @@ this.primaryUser.profile.firstName
 this.primaryUser.profile.lastName
 this.primaryUser.profile.phone
 
+const login = (username) => {
+    userService.getUser(username).then((done) => {
+        console.log(done)
+        this.primaryUser.credentials = done.data.credentials
+        this.primaryUser.profile = done.data.profile
+        return done.data
+    })
+}
 }])

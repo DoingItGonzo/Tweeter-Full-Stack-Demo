@@ -1,6 +1,8 @@
 <div>
+    <label>TheUser: {{$ctrl.globalService.primaryUser.credentials.username}}
     <p>Username: <input type="text" size="20" ng-model="$ctrl.username"></input>
     </p>
     <p>Password: <input type="text" size="20" ng-model="$ctrl.password"></input>
     </p>
+    <label ng-click="$ctrl.getCheckCredentials()">Log-in</label>
 </div>
