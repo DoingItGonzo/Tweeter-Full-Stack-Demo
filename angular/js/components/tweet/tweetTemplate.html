@@ -1,42 +1,13 @@
 <div>
-        <h1>Make A Tweet!</h1><br/>
-        <p>
-            Content: <input type="text" size="20" ng-model="$ctrl.contentCredentials.content"></input>
-        </p>
-        <p>
-            <input type="button" value="Post it!" ng-click="$ctrl.createTweet()"></input>
-        </p>
-        <p>
-            Select by id: <input type="text" size="20" ng-model="$ctrl.tweetId"></input>
-        </p>
-        <p>
-            <input type="button" value="Repost it!" ng-click="$ctrl.createRepost()"></input>
-            <input type="button" value="Genericly Reply to it!" ng-click="$ctrl.createReply()"></input>
-            <input type="button" value="Delete it!" ng-click="$ctrl.deleteTweet()"></input>
-        </p>
-        <p>
-            <input type="button" value="Get all tweets!" ng-click="$ctrl.getAllTweets()"></input>
-            <input type="button" value="Get direct replies!" ng-click="$ctrl.getDirectReplies()"></input>
-            <input type="button" value="Get direct reposts!" ng-click="$ctrl.getDirectReplies()"></input>
-            <input type="button" value="Get context!" ng-click="$ctrl.getContext()"></input>
-        </p>
-        <p>
-            <input type="button" value="Like this tweet!" ng-click="$ctrl.likeTweet()"></input>
-        </p>
-        <p>
-            <input type="button" value="Get users who liked!" ng-click="$ctrl.getUsersWhoLiked()"></input>
-            <input type="button" value="Get mentioned users!" ng-click="$ctrl.getMentionedUsers()"></input>
-            <input type="button" value="Get tags in tweet!" ng-click="$ctrl.getTagsInTweet()"></input>
-        </p>
-</div>
-<div ng-repeat="tweet in $ctrl.tweets">
-        <p>Author: {{ tweet.author }}</p>
-        <p>id: {{ tweet.id }}</p>
-        <p>Content: {{ tweet.content }}</p>
-</div>
-<div ng-repeat="user in $ctrl.users">
-    <p>Username: {{user.username}} </p>
-</div>
-<div ng-repeat="tag in $ctrl.tags">
-        <p>Tag: {{tag.label}} </p>
+    <p ng-hide="!$ctrl.repostTweet">{{ $ctrl.tweet.reposter.profile.firstName }} {{ $ctrl.tweet.reposter.profile.lastName }} reposted:</p>
+    <p ng-hide="!$ctrl.replyTweet">@{{ $ctrl.tweet.repliedTo.profile.firstName }} {{ $ctrl.tweet.repliedTo.profile.lastName }}</p>
+    <p>{{ $ctrl.tweet.author.profile.firstName }} {{ $ctrl.tweet.author.profile.lastName }}</p>
+    <p>{{ $ctrl.tweet.content }}</p>
+    <p>
+        <input type="button" value="Like" ng-click="$ctrl.likeTweet(tweet.id)"></input>
+        {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
+        <input type="button" value="Replies" ng-click="$ctrl.getDirectReplies()"></input>
+        <input type="button" value="Reposts" ng-click="$ctrl.getDirectReposts()"></input>
+        <input type="button" value="Users Who Liked" ng-click="$ctrl.getUsersWhoLiked()"></input>
+    </p>
 </div>
