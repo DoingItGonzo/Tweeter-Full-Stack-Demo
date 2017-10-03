@@ -8,7 +8,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     const hashtagStateFinal = {
         name: 'hashtagsFinal',
         url: '/tagsfinal',
-        component:'hashtagListComponent'
+        component: 'hashtagListComponent'
     }
     const testUserState = {
         name: 'testUser',
@@ -116,8 +116,8 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
-    stateProvider.state(hashtagState) 
-    stateProvider.state(hashtagStateFinal) 
+    stateProvider.state(hashtagState)
+    stateProvider.state(hashtagStateFinal)
     stateProvider.state(signInSignUp)
     stateProvider.state(signIn)
     stateProvider.state(signUp)
@@ -133,4 +133,11 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
 
 
     urlRouter.otherwise('/signInSignUp')
-}])
+}]).filter('createAnchors', ['sce', function (sce) {
+        return function (str) {
+            return sce.trustAsHtml(str.
+                replace('#(\\S)/+','<a ui-sref="$1">$1</a>').
+                replace('@(\\S)/+','<a ui-sref="$1">$1</a>')
+            )
+        }
+    }])

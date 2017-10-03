@@ -1,8 +1,8 @@
 <div>
-    <input type="button" value="Get Jeff" ng-click="$ctrl.getUser($ctrl.username)"></input>
+    <navbar-component></navbar-component>
 </div>
 <div>
-    <p>@{{ $ctrl.user.username }} </p>
+    <p>@{{ $ctrl.user.credentials.username }} </p>
     <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
     <p>Phone: {{ $ctrl.user.profile.phone }}</p>
     <p>Email: {{ $ctrl.user.profile.email }}</p>
