@@ -5,6 +5,11 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/tags',
         component: 'hashtagComponent'
     }
+    const hashtagStateFinal = {
+        name:'hashtagsFinal',
+        url:'/tags_final',
+        component: 'hashtagListComponent'
+    }
     const testUserState = {
         name: 'testUser',
         url: '/testUser',
