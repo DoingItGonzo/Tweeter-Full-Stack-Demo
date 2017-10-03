@@ -53,7 +53,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     }
 
     stateProvider.state(testUserState)
-    stateProvider.state(tweetState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
     stateProvider.state(hashtagState) 
@@ -65,5 +64,5 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(tweetListState)
 
 
-    urlRouter.otherwise('/tweetList')
+    urlRouter.otherwise('/signIn')
 }])

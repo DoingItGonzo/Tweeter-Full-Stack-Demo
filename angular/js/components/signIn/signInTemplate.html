@@ -1,8 +1,8 @@
 <div>
-    <label>TheUser: {{$ctrl.globalService.primaryUser.credentials.username}}
-    <p>Username: <input type="text" size="20" ng-model="$ctrl.username"></input>
+    <label>TheUser: {{$ctrl.globalService.primaryUser.credentials.username}} </label>
+    <p>Username: <input type="text" size="20" ng-model="$ctrl.credentials.username"></input>
     </p>
-    <p>Password: <input type="text" size="20" ng-model="$ctrl.password"></input>
+    <p>Password: <input type="text" size="20" ng-model="$ctrl.credentials.password"></input>
     </p>
-    <label ng-click="$ctrl.getCheckCredentials()">Log-in</label>
+    <label ng-click="$ctrl.userLogin()">Log-in</label>
 </div>

@@ -13,7 +13,7 @@ this.primaryUser.profile.firstName
 this.primaryUser.profile.lastName
 this.primaryUser.profile.phone
 
-const login = (username) => {
+this.login = (username) => {
     userService.getUser(username).then((done) => {
         console.log(done)
         this.primaryUser.credentials = done.data.credentials

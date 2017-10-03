@@ -1,14 +1,15 @@
 <div>
-    <p>Username: <input type="text" size="20" ng-model="$ctrl.username"></input>
+    <p>Username: <input type="text" size="20" ng-model="$ctrl.newUser.credentials.username"></input>
     </p>
-    <p>Password: <input type="text" size="20" ng-model="$ctrl.password"></input>
+    <p>Password: <input type="text" size="20" ng-model="$ctrl.newUser.credentials.password"></input>
     </p>
-    <p>Email: <input type="text" size="20" ng-model="$ctrl.email"></input>
+    <p>Email: <input type="text" size="20" ng-model="$ctrl.newUser.profile.email"></input>
     </p>
-    <p>First Name: <input type="text" size="20" ng-model="$ctrl.firstName"></input>
+    <p>First Name: <input type="text" size="20" ng-model="$ctrl.newUser.profile.firstName"></input>
     </p>
-    <p>Last Name: <input type="text" size="20" ng-model="$ctrl.lastName"></input>
+    <p>Last Name: <input type="text" size="20" ng-model="$ctrl.newUser.profile.lastName"></input>
     </p>
-    <p>Phone Number: <input type="text" size="20" ng-model="$ctrl.phone"></input>
+    <p>Phone Number: <input type="text" size="20" ng-model="$ctrl.newUser.profile.phone"></input>
     </p>
+    <label ng-click="$ctrl.createUser()">Log-in</label>
 </div>
