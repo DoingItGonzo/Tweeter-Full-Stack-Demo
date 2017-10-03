@@ -51,6 +51,26 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/tweetList',
         component: 'tweetListComponent'
     }
+    const userListState = {
+        name: 'userList',
+        url: '/userList',
+        component: 'userListComponent'
+    }
+
+    const thisUserPageState = {
+        name: 'thisUserPage',
+        url: '/thisUserPage',
+        component: 'thisUserPageComponent'
+    }
+
+    const thisUserPageTweetsState = {
+        name: 'thisUserPage.tweets',
+        url: '/tweets',
+        component: 'thisUserPageTweetsComponent',
+        params: {
+            tweets: null,
+        },
+    }
 
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
@@ -60,8 +80,10 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(signInSignUp)
     stateProvider.state(signIn)
     stateProvider.state(signUp)
-    stateProvider.state(tweetState)
     stateProvider.state(tweetListState)
+    stateProvider.state(thisUserPageState)
+    stateProvider.state(thisUserPageTweetsState)
+    stateProvider.state(userListState)
 
 
     urlRouter.otherwise('/signIn')
