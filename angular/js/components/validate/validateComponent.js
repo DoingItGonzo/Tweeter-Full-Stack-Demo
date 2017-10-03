@@ -1,5 +1,5 @@
 angular.module('tweetApp').component('validateComponent', {
-    templateUrl: 'js/validate/validateTemplate.html',
+    templateUrl: 'js/components/validate/validateTemplate.html',
     controller: 'validateController'
 
 })
