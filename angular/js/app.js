@@ -56,6 +56,11 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/userList',
         component: 'userListComponent'
     }
+    const contextState = {
+        name: 'context',
+        url: '/context',
+        component: 'contextComponent'
+    }
 
     const thisUserPageState = {
         name: 'thisUserPage',
@@ -124,6 +129,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(thisUserPageFollowersState)
     stateProvider.state(thisUserPageFollowingState)
     stateProvider.state(userListState)
+    stateProvider.state(contextState)
 
 
     urlRouter.otherwise('/signIn')
