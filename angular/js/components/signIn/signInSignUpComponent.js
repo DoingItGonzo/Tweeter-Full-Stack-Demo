@@ -1,3 +1,3 @@
 angular.module('tweetApp').component('signInSignUpComponent', {
-    templateUrl: 'js/template/signInSignUpTemplate.html'
+    templateUrl: 'js/components/signIn/signInSignUpTemplate.html'
 })

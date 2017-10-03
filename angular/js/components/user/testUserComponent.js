@@ -1,4 +1,4 @@
 angular.module('tweetApp').component('testUserComponent', {
-    templateUrl: 'js/template/testUserTemplate.html',
+    templateUrl: 'js/components/user/testUserTemplate.html',
     controller: 'userController'
 })
