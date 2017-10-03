@@ -11,6 +11,9 @@ angular.module('tweetApp').controller('thisUserPageController', ['userService', 
     this.getFeed = (username) => {
         userService.getFeed(username).then((done) => {
             console.log(done)
+            state.go("thisUserPage.feed", {             
+                tweets: done.data
+            })
             return done.data
         })
     }
@@ -18,9 +21,9 @@ angular.module('tweetApp').controller('thisUserPageController', ['userService', 
     this.getTweets = (username) => {
         userService.getTweets(username).then((done) => {
             console.log(done)
-            state.go(".tweets", {             
+            state.go("thisUserPage.tweets", {             
                 tweets: done.data
-            });
+            })
             return done.data
         })
     }

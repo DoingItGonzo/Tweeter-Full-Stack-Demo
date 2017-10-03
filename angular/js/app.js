@@ -72,6 +72,15 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         },
     }
 
+    const thisUserPageFeedState = {
+        name: 'thisUserPage.feed',
+        url: '/feed',
+        component: 'thisUserPageTweetsComponent',
+        params: {
+            tweets: null,
+        },
+    }
+
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
@@ -83,6 +92,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(tweetListState)
     stateProvider.state(thisUserPageState)
     stateProvider.state(thisUserPageTweetsState)
+    stateProvider.state(thisUserPageFeedState)
     stateProvider.state(userListState)
 
 
