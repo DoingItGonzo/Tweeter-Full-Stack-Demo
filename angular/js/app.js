@@ -81,6 +81,33 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         },
     }
 
+    const thisUserPageMentionsState = {
+        name: 'thisUserPage.mentions',
+        url: '/mentions',
+        component: 'thisUserPageTweetsComponent',
+        params: {
+            tweets: null,
+        },
+    }
+
+    const thisUserPageFollowersState = {
+        name: 'thisUserPage.followers',
+        url: '/followers',
+        component: 'thisUserPageUsersComponent',
+        params: {
+            users: null,
+        },
+    }
+
+    const thisUserPageFollowingState = {
+        name: 'thisUserPage.following',
+        url: '/following',
+        component: 'thisUserPageUsersComponent',
+        params: {
+            users: null,
+        },
+    }
+
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
@@ -93,6 +120,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(thisUserPageState)
     stateProvider.state(thisUserPageTweetsState)
     stateProvider.state(thisUserPageFeedState)
+    stateProvider.state(thisUserPageMentionsState)
+    stateProvider.state(thisUserPageFollowersState)
+    stateProvider.state(thisUserPageFollowingState)
     stateProvider.state(userListState)
 
 

@@ -31,6 +31,9 @@ angular.module('tweetApp').controller('thisUserPageController', ['userService', 
     this.getMentions = (username) => {
         userService.getMentions(username).then((done) => {
             console.log(done)
+            state.go("thisUserPage.mentions", {             
+                tweets: done.data
+            })
             return done.data
         })
     }
@@ -38,14 +41,18 @@ angular.module('tweetApp').controller('thisUserPageController', ['userService', 
     this.getFollowing = (username) => {
         userService.getFollowing(username).then((done) => {
             console.log(done)
-            return done.data
+            state.go("thisUserPage.following", {             
+                users: done.data
+            })
         })
     }
 
     this.getFollowers = (username) => {
         userService.getFollowers(username).then((done) => {
             console.log(done)
-            return done.data
+            state.go("thisUserPage.followers", {             
+                users: done.data
+            })
         })
     }
 
