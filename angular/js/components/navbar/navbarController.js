@@ -9,6 +9,7 @@ angular.module('tweetApp').controller('navbarController', ['globalService', '$st
             globalService.userService.getUser(this.userSearch.substring(1))
         }
         else if (this.userSearch.startsWith("#")) {
+            console.log(this.userSearch)
             state.go('tweetsWithTag', {
                 label: this.userSearch.substring(1)
             })
