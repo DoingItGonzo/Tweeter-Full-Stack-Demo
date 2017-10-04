@@ -5,11 +5,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/tags',
         component: 'hashtagComponent'
     }
-    const hashtagStateFinal = {
-        name: 'hashtagsFinal',
-        url: '/tagsfinal',
-        component: 'hashtagListComponent'
-    }
     const testUserState = {
         name: 'testUser',
         url: '/testUser',
@@ -77,7 +72,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getTweets(stateParams.credentials.username)
+                return userService.getTweets(stateParams.credentials.username).then((done) => {
+                    return done.data
+                }) 
             }]
         }
     }
@@ -88,7 +85,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFeed(stateParams.credentials.username)
+                return userService.getFeed(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -99,7 +98,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getMentions(stateParams.credentials.username)
+                return userService.getMentions(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -110,7 +111,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'usersComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFollowers(stateParams.credentials.username)
+                return userService.getFollowers(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -121,28 +124,62 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'usersComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFollowing(stateParams.credentials.username)
+                return userService.getFollowing(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
 
     const tweetsWithTagState = {
-        name: 'taggedtweets',
-        url: '/taggedtweets',
+        name: 'tweetsWithTag',
+        url: '/tweetsWithTag',
         component: 'tweetsWithTagComponent',
-        params: {
-            tweets:null
+        resolve: {
+            tweets: ['hashtagService', '$stateParams', function(hashtagService, stateParams){
+                return hashtagService.getTaggedTweets(stateParams.label).then((done) => {
+                    return done.data
+                })
+              }]
         }
     }
 
     const allUsersState = {
         name: 'allUsers',
         url: '/allUsers',
-        component: 'thisUserPageUsersComponent',
+        component: 'usersComponent',
         resolve: {
             users: ['userService', function(userService){
-                return userService.getAllUsers()
+                return userService.getAllUsers().then((done) => {
+                    return done.data
+                })
               }]
+        }
+    }
+
+    const hashtagStateFinal = {
+        name: 'allHashtagState',
+        url: '/allHashtags',
+        component: 'hashtagListComponent',
+        resolve: {
+            hashtags: ['hashtagService', function(hashtagService){
+                return hashtagService.getAllTags().then((done) => {
+                    return done.data
+                })
+            }]
+        }
+    }
+
+    const allTweetState = {
+        name: 'allTweets',
+        url: '/allTweets',
+        component: 'tweetsComponent',
+        resolve: {
+            tweets: ['tweetService', function(tweetService){
+                return tweetService.getAllTweets().then((done) => {
+                    return done.data
+                })
+            }]
         }
     }
 
@@ -165,6 +202,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(userListState)
     stateProvider.state(contextState)
     stateProvider.state(tweetsWithTagState)
+    stateProvider.state(allTweetState)
 
 
     urlRouter.otherwise('/signInSignUp')
