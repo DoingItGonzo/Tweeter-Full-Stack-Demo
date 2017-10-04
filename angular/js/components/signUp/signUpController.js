@@ -18,10 +18,10 @@ angular.module('tweetApp').controller('signUpController', ['userService', 'globa
     this.createUser = () => {
         this.userService.makeUser(this.newUser).then((done) => {
             if (done) { 
-                this.globalService.primaryUser = this.newUser
-                console.log(done)
+                this.globalService.primaryUser.credentials = this.newUser.credentials
+                this.globalService.login(this.newUser.credentials.username)
                 return done.data
-            }
+            }       
         })
     }
 

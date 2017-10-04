@@ -1,3 +1,4 @@
 angular.module('tweetApp').component('navbarComponent', {
-    templateUrl: 'js/components/navbar/navbarTemplate.html'
+    templateUrl: 'js/components/navbar/navbarTemplate.html',
+    controller: 'navbarController'
 })

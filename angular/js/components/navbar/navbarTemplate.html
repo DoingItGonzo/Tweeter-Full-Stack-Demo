@@ -11,7 +11,7 @@
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                     <li><a ui-sref="settings">Settings</a></li>
-                    <li>Logout</li>
+                    <li><button ng-click="$ctrl.globalService.logout()">Logout</button></li>
                     <li>My Page</li>
                 </ul>
             </div>
@@ -20,7 +20,7 @@
             <div class="navbar-brand"><a ui-sref="allTweets">All Tweets</a></div>
         </li>
         <li>
-            <div class="navbar-brand"><a ui-sref="allHashTags">All Hashtags</a></div>
+            <div class="navbar-brand"><a ui-sref="hashtagsFinal">All Hashtags</a></div>
         </li>
         <li>
             <div class="navbar-brand"><a ui-sref="allUsers">All Users</a></div>
