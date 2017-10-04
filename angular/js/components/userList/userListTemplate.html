@@ -1,3 +1,10 @@
 <div ng-repeat="user in $ctrl.users">
-        <p>Username: {{ user.username }}</p>
+        <div class="panel panel-primary">
+                <div class="panel-heading">
+                        <span class="glyphicon glyphicon-user"></span>
+                </div>
+                <div class="panel-body">
+                        <p>Username: {{ user.username }}</p>
+                </div>
+        </div>
 </div>
