@@ -20,7 +20,7 @@ this.login = (username) => {
         console.log(done)
         this.primaryUser.profile = done.data.profile
         state.go('userPage', {
-            credentials: this.primaryUser.credentials
+            username: this.primaryUser.credentials.username
         })
         return done.data
     })
