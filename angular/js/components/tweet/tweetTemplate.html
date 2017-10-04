@@ -11,8 +11,9 @@
         <input type="button" value="Users Who Liked" ng-click="$ctrl.getUsersWhoLiked()"></input>
         <input type="button" value="Reply" ng-click="$ctrl.createReply()"></input>
         <input type="button" value="Repost" ng-click="$ctrl.createRepost()"></input>
+        <input ng-if="$ctrl.canDelete" type="button" value="Delete" ng-click="$ctrl.deleteTweet()"></input>
     </p>
-    <div ng-show="$ctrl.isReplying === true">
+    <div ng-if="$ctrl.isReplying === true">
         <input type="text" size="20" ng-model="$ctrl.content"></input>
         <input type="button" value="Post Tweet" ng-click="$ctrl.createActualReply()"></input>
     </div>

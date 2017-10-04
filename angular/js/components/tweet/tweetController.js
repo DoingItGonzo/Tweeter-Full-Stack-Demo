@@ -2,7 +2,6 @@ angular.module('tweetApp').controller('tweetController', ['tweetService','global
 function (tweetService, globalService, state) {
 
     this.user = globalService.primaryUser
-    this.isReplying = false
 
     if (this.sentTweet.repostOf !== undefined) {
         this.tweet = {
@@ -12,16 +11,23 @@ function (tweetService, globalService, state) {
             content: this.sentTweet.repostOf.content,
             posted: this.sentTweet.repostOf.posted
         }
+        this.canDelete = this.tweet.reposter.username === this.user.credentials.username ? true : false
         this.repostTweet = true
     }
     else if (this.sentTweet.inReplyTo !== undefined) {
         this.tweet = this.sentTweet
         this.tweet.repliedTo = this.tweet.inReplyTo.author
+        this.canDelete = this.tweet.author.username === this.user.credentials.username ? true : false
         this.replyTweet = true
     }
     else {
         this.tweet = this.sentTweet
+        this.canDelete = this.tweet.author.username === this.user.credentials.username ? true : false
     }
+
+    
+    this.isReplying = false
+
 
     this.getTweet = tweetService.getTweet
 
@@ -32,8 +38,12 @@ function (tweetService, globalService, state) {
     }
 
     this.deleteTweet = () => {
-        tweetService.deleteTweet(this.tweetId, this.contentCredentials.credentials).then((done) => {
-            
+        tweetService.deleteTweet(this.tweet.id, this.user.credentials).then((done) => {
+            state.go('userPage.feed', {
+                username: this.user.credentials.username
+            }, {
+                reload: true
+            })
         })
     }
 
@@ -120,10 +130,6 @@ function (tweetService, globalService, state) {
         return tweetService.getTagsInTweet(this.tweetId).then((done) => {
             
         })
-    }
-
-    this.goToTag = (tag) => {
-        console.log(tag)
     }
 
 }])
