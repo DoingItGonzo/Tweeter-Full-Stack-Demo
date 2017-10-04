@@ -1,5 +1,5 @@
 angular.module('tweetApp').component('hashtagComponentFinal', {
-    templateUrl: 'js/hashtag/hashtagTemplateFinal.html',
+    templateUrl: 'js/components/hashtag/hashtagTemplateFinal.html',
     controller: 'hashtagController',
     bindings:{
         hashtag : '='

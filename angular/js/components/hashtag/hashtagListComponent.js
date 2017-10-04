@@ -1,5 +1,5 @@
 angular.module('tweetApp').component('hashtagListComponent', {
-    templateUrl: 'js/hashtag/hashtagListTemplate.html',
+    templateUrl: 'js/components/hashtag/hashtagListTemplate.html',
     controller: 'hashtagListController'
 
 })
