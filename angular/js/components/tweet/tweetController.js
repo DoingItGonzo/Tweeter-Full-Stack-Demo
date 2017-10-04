@@ -39,13 +39,19 @@ angular.module('tweetApp').controller('tweetController', ['tweetService','global
         tweetService.createRepost(this.tweet.id, this.user.credentials).then((done) => {
             state.go('userPage.feed', {
                 credentials: this.user.credentials
+            }, {
+                reload: true
             })
         })
     }
 
     this.createReply = () => {
         tweetService.createReply(this.tweetId, this.chinCredentials).then((done) => {
-            
+            state.go('userPage.feed', {
+                credentials: this.user.credentials
+            }, {
+                reload: true
+            })
         })
     }
 

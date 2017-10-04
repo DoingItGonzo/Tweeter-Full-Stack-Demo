@@ -7,6 +7,10 @@
     <p>Phone: {{ $ctrl.user.profile.phone }}</p>
     <p>Email: {{ $ctrl.user.profile.email }}</p>
     <p>
+        <input type="text" size="20" ng-model="$ctrl.content"></input>
+        <input type="button" value="Post Tweet" ng-click="$ctrl.createTweet()"></input>
+    </p>
+    <p>
         <a ui-sref=".followers">
             <input type="button" value="Followers"></input>
         </a>
