@@ -1,4 +1,4 @@
-angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
+angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
 
     const testUserState = {
         name: 'testUser',
