@@ -72,13 +72,20 @@ function (tweetService, globalService, state) {
     }
 
     this.getDirectReplies = () => {
-        return tweetService.getDirectReplies(this.tweet.id).then((done) => {
-            return done.data
+        tweetService.getDirectReplies(this.tweet.id).then((done) => {
+            //return done.data
+            alert("getting replies")
+            state.go('direct_replies',{
+                tweetId: this.tweet.id
+            })
         })
     }
     this.getDirectReposts = () => {
         return tweetService.getDirectReposts(this.tweet.id).then((done) => {
-            return done.data
+            //return done.data
+            state.go('direct_reposts',{
+                tweetId: this.tweet.id
+            })
         })
     }
 
@@ -90,12 +97,15 @@ function (tweetService, globalService, state) {
 
     this.getUsersWhoLiked = () => {
         return tweetService.getUsersWhoLiked(this.tweet.id).then((done) => {
-            
+            state.go('who_liked',{
+                tweetId: this.tweet.id
+            })
         })
     }
 
     this.likeTweet = () => {
-        return tweetService.likeTweet(this.tweet.id, this.chinCredentials.credentials).then((done) => {
+        alert(this.user.credentials.username +" liked tweet #"+ this.tweet.id)
+        return tweetService.likeTweet(this.tweet.id, this.user.credentials).then((done) => {
             
         })
     }
