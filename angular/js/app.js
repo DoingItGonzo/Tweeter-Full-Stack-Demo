@@ -113,6 +113,15 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         },
     }
 
+    const tweetsWithTagState = {
+        name: 'taggedtweets',
+        url: '/taggedtweets',
+        component: 'tweetsWithTagComponent',
+        params: {
+            tweets:null
+        }
+    }
+
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
@@ -130,6 +139,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(thisUserPageFollowingState)
     stateProvider.state(userListState)
     stateProvider.state(contextState)
+    stateProvider.state(tweetsWithTagState)
 
 
     urlRouter.otherwise('/signInSignUp')
