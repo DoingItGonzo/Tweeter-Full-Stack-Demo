@@ -1,4 +1,4 @@
-angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
+angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
 
     const testUserState = {
         name: 'testUser',
@@ -48,11 +48,8 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
     }
     const contextState = {
         name: 'context',
-        url: '/context',
+        url: '/context/{id}',
         component: 'contextComponent',
-        params: {
-            id: null
-        },
         resolve: {
             tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getContext(stateParams.id).then((done) => {
@@ -64,11 +61,8 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
 
     const userPageState = {
         name: 'userPage',
-        url: '/userPage',
-        component: 'userPageComponent',
-        params: {
-            username: null
-        }
+        url: '/userPage/{username}',
+        component: 'userPageComponent'
     }
 
     const userPageTweetsState = {
@@ -138,11 +132,8 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
 
     const tweetsWithTagState = {
         name: 'tweetsWithTag',
-        url: '/tweetsWithTag',
+        url: '/tweetsWithTag/{label}',
         component: 'tweetsWithTagComponent',
-        params: {
-            label: null
-        },
         resolve: {
             tweets: ['hashtagService', '$stateParams', function (hashtagService, stateParams) {
                 console.log(stateParams.label)
@@ -195,11 +186,8 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
 
     const directRepliesState = {
         name: 'direct_replies',
-        url: '/direct_replies',
+        url: '/direct_replies{tweetId}',
         component: 'tweetListComponent',
-        params: {
-            tweetId: null
-        },
         resolve: {
             tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getDirectReplies(stateParams.tweetId).then((done) => {
@@ -211,11 +199,8 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
 
     const directRepostsState = {
         name: 'direct_reposts',
-        url: '/direct_reposts',
+        url: '/direct_reposts/{tweetId}',
         component: 'tweetListComponent',
-        params: {
-            tweetId: null
-        },
         resolve: {
             tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getDirectReposts(stateParams.tweetId).then((done) => {
@@ -227,11 +212,8 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
 
     const usersWhoLikedState = {
         name: 'who_liked',
-        url: '/who_liked',
+        url: '/who_liked/{tweetId}',
         component: 'usersComponent',
-        params: {
-            tweetId: null
-        },
         resolve: {
             users: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getUsersWhoLiked(stateParams.tweetId).then((done) => {
@@ -341,18 +323,15 @@ function ($rootScope, $location, $window, stateService, $stateParams, state) {
         //true only for onPopState
         if ($rootScope.actualLocation === newLocation) {
             // Pressed an arrow
-            console.log('NewLocation: ' + newLocation)
-            //console.log(stateService.stateHistory[stateService.stateHistoryIndex - 1].name)
-            //console.log(stateService.stateHistory[stateService.stateHistoryIndex - 1].name)
             if (stateService.stateHistoryIndex - 1 >= 0 && stateService.stateHistory[stateService.stateHistoryIndex - 1].name === newLocation)
             {
-                console.log('Pressed back arrow')
+                //Press back arrow
                 stateService.stateHistoryIndex--
                 
             }
             else if (stateService.stateHistoryIndex + 1 < stateService.stateHistory.length && stateService.stateHistory[stateService.stateHistoryIndex + 1].name === newLocation)
             {
-                console.log('Pressed forward arrow')
+                //Press forward arrow
                 stateService.stateHistoryIndex++
             }
             console.log(stateService.stateHistory)
@@ -362,23 +341,11 @@ function ($rootScope, $location, $window, stateService, $stateParams, state) {
             const stateGoName = stateHistoryObj.name.substring(1).replace(/\//g, '.')
             const stateGoParams = stateHistoryObj.stateParams
 
-            console.log(stateGoName)
-            console.log(stateGoParams)
             state.go(stateGoName, stateGoParams, {reload:true})
 
         } else {
             // Pressed a link
-            
-            console.log('NewLocation: ' + newLocation)
-            console.log('Pressed link')
-
-            
-            
-            console.log($stateParams)
             stateService.addToHistory(newLocation, Object.assign({}, $stateParams))
-
-            console.log(stateService.stateHistory)
-
         }
 
     })
