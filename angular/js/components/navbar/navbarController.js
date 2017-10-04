@@ -22,10 +22,7 @@ angular.module('tweetApp').controller('navbarController', ['globalService', '$st
                 console.log(done)
                 this.searchedUser = done.data
                 state.go('userPage', {
-                    credentials: {
-                        username: this.searchedUser.username,
-                        password: undefined
-                    }
+                    username: this.searchedUser.username
                 })
             })
         }
@@ -41,10 +38,7 @@ angular.module('tweetApp').controller('navbarController', ['globalService', '$st
             console.log(done)
             this.searchedUser = done.data
             state.go('userPage', {
-                credentials: {
-                    username: this.searchedUser.username,
-                    password: undefined
-                }
+                username: this.searchedUser.username
             })
         })
     }

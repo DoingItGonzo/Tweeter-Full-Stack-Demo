@@ -40,7 +40,7 @@ function (tweetService, globalService, state) {
     this.createRepost = () => {
         tweetService.createRepost(this.tweet.id, this.user.credentials).then((done) => {
             state.go('userPage.feed', {
-                credentials: this.user.credentials
+                username: this.user.credentials.username
             }, {
                 reload: true
             })
@@ -58,7 +58,7 @@ function (tweetService, globalService, state) {
         console.log(this.contentCredentials)
         tweetService.createReply(this.tweet.id, this.contentCredentials).then((done) => {
             state.go('userPage.feed', {
-                credentials: this.user.credentials
+                username: this.user.credentials.username
             }, {
                     reload: true
             })

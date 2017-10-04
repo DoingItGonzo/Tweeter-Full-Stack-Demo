@@ -1,5 +1,5 @@
-angular.module('tweetApp').controller('userPageController', ['userService', 'tweetService', '$state', '$stateParams', 
-function(userService, tweetService, state, stateParams){
+angular.module('tweetApp').controller('userPageController', ['userService', 'tweetService', 'globalService', '$state', '$stateParams', 
+function(userService, tweetService, globalService, state, stateParams){
     
     this.getUser = () => {
         userService.getUser(this.username).then((done) => {
@@ -18,7 +18,7 @@ function(userService, tweetService, state, stateParams){
         console.log(this.contentCredentials)
         tweetService.createTweet(this.contentCredentials).then((done) => {
             state.go('userPage.feed', {
-                credentials: this.contentCredentials.credentials
+                username: this.contentCredentials.credentials.username
             }, {
                 reload: true
             })
@@ -27,8 +27,12 @@ function(userService, tweetService, state, stateParams){
 
 
 
-    this.username = stateParams.credentials.username
-    this.password = stateParams.credentials.password
+    this.username = stateParams.username
+    if (this.username === globalService.primaryUser.credentials.username)
+    {
+        this.password = globalService.primaryUser.credentials.password
+    }
+    console.log(this.password)
     this.user = this.getUser()
     
 
