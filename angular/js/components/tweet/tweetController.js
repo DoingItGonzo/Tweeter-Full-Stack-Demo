@@ -122,4 +122,8 @@ function (tweetService, globalService, state) {
         })
     }
 
+    this.goToTag = (tag) => {
+        console.log(tag)
+    }
+
 }])
