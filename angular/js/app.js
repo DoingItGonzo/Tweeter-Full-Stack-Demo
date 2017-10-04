@@ -77,7 +77,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getTweets(stateParams.credentials.username)
+                return userService.getTweets(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -88,7 +90,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFeed(stateParams.credentials.username)
+                return userService.getFeed(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -99,7 +103,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getMentions(stateParams.credentials.username)
+                return userService.getMentions(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -110,7 +116,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'usersComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFollowers(stateParams.credentials.username)
+                return userService.getFollowers(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
@@ -121,7 +129,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'usersComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFollowing(stateParams.credentials.username)
+                return userService.getFollowing(stateParams.credentials.username).then((done) => {
+                    return done.data
+                })
             }]
         }
     }
