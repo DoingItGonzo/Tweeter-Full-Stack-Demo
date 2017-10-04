@@ -211,11 +211,62 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
 
 
     urlRouter.otherwise('/signInSignUp')
-}]).filter('createAnchors', ['sce', function (sce) {
-        return function (str) {
-            return sce.trustAsHtml(str.
-                replace('#(\\S)/+','<a ui-sref="$1">$1</a>').
-                replace('@(\\S)/+','<a ui-sref="$1">$1</a>')
-            )
+}]).directive('dir', ['$compile', '$parse', function($compile, $parse) {
+    return {
+      restrict: 'E',
+      link: function(scope, element, attr) {
+        scope.$watch(attr.content, function() {
+          element.html($parse(attr.content)(scope));
+          $compile(element.contents())(scope);
+        }, true);
+      }
+    }
+  }]).filter('createAnchors', ['$sce', function (sce) {
+    return function (str) {
+        const regexTag = /#(\S)+/g
+        const regexUser = /@(\S)+/g
+        const stringArray = str.split(' ')
+        let m
+        
+        while ((m = regexTag.exec(str)) !== null) {
+            // This is necessary to avoid infinite loops with zero-width matches
+            if (m.index === regexTag.lastIndex) {
+                regexTag.lastIndex++
+            }
+            console.log(m)
+            console.log(stringArray)
+            
+            // The result can be accessed through the `m`-variable.
+            for (let i = 0; i < stringArray.length; i++)
+            {
+                if(stringArray[i] === m[0])
+                {
+                    stringArray[i] = String(stringArray[i]).replace(m[0], '<a ui-sref="tweetsWithTag({label: \'' + m[0].substring(1) + '\'})">' + m[0] + '</a>')
+                }
+            }
+            //newString = str.replace(m[0], '<input type="button" value="' + m[0] + '" ng-click="$ctrl.goToTag(\'' + m[0].substring(1) + '\')"></input>')
         }
-    }])
+
+        while ((m = regexUser.exec(str)) !== null) {
+            // This is necessary to avoid infinite loops with zero-width matches
+            if (m.index === regexUser.lastIndex) {
+                regexUser.lastIndex++
+            }
+            
+            // The result can be accessed through the `m`-variable.
+            for (let i = 0; i < stringArray.length; i++)
+            {
+                if(stringArray[i] === m[0])
+                {
+                    stringArray[i] = String(stringArray[i]).replace(m[0], '<a ui-sref="userPage({credentials: { username: \'' + m[0].substring(1) + '\', password: null}})" ui-sref-opts="{reload: true}">' + m[0] + '</a>')
+                }
+            }
+            //newString = str.replace(m[0], '<input type="button" value="' + m[0] + '" ng-click="$ctrl.goToTag(\'' + m[0].substring(1) + '\')"></input>')
+        }
+        
+       
+        const newString = stringArray.join(' ')
+        console.log(newString)
+        return sce.trustAsHtml(newString)
+    }
+}])
