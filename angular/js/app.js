@@ -135,6 +135,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         name: 'tweetsWithTag',
         url: '/tweetsWithTag',
         component: 'tweetsWithTagComponent',
+        params: {
+            label: null
+        },
         resolve: {
             tweets: ['hashtagService', '$stateParams', function(hashtagService, stateParams){
                 return hashtagService.getTaggedTweets(stateParams.label).then((done) => {

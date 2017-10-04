@@ -1,5 +1,7 @@
-angular.module('tweetApp').service('globalService', ['userService', '$state', function (userService, state) {
+angular.module('tweetApp').service('globalService', ['hashtagService', 'userService', '$state', function (hashtagService, userService, state) {
     
+this.hashtagService = hashtagService
+this.userService = userService
 
 this.primaryUser = {}
 this.primaryUser.credentials = {}
