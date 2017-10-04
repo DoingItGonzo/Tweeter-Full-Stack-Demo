@@ -4,7 +4,7 @@
                         <span class="glyphicon glyphicon-user"></span>
                 </div>
                 <div class="panel-body">
-                        <p>Username: {{ user.username }}</p>
+                        <p>Username: @<a ui-sref="userPage({ username: user.username })">{{user.username}}</a></p>
                 </div>
         </div>
 </div>

@@ -1,10 +1,5 @@
-angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
+angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
 
-    const hashtagState = {
-        name: 'hashtags',
-        url: '/tags',
-        component: 'hashtagComponent'
-    }
     const testUserState = {
         name: 'testUser',
         url: '/testUser',
@@ -54,7 +49,17 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     const contextState = {
         name: 'context',
         url: '/context',
-        component: 'contextComponent'
+        component: 'contextComponent',
+        params: {
+            id: null
+        },
+        resolve: {
+            tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
+                return tweetService.getContext(stateParams.id).then((done) => {
+                    return done.data.before.concat(done.data.target).concat(done.data.after)
+                })
+            }]
+        }
     }
 
     const userPageState = {
@@ -139,13 +144,13 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
             label: null
         },
         resolve: {
-            tweets: ['hashtagService', '$stateParams', function(hashtagService, stateParams){
+            tweets: ['hashtagService', '$stateParams', function (hashtagService, stateParams) {
                 console.log(stateParams.label)
                 return hashtagService.getTaggedTweets(stateParams.label).then((done) => {
                     console.log(done.data)
                     return done.data
                 })
-              }]
+            }]
         }
     }
 
@@ -154,20 +159,20 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/allUsers',
         component: 'usersComponent',
         resolve: {
-            users: ['userService', function(userService){
+            users: ['userService', function (userService) {
                 return userService.getAllUsers().then((done) => {
                     return done.data
                 })
-              }]
+            }]
         }
     }
 
     const hashtagStateFinal = {
-        name: 'allHashtagState',
+        name: 'allHashtags',
         url: '/allHashtags',
         component: 'hashtagListComponent',
         resolve: {
-            hashtags: ['hashtagService', function(hashtagService){
+            hashtags: ['hashtagService', function (hashtagService) {
                 return hashtagService.getAllTags().then((done) => {
                     return done.data
                 })
@@ -180,7 +185,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/allTweets',
         component: 'tweetsComponent',
         resolve: {
-            tweets: ['tweetService', function(tweetService){
+            tweets: ['tweetService', function (tweetService) {
                 return tweetService.getAllTweets().then((done) => {
                     return done.data
                 })
@@ -189,14 +194,14 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     }
 
     const directRepliesState = {
-        name:   'direct_replies',
-        url:    '/direct_replies',
-        component:  'tweetListComponent',
+        name: 'direct_replies',
+        url: '/direct_replies',
+        component: 'tweetListComponent',
         params: {
             tweetId: null
         },
-        resolve:{
-            tweets: ['tweetService', '$stateParams',function(tweetService, stateParams){
+        resolve: {
+            tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getDirectReplies(stateParams.tweetId).then((done) => {
                     return done.data
                 })
@@ -205,14 +210,14 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     }
 
     const directRepostsState = {
-        name:   'direct_reposts',
-        url:    '/direct_reposts',
-        component:  'tweetListComponent',
+        name: 'direct_reposts',
+        url: '/direct_reposts',
+        component: 'tweetListComponent',
         params: {
             tweetId: null
         },
         resolve: {
-            tweets: ['tweetService', '$stateParams',function(tweetService, stateParams){
+            tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getDirectReposts(stateParams.tweetId).then((done) => {
                     return done.data
                 })
@@ -221,14 +226,14 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     }
 
     const usersWhoLikedState = {
-        name:   'who_liked',
-        url:    '/who_liked',
-        component:  'usersComponent',
+        name: 'who_liked',
+        url: '/who_liked',
+        component: 'usersComponent',
         params: {
             tweetId: null
         },
         resolve: {
-            users: ['tweetService', '$stateParams', function(tweetService, stateParams){
+            users: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getUsersWhoLiked(stateParams.tweetId).then((done) => {
                     return done.data
                 })
@@ -240,7 +245,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
-    stateProvider.state(hashtagState)
     stateProvider.state(hashtagStateFinal)
     stateProvider.state(signInSignUp)
     stateProvider.state(signIn)
@@ -262,34 +266,32 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
 
 
     urlRouter.otherwise('/signInSignUp')
-}]).directive('dir', ['$compile', '$parse', function($compile, $parse) {
+}]).directive('dir', ['$compile', '$parse', function ($compile, $parse) {
     return {
-      restrict: 'E',
-      link: function(scope, element, attr) {
-        scope.$watch(attr.content, function() {
-          element.html($parse(attr.content)(scope));
-          $compile(element.contents())(scope);
-        }, true);
-      }
+        restrict: 'E',
+        link: function (scope, element, attr) {
+            scope.$watch(attr.content, function () {
+                element.html($parse(attr.content)(scope));
+                $compile(element.contents())(scope);
+            }, true);
+        }
     }
-  }]).filter('createAnchors', ['$sce', function (sce) {
+}]).filter('createAnchors', ['$sce', function (sce) {
     return function (str) {
         const regexTag = /#(\S)+/g
         const regexUser = /@(\S)+/g
         const stringArray = str.split(' ')
         let m
-        
+
         while ((m = regexTag.exec(str)) !== null) {
             // This is necessary to avoid infinite loops with zero-width matches
             if (m.index === regexTag.lastIndex) {
                 regexTag.lastIndex++
             }
-            
+
             // The result can be accessed through the `m`-variable.
-            for (let i = 0; i < stringArray.length; i++)
-            {
-                if(stringArray[i] === m[0])
-                {
+            for (let i = 0; i < stringArray.length; i++) {
+                if (stringArray[i] === m[0]) {
                     stringArray[i] = String(stringArray[i]).replace(m[0], '<a ui-sref="tweetsWithTag({label: \'' + m[0].substring(1) + '\'})">' + m[0] + '</a>')
                 }
             }
@@ -301,20 +303,76 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
             if (m.index === regexUser.lastIndex) {
                 regexUser.lastIndex++
             }
-            
+
             // The result can be accessed through the `m`-variable.
-            for (let i = 0; i < stringArray.length; i++)
-            {
-                if(stringArray[i] === m[0])
-                {
+            for (let i = 0; i < stringArray.length; i++) {
+                if (stringArray[i] === m[0]) {
                     stringArray[i] = String(stringArray[i]).replace(m[0], '<a ui-sref="userPage({ username: \'' + m[0].substring(1) + '\'})" ui-sref-opts="{reload: true}">' + m[0] + '</a>')
                 }
             }
             //newString = str.replace(m[0], '<input type="button" value="' + m[0] + '" ng-click="$ctrl.goToTag(\'' + m[0].substring(1) + '\')"></input>')
         }
-        
-       
+
+
         const newString = stringArray.join(' ')
         return sce.trustAsHtml(newString)
     }
+}]).run(['$rootScope', '$location', '$window', 'stateService', '$stateParams', '$state',
+function ($rootScope, $location, $window, stateService, $stateParams, state) {
+    //Bind the `$locationChangeSuccess` event on the rootScope, so that we dont need to 
+    //bind in induvidual controllers.
+
+    $rootScope.$on('$locationChangeSuccess', function () {
+        $rootScope.actualLocation = $location.path();
+    });
+
+
+    $rootScope.$watch(function () { return $location.path() }, function (newLocation, oldLocation) {
+
+        
+
+        //true only for onPopState
+        if ($rootScope.actualLocation === newLocation) {
+            // Pressed an arrow
+            console.log('NewLocation: ' + newLocation)
+            //console.log(stateService.stateHistory[stateService.stateHistoryIndex - 1].name)
+            //console.log(stateService.stateHistory[stateService.stateHistoryIndex - 1].name)
+            if (stateService.stateHistoryIndex - 1 >= 0 && stateService.stateHistory[stateService.stateHistoryIndex - 1].name === newLocation)
+            {
+                console.log('Pressed back arrow')
+                stateService.stateHistoryIndex--
+                
+            }
+            else if (stateService.stateHistoryIndex + 1 < stateService.stateHistory.length && stateService.stateHistory[stateService.stateHistoryIndex + 1].name === newLocation)
+            {
+                console.log('Pressed forward arrow')
+                stateService.stateHistoryIndex++
+            }
+            console.log(stateService.stateHistory)
+            console.log(stateService.stateHistoryIndex)
+
+            const stateHistoryObj = stateService.stateHistory[stateService.stateHistoryIndex]
+            const stateGoName = stateHistoryObj.name.substring(1).replace(/\//g, '.')
+            const stateGoParams = stateHistoryObj.stateParams
+
+            console.log(stateGoName)
+            console.log(stateGoParams)
+            state.go(stateGoName, stateGoParams, {reload:true})
+
+        } else {
+            // Pressed a link
+            
+            console.log('NewLocation: ' + newLocation)
+            console.log('Pressed link')
+
+            
+            
+            console.log($stateParams)
+            stateService.addToHistory(newLocation, Object.assign({}, $stateParams))
+
+            console.log(stateService.stateHistory)
+
+        }
+
+    })
 }])
