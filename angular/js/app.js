@@ -241,6 +241,12 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
         }
     }
 
+    const userNotFoundState = {
+        name:   'userNotFoundPage',
+        url:    '/userNotFound',
+        component:  'userNotFoundComponent'
+    }
+
     stateProvider.state(allUsersState)
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
@@ -263,6 +269,7 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
     stateProvider.state(directRepliesState)
     stateProvider.state(directRepostsState)
     stateProvider.state(usersWhoLikedState)
+    stateProvider.state(userNotFoundState)
 
 
     urlRouter.otherwise('/signInSignUp')
