@@ -284,8 +284,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
             if (m.index === regexTag.lastIndex) {
                 regexTag.lastIndex++
             }
-            console.log(m)
-            console.log(stringArray)
             
             // The result can be accessed through the `m`-variable.
             for (let i = 0; i < stringArray.length; i++)
@@ -317,7 +315,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         
        
         const newString = stringArray.join(' ')
-        console.log(newString)
         return sce.trustAsHtml(newString)
     }
 }])
