@@ -1,4 +1,4 @@
-angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
+angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
 
     const testUserState = {
         name: 'testUser',
@@ -316,18 +316,15 @@ function ($rootScope, $location, $window, stateService, $stateParams, state) {
         //true only for onPopState
         if ($rootScope.actualLocation === newLocation) {
             // Pressed an arrow
-            console.log('NewLocation: ' + newLocation)
-            //console.log(stateService.stateHistory[stateService.stateHistoryIndex - 1].name)
-            //console.log(stateService.stateHistory[stateService.stateHistoryIndex - 1].name)
             if (stateService.stateHistoryIndex - 1 >= 0 && stateService.stateHistory[stateService.stateHistoryIndex - 1].name === newLocation)
             {
-                console.log('Pressed back arrow')
+                //Press back arrow
                 stateService.stateHistoryIndex--
                 
             }
             else if (stateService.stateHistoryIndex + 1 < stateService.stateHistory.length && stateService.stateHistory[stateService.stateHistoryIndex + 1].name === newLocation)
             {
-                console.log('Pressed forward arrow')
+                //Press forward arrow
                 stateService.stateHistoryIndex++
             }
             console.log(stateService.stateHistory)
@@ -337,23 +334,11 @@ function ($rootScope, $location, $window, stateService, $stateParams, state) {
             const stateGoName = stateHistoryObj.name.substring(1).replace(/\//g, '.')
             const stateGoParams = stateHistoryObj.stateParams
 
-            console.log(stateGoName)
-            console.log(stateGoParams)
             state.go(stateGoName, stateGoParams, {reload:true})
 
         } else {
             // Pressed a link
-            
-            console.log('NewLocation: ' + newLocation)
-            console.log('Pressed link')
-
-            
-            
-            console.log($stateParams)
             stateService.addToHistory(newLocation, Object.assign({}, $stateParams))
-
-            console.log(stateService.stateHistory)
-
         }
 
     })
