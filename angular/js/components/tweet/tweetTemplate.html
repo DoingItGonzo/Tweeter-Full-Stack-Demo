@@ -1,6 +1,6 @@
 <div>
-    <p ng-hide="!$ctrl.repostTweet">{{ $ctrl.tweet.reposter.profile.firstName }} {{ $ctrl.tweet.reposter.profile.lastName }} reposted:</p>
-    <p ng-hide="!$ctrl.replyTweet">@{{ $ctrl.tweet.repliedTo.profile.firstName }} {{ $ctrl.tweet.repliedTo.profile.lastName }}</p>
+    <p ng-if="$ctrl.repostTweet === true">{{ $ctrl.tweet.reposter.profile.firstName }} {{ $ctrl.tweet.reposter.profile.lastName }} reposted:</p>
+    <p ng-if="$ctrl.replyTweet === true">@{{ $ctrl.tweet.repliedTo.profile.firstName }} {{ $ctrl.tweet.repliedTo.profile.lastName }}</p>
     <p>{{ $ctrl.tweet.author.profile.firstName }} {{ $ctrl.tweet.author.profile.lastName }}</p>
     <p>{{ $ctrl.tweet.content }}</p>
     <p>
@@ -12,4 +12,8 @@
         <input type="button" value="Reply" ng-click="$ctrl.createReply()"></input>
         <input type="button" value="Repost" ng-click="$ctrl.createRepost()"></input>
     </p>
+    <div ng-show="$ctrl.isReplying === true">
+        <input type="text" size="20" ng-model="$ctrl.content"></input>
+        <input type="button" value="Post Tweet" ng-click="$ctrl.createActualReply()"></input>
+    </div>
 </div>

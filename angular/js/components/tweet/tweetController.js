@@ -1,6 +1,8 @@
-angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state', function (tweetService, globalService, state) {
+angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state', 
+function (tweetService, globalService, state) {
 
     this.user = globalService.primaryUser
+    this.isReplying = false
 
     if (this.sentTweet.repostOf !== undefined) {
         this.tweet = {
@@ -46,11 +48,19 @@ angular.module('tweetApp').controller('tweetController', ['tweetService','global
     }
 
     this.createReply = () => {
-        tweetService.createReply(this.tweetId, this.chinCredentials).then((done) => {
+        this.isReplying = !this.isReplying
+    }
+
+    this.createActualReply = () => {
+        this.contentCredentials = {}
+        this.contentCredentials.content = this.content
+        this.contentCredentials.credentials = this.user.credentials
+        console.log(this.contentCredentials)
+        tweetService.createReply(this.tweet.id, this.contentCredentials).then((done) => {
             state.go('userPage.feed', {
                 credentials: this.user.credentials
             }, {
-                reload: true
+                    reload: true
             })
         })
     }
