@@ -62,7 +62,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         url: '/userPage',
         component: 'userPageComponent',
         params: {
-            credentials: null
+            username: null
         }
     }
 
@@ -72,7 +72,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getTweets(stateParams.credentials.username).then((done) => {
+                return userService.getTweets(stateParams.username).then((done) => {
                     return done.data
                 })
             }]
@@ -85,7 +85,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFeed(stateParams.credentials.username).then((done) => {
+                return userService.getFeed(stateParams.username).then((done) => {
                     return done.data
                 })
             }]
@@ -98,7 +98,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'tweetsComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getMentions(stateParams.credentials.username).then((done) => {
+                return userService.getMentions(stateParams.username).then((done) => {
                     return done.data
                 })
             }]
@@ -111,7 +111,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'usersComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFollowers(stateParams.credentials.username).then((done) => {
+                return userService.getFollowers(stateParams.username).then((done) => {
                     return done.data
                 })
             }]
@@ -124,7 +124,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'usersComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
-                return userService.getFollowing(stateParams.credentials.username).then((done) => {
+                return userService.getFollowing(stateParams.username).then((done) => {
                     return done.data
                 })
             }]
@@ -284,8 +284,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
             if (m.index === regexTag.lastIndex) {
                 regexTag.lastIndex++
             }
-            console.log(m)
-            console.log(stringArray)
             
             // The result can be accessed through the `m`-variable.
             for (let i = 0; i < stringArray.length; i++)
@@ -309,7 +307,7 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
             {
                 if(stringArray[i] === m[0])
                 {
-                    stringArray[i] = String(stringArray[i]).replace(m[0], '<a ui-sref="userPage({credentials: { username: \'' + m[0].substring(1) + '\', password: null}})" ui-sref-opts="{reload: true}">' + m[0] + '</a>')
+                    stringArray[i] = String(stringArray[i]).replace(m[0], '<a ui-sref="userPage({ username: \'' + m[0].substring(1) + '\'})" ui-sref-opts="{reload: true}">' + m[0] + '</a>')
                 }
             }
             //newString = str.replace(m[0], '<input type="button" value="' + m[0] + '" ng-click="$ctrl.goToTag(\'' + m[0].substring(1) + '\')"></input>')
@@ -317,7 +315,6 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         
        
         const newString = stringArray.join(' ')
-        console.log(newString)
         return sce.trustAsHtml(newString)
     }
 }])

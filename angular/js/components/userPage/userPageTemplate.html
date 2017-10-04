@@ -3,15 +3,19 @@
 </div>
 <div>
     <p>@{{ $ctrl.user.username }} </p>
+    <p ng-if=!$ctrl.password>
+            <input ng-if=!$ctrl.isFollowing type="button" value="Follow" ng-click="$ctrl.followUser()"></input>
+            <input ng-if=$ctrl.isFollowing type="button" value="Unfollow" ng-click="$ctrl.unfollowUser()"></input>
+    </p>
     <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
     <p>Phone: {{ $ctrl.user.profile.phone }}</p>
     <p>Email: {{ $ctrl.user.profile.email }}</p>
-    <p>
+    <p ng-if=$ctrl.password>
         <input type="text" size="20" ng-model="$ctrl.content"></input>
         <input type="button" value="Post Tweet" ng-click="$ctrl.createTweet()"></input>
     </p>
     <p>
-        <a ui-sref=".followers({username: hello})">
+        <a ui-sref=".followers">
             <input type="button" value="Followers"></input>
         </a>
     </p>
