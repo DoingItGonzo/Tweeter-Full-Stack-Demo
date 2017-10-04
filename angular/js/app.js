@@ -62,55 +62,77 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         component: 'contextComponent'
     }
 
-    const thisUserPageState = {
-        name: 'thisUserPage',
-        url: '/thisUserPage',
-        component: 'thisUserPageComponent'
+    const userPageState = {
+        name: 'userPage',
+        url: '/userPage',
+        component: 'userPageComponent',
+        params: {
+            credentials: null
+        }
     }
 
-    const thisUserPageTweetsState = {
-        name: 'thisUserPage.tweets',
+    const userPageTweetsState = {
+        name: 'userPage.tweets',
         url: '/tweets',
-        component: 'thisUserPageTweetsComponent',
-        params: {
-            tweets: null,
-        },
+        component: 'tweetsComponent',
+        resolve: {
+            tweets: ['userService', '$stateParams', function (userService, stateParams) {
+                return userService.getTweets(stateParams.credentials.username)
+            }]
+        }
     }
 
-    const thisUserPageFeedState = {
-        name: 'thisUserPage.feed',
+    const userPageFeedState = {
+        name: 'userPage.feed',
         url: '/feed',
-        component: 'thisUserPageTweetsComponent',
-        params: {
-            tweets: null,
-        },
+        component: 'tweetsComponent',
+        resolve: {
+            tweets: ['userService', '$stateParams', function (userService, stateParams) {
+                return userService.getFeed(stateParams.credentials.username)
+            }]
+        }
     }
 
-    const thisUserPageMentionsState = {
-        name: 'thisUserPage.mentions',
+    const userPageMentionsState = {
+        name: 'userPage.mentions',
         url: '/mentions',
-        component: 'thisUserPageTweetsComponent',
-        params: {
-            tweets: null,
-        },
+        component: 'tweetsComponent',
+        resolve: {
+            tweets: ['userService', '$stateParams', function (userService, stateParams) {
+                return userService.getMentions(stateParams.credentials.username)
+            }]
+        }
     }
 
-    const thisUserPageFollowersState = {
-        name: 'thisUserPage.followers',
+    const userPageFollowersState = {
+        name: 'userPage.followers',
         url: '/followers',
-        component: 'thisUserPageUsersComponent',
-        params: {
-            users: null,
-        },
+        component: 'usersComponent',
+        resolve: {
+            users: ['userService', '$stateParams', function (userService, stateParams) {
+                return userService.getFollowers(stateParams.credentials.username)
+            }]
+        }
     }
 
-    const thisUserPageFollowingState = {
-        name: 'thisUserPage.following',
+    const userPageFollowingState = {
+        name: 'userPage.following',
         url: '/following',
-        component: 'thisUserPageUsersComponent',
+        component: 'usersComponent',
+        resolve: {
+            users: ['userService', '$stateParams', function (userService, stateParams) {
+                return userService.getFollowing(stateParams.credentials.username)
+            }]
+        }
+    }
+
+    const tweetsWithTagState = {
+        name: 'taggedtweets',
+        url: '/taggedtweets',
+        component: 'tweetsWithTagComponent',
         params: {
-            users: null,
-        },
+            tweets:null
+        }
     }
 
     stateProvider.state(testUserState)
@@ -122,14 +144,15 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(signIn)
     stateProvider.state(signUp)
     stateProvider.state(tweetListState)
-    stateProvider.state(thisUserPageState)
-    stateProvider.state(thisUserPageTweetsState)
-    stateProvider.state(thisUserPageFeedState)
-    stateProvider.state(thisUserPageMentionsState)
-    stateProvider.state(thisUserPageFollowersState)
-    stateProvider.state(thisUserPageFollowingState)
+    stateProvider.state(userPageState)
+    stateProvider.state(userPageTweetsState)
+    stateProvider.state(userPageFeedState)
+    stateProvider.state(userPageMentionsState)
+    stateProvider.state(userPageFollowersState)
+    stateProvider.state(userPageFollowingState)
     stateProvider.state(userListState)
     stateProvider.state(contextState)
+    stateProvider.state(tweetsWithTagState)
 
 
     urlRouter.otherwise('/signInSignUp')

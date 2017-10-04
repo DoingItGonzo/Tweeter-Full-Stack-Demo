@@ -1,4 +1,4 @@
-angular.module('tweetApp').controller('hashtagController', ['hashtagService', function(hashtagService) {
+angular.module('tweetApp').controller('hashtagController', ['hashtagService','$state', function(hashtagService,state) {
 
     console.log(this.hashtag)
 
@@ -9,10 +9,13 @@ angular.module('tweetApp').controller('hashtagController', ['hashtagService', fu
             return done.data;
         })
     }
-    this.getOneTag = () => {
-        hashtagService.getTaggedTweets(this.label).then((done) =>{
+    this.getOneTag = (tagLabel) => {
+        hashtagService.getTaggedTweets(tagLabel).then((done) =>{
             this.tag = done.data;
             console.log(done.data);
+            state.go('taggedtweets',{
+                tweets: done.data
+            })
             return done.data;
         })
     }

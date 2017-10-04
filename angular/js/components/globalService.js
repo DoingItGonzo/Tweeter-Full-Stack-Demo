@@ -25,7 +25,9 @@ this.login = (username) => {
     userService.getUser(username).then((done) => {
         console.log(done)
         this.primaryUser.profile = done.data.profile
-        state.go('thisUserPage')
+        state.go('userPage', {
+            credentials: this.primaryUser.credentials
+        })
         return done.data
     })
 }

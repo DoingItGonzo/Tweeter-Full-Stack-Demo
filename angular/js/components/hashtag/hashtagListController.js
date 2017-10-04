@@ -1,6 +1,4 @@
-angular.module('tweetApp').controller('hashtagListController', ['hashtagService', function(hashtagService) {
-
-    //this.tags = []
+angular.module('tweetApp').controller('hashtagListController', ['hashtagService','$state', function(hashtagService,state) {
 
     this.getAllTags = () => {
         hashtagService.getAllTags().then((done) =>{
