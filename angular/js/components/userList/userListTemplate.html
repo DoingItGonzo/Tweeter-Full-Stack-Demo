@@ -1,3 +1,3 @@
 <div ng-repeat="user in $ctrl.users">
-        <p>Username: {{ user.username }}</p>
+        <p>Username: @<a ui-sref="userPage({ username: user.username })">{{user.username}}</a></p>
 </div>
