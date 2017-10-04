@@ -186,6 +186,54 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         }
     }
 
+    const directRepliesState = {
+        name:   'direct_replies',
+        url:    '/direct_replies',
+        component:  'tweetListComponent',
+        params: {
+            tweetId: null
+        },
+        resolve:{
+            tweets: ['tweetService', '$stateParams',function(tweetService, stateParams){
+                return tweetService.getDirectReplies(stateParams.tweetId).then((done) => {
+                    return done.data
+                })
+            }]
+        }
+    }
+
+    const directRepostsState = {
+        name:   'direct_reposts',
+        url:    '/direct_reposts',
+        component:  'tweetListComponent',
+        params: {
+            tweetId: null
+        },
+        resolve: {
+            tweets: ['tweetService', '$stateParams',function(tweetService, stateParams){
+                return tweetService.getDirectReposts(stateParams.tweetId).then((done) => {
+                    return done.data
+                })
+            }]
+        }
+    }
+
+    const usersWhoLikedState = {
+        name:   'who_liked',
+        url:    '/who_liked',
+        component:  'usersComponent',
+        params: {
+            tweetId: null
+        },
+        resolve: {
+            users: ['tweetService', '$stateParams', function(tweetService, stateParams){
+                return tweetService.getUsersWhoLiked(stateParams.tweetId).then((done) => {
+                    return done.data
+                })
+            }]
+        }
+    }
+
     stateProvider.state(allUsersState)
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
@@ -206,6 +254,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
     stateProvider.state(contextState)
     stateProvider.state(tweetsWithTagState)
     stateProvider.state(allTweetState)
+    stateProvider.state(directRepliesState)
+    stateProvider.state(directRepostsState)
+    stateProvider.state(usersWhoLikedState)
 
 
     urlRouter.otherwise('/signInSignUp')
