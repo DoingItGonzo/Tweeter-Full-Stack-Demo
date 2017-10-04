@@ -113,6 +113,18 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         },
     }
 
+    const allUsersState = {
+        name: 'allUsers',
+        url: '/allUsers',
+        component: 'thisUserPageUsersComponent',
+        resolve: {
+            users: ['userService', function(userService){
+                return userService.getAllUsers()
+              }]
+        }
+    }
+
+    stateProvider.state(allUsersState)
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
