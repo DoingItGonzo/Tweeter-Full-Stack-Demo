@@ -140,7 +140,9 @@ angular.module('tweetApp', ['ui.router']).config(['$stateProvider', '$urlRouterP
         },
         resolve: {
             tweets: ['hashtagService', '$stateParams', function(hashtagService, stateParams){
+                console.log(stateParams.label)
                 return hashtagService.getTaggedTweets(stateParams.label).then((done) => {
+                    console.log(done.data)
                     return done.data
                 })
               }]
