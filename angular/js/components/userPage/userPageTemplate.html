@@ -1,0 +1,37 @@
+<div>
+    <navbar-component></navbar-component>
+</div>
+<div>
+    <p>@{{ $ctrl.user.username }} </p>
+    <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
+    <p>Phone: {{ $ctrl.user.profile.phone }}</p>
+    <p>Email: {{ $ctrl.user.profile.email }}</p>
+    <p>
+        <a ui-sref=".followers">
+            <input type="button" value="Followers"></input>
+        </a>
+    </p>
+    <p>
+        <a ui-sref=".following">
+            <input type="button" value="Following"></input>
+        </a>
+    </p>
+    <p>
+        <a ui-sref=".mentions">
+            <input type="button" value="Mentions"></input>
+        </a>
+    </p>
+    <p>
+        <a ui-sref=".tweets">
+            <input type="button" value="Tweets"></input>
+        </a>
+    </p>
+    <p>
+        <a ui-sref=".feed">
+            <input type="button" value="Feed"></input>
+        </a>
+    </p>
+</div>
+<div>
+    <ui-view></ui-view>
+</div>
