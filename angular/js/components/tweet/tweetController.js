@@ -1,5 +1,7 @@
-angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state', 
+angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state',
 function (tweetService, globalService, state) {
+
+    this.globalService = globalService
 
     this.user = globalService.primaryUser
 
@@ -15,8 +17,9 @@ function (tweetService, globalService, state) {
         this.repostTweet = true
     }
     else if (this.sentTweet.inReplyTo !== undefined) {
+        console.log(this.sentTweet)
         this.tweet = this.sentTweet
-        this.tweet.repliedTo = this.tweet.inReplyTo.author
+        this.tweet.repliedTo = this.tweet.inReplyTo === null ? {username: 'deleted Tweet'} : this.tweet.inReplyTo.author
         this.canDelete = this.tweet.author.username === this.user.credentials.username ? true : false
         this.replyTweet = true
     }
@@ -30,7 +33,7 @@ function (tweetService, globalService, state) {
 
 
     this.getTweet = tweetService.getTweet
-
+    
     this.createTweet = () => {
         tweetService.createTweet(this.contentCredentials).then((done) => {
             
@@ -100,8 +103,8 @@ function (tweetService, globalService, state) {
     }
 
     this.getContext = () => {
-        return tweetService.getContext(this.tweetId).then((done) => {
-            
+        state.go('context', {
+            id: this.tweet.id
         })
     }
 

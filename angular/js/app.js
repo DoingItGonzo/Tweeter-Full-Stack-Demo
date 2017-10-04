@@ -49,7 +49,17 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
     const contextState = {
         name: 'context',
         url: '/context',
-        component: 'contextComponent'
+        component: 'contextComponent',
+        params: {
+            id: null
+        },
+        resolve: {
+            tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
+                return tweetService.getContext(stateParams.id).then((done) => {
+                    return done.data.before.concat(done.data.target).concat(done.data.after)
+                })
+            }]
+        }
     }
 
     const userPageState = {

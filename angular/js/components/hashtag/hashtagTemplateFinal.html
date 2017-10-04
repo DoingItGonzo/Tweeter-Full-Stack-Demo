@@ -1,5 +1,10 @@
-<div>
-        <p size="20" ng-click="$ctrl.getOneTag($ctrl.hashtag.label)">#{{$ctrl.hashtag.label}}</p>
-        <p>First Used: {{$ctrl.hashtag.firstUsed}}</p>
-        <p>Last Used: {{$ctrl.hashtag.lastUsed}}</p>
+<div class="panel panel-primary">
+        <div class="panel-heading">
+                <span class="glyphicon glyphicon-tag"></span>
+        </div>
+        <div class="panel-body">
+                <p size="20" ng-click="$ctrl.getOneTag($ctrl.hashtag.label)">#{{$ctrl.hashtag.label}}</p>
+                <p>First Used: {{$ctrl.hashtag.firstUsed}}</p>
+                <p>Last Used: {{$ctrl.hashtag.lastUsed}}</p>
+        </div>
 </div>

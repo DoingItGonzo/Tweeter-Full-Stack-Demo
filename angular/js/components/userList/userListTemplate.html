@@ -1,3 +1,10 @@
 <div ng-repeat="user in $ctrl.users">
-        <p>Username: @<a ui-sref="userPage({ username: user.username })">{{user.username}}</a></p>
+        <div class="panel panel-primary">
+                <div class="panel-heading">
+                        <span class="glyphicon glyphicon-user"></span>
+                </div>
+                <div class="panel-body">
+                        <p>Username: @<a ui-sref="userPage({ username: user.username })">{{user.username}}</a></p>
+                </div>
+        </div>
 </div>

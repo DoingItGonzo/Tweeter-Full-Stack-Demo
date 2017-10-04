@@ -1,11 +1,11 @@
-<input type="text" ng-model="$ctrl.tweetId"></input>
-<input type="button" value="Get My Context!" ng-click="$ctrl.getContext()"></input>
-<div ng-repeat="tweet in $ctrl.beforeContext">
+<!-- <input type="text" ng-model="$ctrl.tweetId"></input>
+<input type="button" value="Get My Context!" ng-click="$ctrl.getContext()"></input> -->
+<div ng-repeat="tweet in $ctrl.tweets">
         <tweet-component sent-tweet="tweet"></tweet-component>
 </div>
-<div ng-repeat="tweet in $ctrl.contextTarget">
+<!-- <div ng-repeat="tweet in $ctrl.contextTarget">
     <tweet-component sent-tweet="tweet"></tweet-component>
 </div>
 <div ng-repeat="tweet in $ctrl.afterContext">
         <tweet-component sent-tweet="tweet"></tweet-component>
-</div>
+</div> -->
