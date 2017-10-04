@@ -1,6 +1,8 @@
 angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state', 
 function (tweetService, globalService, state) {
 
+    this.globalService = globalService
+
     this.user = globalService.primaryUser
     this.isReplying = false
 
@@ -24,7 +26,7 @@ function (tweetService, globalService, state) {
     }
 
     this.getTweet = tweetService.getTweet
-
+    
     this.createTweet = () => {
         tweetService.createTweet(this.contentCredentials).then((done) => {
             
