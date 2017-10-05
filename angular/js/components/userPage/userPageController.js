@@ -20,6 +20,7 @@ function(userService, tweetService, globalService, state, stateParams){
             }, {
                 reload: true
             })
+            this.activateButton(this.buttonClasses.feedButtonClass)
         })
     }
 
