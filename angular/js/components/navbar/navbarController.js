@@ -20,17 +20,11 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
         if (this.userSearch.startsWith("@")) {
 
             validateService.getUsernameExists(this.userSearch.substring(1)).then((done) => {
-                 
-                if(done.data)
-                    {
-                        globalService.userService.getUser(this.userSearch.substring(1)).then((done) => {
-                        console.log(done)
-                        this.searchedUser = done.data
-                        state.go('userPage', {
-                            username: this.searchedUser.username
-                        })
-                    })
 
+                if (done.data) {
+                    state.go('userPage', {
+                        username: this.userSearch.substring(1)
+                    })
                 }
                 else {
                     state.go('userNotFoundPage')
@@ -41,24 +35,22 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
 
             validateService.getLabelExists(this.userSearch.substring(1)).then((done) => {
 
-                if(done.data)
-                    {
-                        console.log(this.userSearch)
-                        state.go('tweetsWithTag', {
-                            label: this.userSearch.substring(1)
-                        })
-                    }
-                else
-                    {
-                        state.go('hashtagNotFoundPage')
-                    }
+                if (done.data) {
+                    console.log(this.userSearch)
+                    state.go('tweetsWithTag', {
+                        label: this.userSearch.substring(1)
+                    })
+                }
+                else {
+                    state.go('hashtagNotFoundPage')
+                }
             })
         }
     }
     this.settingsPage = () => {
-        if (!globalService.loggedIn) 
+        if (!globalService.loggedIn)
             state.go('signIn')
-        else 
+        else
             state.go('settings')
     }
     this.homePage = () => {
@@ -79,8 +71,7 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
         if (!globalService.loggedIn) {
             state.go('signInSignUp')
         }
-        else
-        {
+        else {
             state.go('settings')
         }
     }

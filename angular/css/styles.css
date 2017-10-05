@@ -85,3 +85,15 @@
 .settingsUpdateButton {
     margin-right: 10px;
 }
+
+a {
+    cursor: pointer;
+}
+
+.repostedText {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.width100 {
+    width: 100%;
+}
