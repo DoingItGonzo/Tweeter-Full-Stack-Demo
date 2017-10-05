@@ -1,5 +1,5 @@
-angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state',
-function (tweetService, globalService, state) {
+angular.module('tweetApp').controller('tweetController', ['tweetService','globalService','$state', 'validateService',
+function (tweetService, globalService, state, validateService) {
 
     this.globalService = globalService
 
@@ -85,17 +85,21 @@ function (tweetService, globalService, state) {
     }
 
     this.createActualReply = () => {
+        canGoToContext = false;
         this.contentCredentials = {}
         this.contentCredentials.content = this.content
         this.contentCredentials.credentials = this.user.credentials
         console.log(this.contentCredentials)
-        tweetService.createReply(this.tweet.id, this.contentCredentials).then((done) => {
-            state.go('userPage.feed', {
-                username: this.user.credentials.username
-            }, {
-                    reload: true
+        if (this.content !== undefined && this.content !== '')
+        {
+            tweetService.createReply(this.tweet.id, this.contentCredentials).then((done) => {
+                state.go('userPage.feed', {
+                    username: this.user.credentials.username
+                }, {
+                        reload: true
+                })
             })
-        })
+        }
     }
 
     this.getAllTweets = () => {
@@ -141,7 +145,7 @@ function (tweetService, globalService, state) {
     this.likeTweet = () => {
         canGoToContext=false
         return tweetService.likeTweet(this.tweet.id, this.user.credentials).then((done) => {
-            canGoToContext=true
+
         })
     }
 
@@ -154,6 +158,20 @@ function (tweetService, globalService, state) {
     this.getTagsInTweet = () => {
         return tweetService.getTagsInTweet(this.tweetId).then((done) => {
             
+        })
+    }
+
+    this.goToUser = (username) => {
+        canGoToContext=false
+        validateService.getUsernameExists(username).then((done) => {
+            if (done.data) {
+                state.go('userPage', {
+                    username: username
+                })
+            }
+            else {
+                state.go('userNotFoundPage')
+            }
         })
     }
 

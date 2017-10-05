@@ -1,30 +1,34 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <p ng-if="$ctrl.repostTweet === true"><a ui-sref="userPage({username: $ctrl.tweet.reposter.username})" >@{{ $ctrl.tweet.reposter.username }} </a> reposted:</p>
-        <a ui-sref="userPage({username: $ctrl.tweet.repliedTo.username})" ng-if="$ctrl.replyTweet === true">@{{ $ctrl.tweet.repliedTo.username }} </a>
+        <div ng-if="$ctrl.repostTweet === true"><a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)">@{{ $ctrl.tweet.reposter.username }} </a>
+            <span class="repostedText"> reposted:</div></div>
+        <a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)" ng-if="$ctrl.replyTweet === true">@{{ $ctrl.tweet.repliedTo.username }} </a>
     </div>
 
-    <div class="panel-body" ng-click="$ctrl.getContext()">
-        <a ui-sref="userPage({username: $ctrl.tweet.author.username})">@{{ $ctrl.tweet.author.username }}</a>
-        <dir id="dir" content="$ctrl.tweet.content | createAnchors"></dir>
-        <p>
-            {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
-            <button ng-if=$ctrl.globalService.loggedIn class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">
-                    Like <span class="glyphicon glyphicon-thumbs-up"></span>
-            </button> 
-            <button class="btn btn-default" ng-click="$ctrl.getDirectReplies()">Replies</button>
-            <button class="btn btn-default" ng-click="$ctrl.getDirectReposts()">Reposts</button>
-            <button class="btn btn-default" ng-click="$ctrl.getUsersWhoLiked()">
-                <span class="glyphicon glyphicon-user"></span> Users Who Liked
-            </button>
-            <button ng-if=$ctrl.globalService.loggedIn class="btn btn-primary" ng-click="$ctrl.createReply()">Reply</button>
-            <button ng-if=$ctrl.globalService.loggedIn class="btn btn-primary" ng-click="$ctrl.createRepost()">Repost</button>
-            <button ng-if="$ctrl.canDelete" class="btn btn-danger" ng-confirm-click="Are you sure you want to delete this tweet?" confirmed-click="$ctrl.deleteTweet()">Delete</button>
-        </p>
-        <div ng-if="$ctrl.isReplying === true">
+    <div class="panel-body">
+        <div ng-click="$ctrl.getContext()">
+            <a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)">@{{ $ctrl.tweet.author.username }}</a>
+            <dir id="dir" content="$ctrl.tweet.content | createAnchors"></dir>
+            <p>
+                {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
+                <button ng-if=$ctrl.globalService.loggedIn class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">
+                        Like <span class="glyphicon glyphicon-thumbs-up"></span>
+                </button> 
+                <button class="btn btn-default" ng-click="$ctrl.getDirectReplies()">Replies</button>
+                <button class="btn btn-default" ng-click="$ctrl.getDirectReposts()">Reposts</button>
+                <button class="btn btn-default" ng-click="$ctrl.getUsersWhoLiked()">
+                    <span class="glyphicon glyphicon-user"></span> Users Who Liked
+                </button>
+                <button ng-if=$ctrl.globalService.loggedIn class="btn btn-primary" ng-click="$ctrl.createReply()">Reply</button>
+                <button ng-if=$ctrl.globalService.loggedIn class="btn btn-primary" ng-click="$ctrl.createRepost()">Repost</button>
+                <button ng-if="$ctrl.canDelete" class="btn btn-danger" ng-confirm-click="Are you sure you want to delete this tweet?" confirmed-click="$ctrl.deleteTweet()">Delete</button>
+            </p>
+        </div>
+        <div class="flexRow" ng-if="$ctrl.isReplying === true">
             <input type="text" size="20" ng-model="$ctrl.content"></input>
             <button class="btn btn-primary" ng-click="$ctrl.createActualReply()">Post Tweet</button>
+            <div class="width100" ng-click="$ctrl.getContext()"></div>
         </div>
 
 
