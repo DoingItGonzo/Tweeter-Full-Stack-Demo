@@ -4,7 +4,7 @@
         </div>
         <div class="panel-body">
                 <p size="20" ng-click="$ctrl.getOneTag($ctrl.hashtag.label)">#{{$ctrl.hashtag.label}}</p>
-                <p>First Used: {{$ctrl.hashtag.firstUsed}}</p>
-                <p>Last Used: {{$ctrl.hashtag.lastUsed}}</p>
+                <p>First Used: {{$ctrl.hashtag.firstUsed | date:"MM/dd/yyyy 'at' h:mma"}}</p>
+                <p>Last Used: {{$ctrl.hashtag.lastUsed | date:"MM/dd/yyyy 'at' h:mma"}}</p>
         </div>
 </div>
