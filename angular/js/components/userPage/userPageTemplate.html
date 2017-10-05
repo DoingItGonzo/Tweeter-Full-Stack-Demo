@@ -1,12 +1,15 @@
 <div class="flexColumn userPage">
-    <div class="flexRow userPageUsername lead">@{{ $ctrl.user.username }}</div>
-    <div class="flexRow">
-        <div ng-if=$ctrl.canDoFollow>
-                <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
-                <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
-                
+    <div class="flexColumn userPageTop">
+        <div class="lead">@{{ $ctrl.user.username }}</div>
+        <div>
+            <div ng-if=$ctrl.canDoFollow>
+                    <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
+                    <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
+            </div>
         </div>
-        <div>    
+    </div>
+    <div class="flexRow profileInfo">
+        <div class="flexColumn">    
             <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
             <p>Phone: {{ $ctrl.user.profile.phone }}</p>
             <p>Email: {{ $ctrl.user.profile.email }}</p>
