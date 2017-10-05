@@ -57,12 +57,16 @@ function(userService, tweetService, globalService, state, stateParams){
 
 
     this.username = stateParams.username
-    if (this.username === globalService.primaryUser.credentials.username)
+    this.isPrimaryUser = false
+    if (globalService.loggedIn === true && this.username === globalService.primaryUser.credentials.username)
     {
         this.password = globalService.primaryUser.credentials.password
+        this.getFollowing()
+        this.isPrimaryUser == true
     }
     this.user = this.getUser()
-    this.getFollowing() 
+
+     
     
 
 }])

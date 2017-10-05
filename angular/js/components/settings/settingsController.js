@@ -3,13 +3,7 @@ angular.module('tweetApp').controller('settingsController', ['userService', '$st
     this.userService = userService
     this.globalService = globalService
 
-    this.updatedUser = {}
-    this.updatedUser.credentials = this.globalService.primaryUser.credentials
-    this.updatedUser.profile = {}
-    this.updatedUser.profile.email
-    this.updatedUser.profile.firstName
-    this.updatedUser.profile.lastName
-    this.updatedUser.profile.phone
+    this.updatedUser = Object.assign({}, this.globalService.primaryUser)
 
     if (!globalService.loggedIn) state.go('signIn')
 
