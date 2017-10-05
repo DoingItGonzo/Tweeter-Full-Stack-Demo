@@ -11,6 +11,6 @@
     </p>
     <p>Phone Number: <input type="text" size="20" ng-model="$ctrl.newUser.profile.phone"></input>
     </p>
-    <label ng-click="$ctrl.createUser()">Log-in</label>
+    <button type="button" ng-click="$ctrl.createUser()">Log-in</button>
     <p ng-if=$ctrl.failedSignIn>User not found</p>
 </div>
