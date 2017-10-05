@@ -1,11 +1,10 @@
-<h1> All Hashtags</h1>
-<labal ng-click="$ctrl.getAllTags()" value="click">click me</labal>
-<p>
-    Find a hashtag: <input type="text" ng-model="$ctrl.label"></input>
-    <label ng-click="$ctrl.getOneTag()">click me</label>
-</p>
-<div ng-repeat="hashtag in $ctrl.tags">
-    <p>Label: {{hashtag.label}}</p>
-    <p>First Used: {{hashtag.firstUsed}}</p>
-    <p>Last Used: {{hashtag.lastUsed}}</p>
+<div class="panel panel-info">
+        <div class="panel-heading">
+                <span class="glyphicon glyphicon-tag"></span>
+        </div>
+        <div class="panel-body">
+                <p size="20" ng-click="$ctrl.getOneTag($ctrl.hashtag.label)">#{{$ctrl.hashtag.label}}</p>
+                <p>First Used: {{$ctrl.hashtag.firstUsed | date:"MM/dd/yyyy 'at' h:mma"}}</p>
+                <p>Last Used: {{$ctrl.hashtag.lastUsed | date:"MM/dd/yyyy 'at' h:mma"}}</p>
+        </div>
 </div>
