@@ -38,6 +38,7 @@ ul.navbar-nav {
 
 .profileInfo {
     justify-content: flex-end;
+    font-size: x-small;
 }
 
 .userPage {

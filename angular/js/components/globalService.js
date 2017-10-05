@@ -31,14 +31,24 @@ this.login = (username) => {
         return done.data
     })
 }
-this.signUpPage = () => {
-    state.go('signUp')
-}
 this.logout = () => {
     this.primaryUser = {}
     cookies.remove('username')
     cookies.remove('password')
     state.go('signIn')
     return null
+}
+this.reactivateAccount = (reactivatedUser) => {
+    userService.makeUser(reactivatedUser).then((done) => {
+        console.log(done.data)
+        this.primaryUser.credentials = reactivatedUser.credentials
+        this.primaryUser.profile = done.data.profile
+        state.go('userPage', {
+            username: this.primaryUser.credentials.username
+        })
+    })
+}
+this.reactivatePageSignInReturn = () => {
+    state.go('signIn')
 }
 }])
