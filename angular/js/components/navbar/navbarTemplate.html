@@ -10,10 +10,10 @@
                     Profile
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                    <li><a ui-sref="settings">Settings</a></li>
+                    <li><a ng-click="$ctrl.homePage()">My Page</a></li>
+                    <li><a ng-click="$ctrl.settings()">Settings</a></li>
                     <li><a ng-click="$ctrl.globalService.logout()">Logout</a></li>
                     <!-- <li><a ng-click="$ctrl.globalService.login(globalService.primaryUser.credentials.username)">My Page</a></li> -->
-                    <li><a ng-click="$ctrl.homePage()">My Page</a></li>
                 </ul>
             </div>
         </li>

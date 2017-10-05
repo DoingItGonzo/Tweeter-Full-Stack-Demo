@@ -10,7 +10,7 @@
         <dir id="dir" content="$ctrl.tweet.content | createAnchors"></dir>
         <p>
             {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
-            <button type="button" class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">
+            <button ng-if=$ctrl.globalService.loggedIn type="button" class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">
                     Like <span class="glyphicon glyphicon-thumbs-up"></span>
             </button> 
             <button type="button" class="btn btn-default" ng-click="$ctrl.getDirectReplies()">Replies</button>
@@ -18,8 +18,8 @@
             <button type="button" class="btn btn-default" ng-click="$ctrl.getUsersWhoLiked()">
                 <span class="glyphicon glyphicon-user"></span> Users Who Liked
             </button>
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.createReply()">Reply</button>
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.createRepost()">Repost</button>
+            <button ng-if=$ctrl.globalService.loggedIn type="button" class="btn btn-primary" ng-click="$ctrl.createReply()">Reply</button>
+            <button ng-if=$ctrl.globalService.loggedIn type="button" class="btn btn-primary" ng-click="$ctrl.createRepost()">Repost</button>
             <input ng-if="$ctrl.canDelete" type="button" value="Delete" ng-click="$ctrl.deleteTweet()"></input>
         </p>
         <div ng-if="$ctrl.isReplying === true">

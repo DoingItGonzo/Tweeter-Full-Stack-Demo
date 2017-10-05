@@ -13,19 +13,19 @@ function (tweetService, globalService, state) {
             content: this.sentTweet.repostOf.content,
             posted: this.sentTweet.repostOf.posted
         }
-        this.canDelete = this.tweet.reposter.username === this.user.credentials.username ? true : false
+        this.canDelete = globalService.loggedIn && this.tweet.reposter.username === this.user.credentials.username ? true : false
         this.repostTweet = true
     }
     else if (this.sentTweet.inReplyTo !== undefined) {
         console.log(this.sentTweet)
         this.tweet = this.sentTweet
         this.tweet.repliedTo = this.tweet.inReplyTo === null ? {username: 'deleted Tweet'} : this.tweet.inReplyTo.author
-        this.canDelete = this.tweet.author.username === this.user.credentials.username ? true : false
+        this.canDelete =  globalService.loggedIn && this.tweet.author.username === this.user.credentials.username ? true : false
         this.replyTweet = true
     }
     else {
         this.tweet = this.sentTweet
-        this.canDelete = this.tweet.author.username === this.user.credentials.username ? true : false
+        this.canDelete = globalService.loggedIn && this.tweet.author.username === this.user.credentials.username ? true : false
     }
 
     

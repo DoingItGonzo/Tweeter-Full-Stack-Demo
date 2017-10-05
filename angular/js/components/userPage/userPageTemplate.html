@@ -3,7 +3,7 @@
 </div>
 <div>
     <p>@{{ $ctrl.user.username }} </p>
-    <p ng-if=!$ctrl.password>
+    <p ng-if=$ctrl.globalService.loggedIn>
             <input ng-if=!$ctrl.isFollowing type="button" value="Follow" ng-click="$ctrl.followUser()"></input>
             <input ng-if=$ctrl.isFollowing type="button" value="Unfollow" ng-click="$ctrl.unfollowUser()"></input>
     </p>

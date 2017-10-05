@@ -58,4 +58,13 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
             })
         }
     }
+    this.settings = () => {
+        if (!globalService.loggedIn) {
+            state.go('signInSignUp')
+        }
+        else
+        {
+            state.go('settings')
+        }
+    }
 }])
