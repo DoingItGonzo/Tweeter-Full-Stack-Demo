@@ -163,7 +163,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         }
     }
 
-    const hashtagStateFinal = {
+    const hashtagState = {
         name: 'allHashtags',
         url: '/allHashtags',
         component: 'hashtagListComponent',
@@ -245,7 +245,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
     stateProvider.state(validateState)
-    stateProvider.state(hashtagStateFinal)
+    stateProvider.state(hashtagState)
     stateProvider.state(signInSignUp)
     stateProvider.state(signIn)
     stateProvider.state(signUp)

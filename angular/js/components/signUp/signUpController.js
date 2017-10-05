@@ -4,6 +4,10 @@ angular.module('tweetApp').controller('signUpController', ['userService', 'globa
     this.globalService = globalService
     this.validateService = validateService
 
+    if (this.globalService.loggedIn) state.go('userPage', {
+        username: this.globalService.primaryUser.credentials.username
+    })
+
     this.newUser = {}
     this.newUser.credentials = {}
     this.newUser.profile = {}
@@ -18,29 +22,31 @@ angular.module('tweetApp').controller('signUpController', ['userService', 'globa
 
     this.usernameTaken = false
     this.emailLeftBlank = false
+    this.accountCreationFailed = false
 
     this.createUser = () => {
         if (!this.newUser.profile.email) {
             this.emailLeftBlank = true
             return null
         } else {
-            this.emailLeftBlank = false    
+            this.emailLeftBlank = false
         }
-        
-        if (!this.validateService.getUsernameAvailable(this.newUser.credentials.username).then((done) => {
-            return done.data
-        })) {
-            this.usernameTaken = true
-            return null
-        }
+        this.validateService.getUsernameAvailable(this.newUser.credentials.username).then((done) => {
+            if (!done.data) {
+                this.usernameTaken = true
+                return null
+            } else {
+                this.usernameTaken = false
+            }
+        })
         this.userService.makeUser(this.newUser).then((done) => {
-            if (done) { 
+            if (done) {
                 this.globalService.primaryUser.credentials = this.newUser.credentials
                 this.globalService.login(this.newUser.credentials.username)
-                this.failedSignUp = false
+                this.accountCreationFailed = false
                 return done.data
             } else
-                this.failedSignUp = true
+                this.accountCreationFailed = true
         })
     }
 

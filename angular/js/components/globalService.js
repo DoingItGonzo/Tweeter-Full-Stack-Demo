@@ -35,6 +35,7 @@ this.logout = () => {
     this.primaryUser = {}
     cookies.remove('username')
     cookies.remove('password')
+    this.loggedIn = false
     state.go('signIn')
     return null
 }

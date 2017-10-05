@@ -1,16 +1,18 @@
 <div>
-    <p>Username: <input type="text" size="20" ng-model="$ctrl.newUser.credentials.username"></input>
+    <p><span class="settingsPageText">Username:</span><input type="text" size="20" ng-model="$ctrl.newUser.credentials.username"></input>
     </p>
-    <p>Password: <input type="text" size="20" ng-model="$ctrl.newUser.credentials.password"></input>
+    <p><span class="settingsPageText">Password:</span><input type="text" size="20" ng-model="$ctrl.newUser.credentials.password"></input>
     </p>
-    <p>Email: <input type="text" size="20" ng-model="$ctrl.newUser.profile.email"></input>
+    <p><span class="settingsPageText">Email:</span><input type="text" size="20" ng-model="$ctrl.newUser.profile.email"></input>
     </p>
-    <p>First Name: <input type="text" size="20" ng-model="$ctrl.newUser.profile.firstName"></input>
+    <p><span class="settingsPageText">First Name:</span><input type="text" size="20" ng-model="$ctrl.newUser.profile.firstName"></input>
     </p>
-    <p>Last Name: <input type="text" size="20" ng-model="$ctrl.newUser.profile.lastName"></input>
+    <p><span class="settingsPageText">Last Name:</span><input type="text" size="20" ng-model="$ctrl.newUser.profile.lastName"></input>
     </p>
-    <p>Phone Number: <input type="text" size="20" ng-model="$ctrl.newUser.profile.phone"></input>
+    <p><span class="settingsPageText">Phone Number:</span><input type="text" size="20" ng-model="$ctrl.newUser.profile.phone"></input>
     </p>
-    <button type="button" ng-click="$ctrl.createUser()">Log-in</button>
-    <p ng-if=$ctrl.failedSignIn>User not found</p>
+    <button class= "btn btn-primary settingsUpdateButton" type="button" ng-click="$ctrl.createUser()">Sign Up</button>
+    <p ng-if=$ctrl.usernameTaken>Username Taken</p>
+    <p ng-if=$ctrl.emailLeftBlank>Email Required</p>
+    <p ng-if=$ctrl.accountCreationFailed>Failed To Create Account</p>
 </div>
