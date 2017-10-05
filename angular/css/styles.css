@@ -71,3 +71,17 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.settingsPage {
+    margin-left: 10px;
+}
+
+.settingsPageText {
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+}
+
+.settingsUpdateButton {
+    margin-right: 10px;
+}

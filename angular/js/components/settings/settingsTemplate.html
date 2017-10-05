@@ -1,12 +1,12 @@
-<div>
-    <p>Email: <input type="text" size="20" ng-model="$ctrl.updatedUser.profile.email"></input>
+<div class="settingsPage">
+    <p><span class="settingsPageText">Email:</span><input type="text" size="20" ng-model="$ctrl.updatedUser.profile.email"></input>
     </p>
-    <p>First Name: <input type="text" size="20" ng-model="$ctrl.updatedUser.profile.firstName"></input>
+    <p><span class="settingsPageText">First Name:</span><input type="text" size="20" ng-model="$ctrl.updatedUser.profile.firstName"></input>
     </p>
-    <p>Last Name: <input type="text" size="20" ng-model="$ctrl.updatedUser.profile.lastName"></input>
+    <p><span class="settingsPageText">Last Name:</span><input type="text" size="20" ng-model="$ctrl.updatedUser.profile.lastName"></input>
     </p>
-    <p>Phone Number: <input type="text" size="20" ng-model="$ctrl.updatedUser.profile.phone"></input>
+    <p><span class="settingsPageText">Phone Number:</span><input type="text" size="20" ng-model="$ctrl.updatedUser.profile.phone"></input>
     </p>
-    <button type="button" ng-click="$ctrl.updateProfile()">Update Profile</button>
-    <button type="button" ng-click="$ctrl.deactivateProfile()">Deactivate Profile</button>
+    <button class= "btn-primary settingsUpdateButton" type="button" ng-click="$ctrl.updateProfile()">Update Profile</button>
+    <button class= "btn-danger" type="button" ng-confirm-click="Are you sure you want to deactiveate your account?" confirmed-click="$ctrl.deactivateProfile()">Deactivate Account</button>
 </div>

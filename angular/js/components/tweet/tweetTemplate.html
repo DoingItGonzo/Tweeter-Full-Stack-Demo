@@ -10,21 +10,21 @@
         <dir id="dir" content="$ctrl.tweet.content | createAnchors"></dir>
         <p>
             {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
-            <button ng-if=$ctrl.globalService.loggedIn type="button" class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">
+            <button ng-if=$ctrl.globalService.loggedIn class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">
                     Like <span class="glyphicon glyphicon-thumbs-up"></span>
             </button> 
-            <button type="button" class="btn btn-default" ng-click="$ctrl.getDirectReplies()">Replies</button>
-            <button type="button" class="btn btn-default" ng-click="$ctrl.getDirectReposts()">Reposts</button>
-            <button type="button" class="btn btn-default" ng-click="$ctrl.getUsersWhoLiked()">
+            <button class="btn btn-default" ng-click="$ctrl.getDirectReplies()">Replies</button>
+            <button class="btn btn-default" ng-click="$ctrl.getDirectReposts()">Reposts</button>
+            <button class="btn btn-default" ng-click="$ctrl.getUsersWhoLiked()">
                 <span class="glyphicon glyphicon-user"></span> Users Who Liked
             </button>
-            <button ng-if=$ctrl.globalService.loggedIn type="button" class="btn btn-primary" ng-click="$ctrl.createReply()">Reply</button>
-            <button ng-if=$ctrl.globalService.loggedIn type="button" class="btn btn-primary" ng-click="$ctrl.createRepost()">Repost</button>
-            <input ng-if="$ctrl.canDelete" type="button" value="Delete" ng-click="$ctrl.deleteTweet()"></input>
+            <button ng-if=$ctrl.globalService.loggedIn class="btn btn-primary" ng-click="$ctrl.createReply()">Reply</button>
+            <button ng-if=$ctrl.globalService.loggedIn class="btn btn-primary" ng-click="$ctrl.createRepost()">Repost</button>
+            <button ng-if="$ctrl.canDelete" class="btn btn-danger" ng-confirm-click="Are you sure you want to delete this tweet?" confirmed-click="$ctrl.deleteTweet()">Delete</button>
         </p>
         <div ng-if="$ctrl.isReplying === true">
             <input type="text" size="20" ng-model="$ctrl.content"></input>
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.createActualReply()">Post Tweet</button>
+            <button class="btn btn-primary" ng-click="$ctrl.createActualReply()">Post Tweet</button>
         </div>
 
 
