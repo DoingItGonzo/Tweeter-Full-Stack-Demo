@@ -1,0 +1,19 @@
+.logIn {
+    outline: 2px solid darkgray;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 150px;
+
+}
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logInButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

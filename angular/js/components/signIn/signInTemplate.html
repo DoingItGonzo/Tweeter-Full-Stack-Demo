@@ -1,15 +1,18 @@
 <div>
     <navbar-component></navbar-component>
 </div>
-
-<div>
-    <p>Username: <input type="text" size="20" ng-model="$ctrl.credentials.username"></input>
-    </p>
-    <p>Password: <input type="text" size="20" ng-model="$ctrl.credentials.password"></input>
-    </p>
-    <button ng-click="$ctrl.userLogin()">Let's Tweet!</button>
-
-    <a ui-sref="signUp">
-        <input type="button" value="Sign Up"></input>
-    </a>
+<div class="container">
+    <div class="panel panel-default">
+        <!-- <div class="logIn"> -->
+        <p>Username: <input type="text" size="20" ng-model="$ctrl.credentials.username"></input>
+        </p>
+        <p>Password: <input type="text" size="20" ng-model="$ctrl.credentials.password"></input>
+        </p>
+        <div class="logInButtons">
+            <button class="btn" ng-click="$ctrl.userLogin()">Let's Tweet!</button>
+            <button class="btn" ng-click="$ctrl.globalService.signUpPage()">Sign Up</button>
+            <p ng-if=$ctrl.failedSignIn>User not found</p>
+        </div>
+        <!-- </div> -->
+    </div>
 </div>

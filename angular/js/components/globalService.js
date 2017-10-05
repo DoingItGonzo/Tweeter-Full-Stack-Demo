@@ -31,6 +31,9 @@ this.login = (username) => {
         return done.data
     })
 }
+this.signUpPage = () => {
+    state.go('signUp')
+}
 this.logout = () => {
     this.primaryUser = {}
     cookies.remove('username')
