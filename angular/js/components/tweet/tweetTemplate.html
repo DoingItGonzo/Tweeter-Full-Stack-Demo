@@ -1,5 +1,6 @@
-<div class="panel panel-primary">
-    <div class="panel-header">
+
+<div class="panel panel-info">
+    <div class="panel-headeing">
         <p ng-if="$ctrl.repostTweet === true"><a ui-sref="userPage({username: $ctrl.tweet.reposter.username})" >@{{ $ctrl.tweet.reposter.username }} </a> reposted:</p>
         <a ui-sref="userPage({username: $ctrl.tweet.repliedTo.username})" ng-if="$ctrl.replyTweet === true">@{{ $ctrl.tweet.repliedTo.username }} </a>
     </div>

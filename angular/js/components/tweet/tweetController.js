@@ -98,7 +98,7 @@ function (tweetService, globalService, state) {
             //return done.data
             state.go('direct_reposts',{
                 tweetId: this.tweet.id
-            })
+            })  
         })
     }
 

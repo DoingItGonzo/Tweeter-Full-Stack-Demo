@@ -1,4 +1,4 @@
-angular.module('tweetApp').controller('navbarController', ['globalService', '$state', function (globalService, state) {
+angular.module('tweetApp').controller('navbarController', ['validateService','globalService', '$state', function (validateService,globalService, state) {
 
     this.globalService = globalService
 
@@ -18,13 +18,25 @@ angular.module('tweetApp').controller('navbarController', ['globalService', '$st
 
     this.search = () => {
         if (this.userSearch.startsWith("@")) {
-            globalService.userService.getUser(this.userSearch.substring(1)).then((done) => {
-                console.log(done)
-                this.searchedUser = done.data
-                state.go('userPage', {
-                    username: this.searchedUser.username
-                })
-            })
+
+            validateService.getUsernameExists(this.userSearch.substring(1)).then((done) => {
+                 
+                if(done.data)
+                    {
+                        console.log("getting")
+                        globalService.userService.getUser(this.userSearch.substring(1)).then((done) => {
+                        console.log(done)
+                        this.searchedUser = done.data
+                        state.go('userPage', {
+                            username: this.searchedUser.username
+                            })
+                        })
+
+                    }
+                else{
+                    state.go('userNotFoundPage')
+                }
+            })   
         }
         else if (this.userSearch.startsWith("#")) {
             console.log(this.userSearch)
