@@ -299,8 +299,8 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         const newString = stringArray.join(' ')
         return sce.trustAsHtml(newString)
     }
-}]).run(['$rootScope', '$location', '$window', 'stateService', '$stateParams', '$state',
-function ($rootScope, $location, $window, stateService, $stateParams, state) {
+}]).run(['$rootScope', '$location', '$window', 'stateService', '$stateParams', '$state', 'globalService', '$cookies',
+function ($rootScope, $location, $window, stateService, $stateParams, state, globalService, $cookies) {
     //Bind the `$locationChangeSuccess` event on the rootScope, so that we dont need to 
     //bind in induvidual controllers.
 
@@ -342,4 +342,16 @@ function ($rootScope, $location, $window, stateService, $stateParams, state) {
         }
 
     })
+
+    this.username = $cookies.get('username')
+    this.password = $cookies.get('password')
+
+    if (this.username !== undefined && this.password !== undefined)
+    {
+        globalService.primaryUser.credentials.username = this.username
+        globalService.primaryUser.credentials.password = this.password
+        globalService.login(this.username)
+    }
+
+
 }])
