@@ -1,5 +1,5 @@
-angular.module('tweetApp').controller('userPageController', ['userService', 'tweetService', 'globalService', '$state', '$stateParams', 
-function(userService, tweetService, globalService, state, stateParams){
+angular.module('tweetApp').controller('userPageController', ['userService', 'tweetService', 'globalService', '$state', '$stateParams', '$rootScope', '$location', 
+function(userService, tweetService, globalService, state, stateParams, rootScope, location){
 
     this.getUser = () => {
         userService.getUser(this.username).then((done) => {
@@ -64,7 +64,6 @@ function(userService, tweetService, globalService, state, stateParams){
     }
 
     this.activateButton = (buttonPressed) => {
-        console.log(buttonPressed)
         for (let key in this.buttonClasses)
         {
             if (this.buttonClasses.hasOwnProperty(key))
@@ -102,6 +101,40 @@ function(userService, tweetService, globalService, state, stateParams){
     }
     
     this.user = this.getUser()
+
+    rootScope.$watch(function () { return location.path() }, (newLocation, oldLocation) => {
+        console.log(newLocation)
+        if (newLocation.includes('feed'))
+        {
+            this.activateButton('feedButtonClass')
+        }
+        else if (newLocation.includes('tweets'))
+        {
+            this.activateButton('tweetsButtonClass')
+        }
+        else if (newLocation.includes('mentions'))
+        {
+            this.activateButton('mentionsButtonClass')
+        }
+        else if (newLocation.includes('following'))
+        {
+            this.activateButton('followingButtonClass')
+        }
+        else if (newLocation.includes('followers'))
+        {
+            this.activateButton('followersButtonClass')
+        }
+        else
+        {
+            for (let key in this.buttonClasses)
+            {
+                if (this.buttonClasses.hasOwnProperty(key))
+                {
+                    this.buttonClasses[key] = 'btn btn-block'
+                }
+            }
+        }
+    })
 
      
     

@@ -329,7 +329,7 @@ function ($rootScope, $location, $window, stateService, $stateParams, state, glo
     });
 
 
-    $rootScope.$watch(function () { return $location.path() }, function (newLocation, oldLocation) {
+    /*$rootScope.$watch(function () { return $location.path() }, function (newLocation, oldLocation) {
 
         
 
@@ -361,7 +361,7 @@ function ($rootScope, $location, $window, stateService, $stateParams, state, glo
             stateService.addToHistory(newLocation, Object.assign({}, $stateParams))
         }
 
-    })
+    })*/
 
     this.username = $cookies.get('username')
     this.password = $cookies.get('password')
