@@ -1,12 +1,15 @@
 <div class="flexColumn userPage">
-    <div class="flexRow userPageUsername lead">@{{ $ctrl.user.username }}</div>
-    <div class="flexRow">
-        <div ng-if=$ctrl.canDoFollow>
-                <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
-                <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
-                
+    <div class="flexColumn userPageTop">
+        <div class="lead">@{{ $ctrl.user.username }}</div>
+        <div>
+            <div ng-if=$ctrl.canDoFollow>
+                    <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
+                    <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
+            </div>
         </div>
-        <div>    
+    </div>
+    <div class="flexRow profileInfo">
+        <div class="flexColumn">    
             <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
             <p>Phone: {{ $ctrl.user.profile.phone }}</p>
             <p>Email: {{ $ctrl.user.profile.email }}</p>
@@ -16,27 +19,27 @@
         <div class="flexColumn userPageLeftSide">
             <p>
                 <a ui-sref=".followers">
-                    <button type="button" ng-class=$ctrl.buttonClasses.followersButtonClass ng-click=$ctrl.activateButton(&quot;followersButtonClass&quot;)>Followers</button>
+                    <button ng-class=$ctrl.buttonClasses.followersButtonClass ng-click=$ctrl.activateButton(&quot;followersButtonClass&quot;)>Followers</button>
                 </a>
             </p>
             <p>
                 <a ui-sref=".following">
-                    <button type="button" ng-class=$ctrl.buttonClasses.followingButtonClass ng-click=$ctrl.activateButton(&quot;followingButtonClass&quot;)>Following</button>
+                    <button ng-class=$ctrl.buttonClasses.followingButtonClass ng-click=$ctrl.activateButton(&quot;followingButtonClass&quot;)>Following</button>
                 </a>
             </p>
             <p>
                 <a ui-sref=".mentions">
-                    <button type="button" ng-class=$ctrl.buttonClasses.mentionsButtonClass ng-click=$ctrl.activateButton(&quot;mentionsButtonClass&quot;)>Mentions</button>
+                    <button ng-class=$ctrl.buttonClasses.mentionsButtonClass ng-click=$ctrl.activateButton(&quot;mentionsButtonClass&quot;)>Mentions</button>
                 </a>
             </p>
             <p>
                 <a ui-sref=".tweets">
-                    <button type="button" ng-class=$ctrl.buttonClasses.tweetsButtonClass ng-click=$ctrl.activateButton(&quot;tweetsButtonClass&quot;)>Tweets</button>
+                    <button ng-class=$ctrl.buttonClasses.tweetsButtonClass ng-click=$ctrl.activateButton(&quot;tweetsButtonClass&quot;)>Tweets</button>
                 </a>
             </p>
             <p>
                 <a ui-sref=".feed">
-                    <button type="button" ng-class=$ctrl.buttonClasses.feedButtonClass ng-click=$ctrl.activateButton(&quot;feedButtonClass&quot;)>Feed</button>
+                    <button ng-class=$ctrl.buttonClasses.feedButtonClass ng-click=$ctrl.activateButton(&quot;feedButtonClass&quot;)>Feed</button>
                 </a>
             </p>
         </div>
@@ -47,7 +50,7 @@
                         <textArea class="contentBox" ng-model="$ctrl.content"></textArea>
                     </div>
                     <div>
-                        <button class="btn-primary" ng-click="$ctrl.createTweet()">Post Tweet</button>
+                        <button class="btn btn-primary" ng-click="$ctrl.createTweet()">Post Tweet</button>
                     </div>
                 </div>   
                 <div>

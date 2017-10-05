@@ -8,12 +8,27 @@ function (tweetService, globalService, state) {
     let canGoToContext = true
 
     if (this.sentTweet.repostOf !== undefined) {
-        this.tweet = {
-            id: this.sentTweet.id,
-            reposter: this.sentTweet.author,
-            author: this.sentTweet.repostOf.author,
-            content: this.sentTweet.repostOf.content,
-            posted: this.sentTweet.repostOf.posted
+        if (this.sentTweet.repostOf === null)
+        {
+            this.tweet = {
+                id: this.sentTweet.id,
+                reposter: this.sentTweet.author,
+                author: {
+                    username: 'deleted Tweet'
+                },
+                content: 'deleted Tweet',
+                posted: 'deleted Tweet'
+            }
+        }
+        else
+        {
+            this.tweet = {
+                id: this.sentTweet.id,
+                reposter: this.sentTweet.author,
+                author: this.sentTweet.repostOf.author,
+                content: this.sentTweet.repostOf.content,
+                posted: this.sentTweet.repostOf.posted
+            }
         }
         this.canDelete = globalService.loggedIn && this.tweet.reposter.username === this.user.credentials.username ? true : false
         this.repostTweet = true

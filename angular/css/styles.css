@@ -8,7 +8,7 @@
     flex-direction: row;
 }
 
-.userPageUsername {
+.userPageTop {
     justify-content: center;
     align-items: center;
 
@@ -16,7 +16,11 @@
 
 .followUnfollowbtn {
     width: 70px;
-    margin-right: 10px;
+    align-self: center;
+}
+
+.profileInfo {
+    justify-content: flex-end;
 }
 
 .userPage {
@@ -66,4 +70,18 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.settingsPage {
+    margin-left: 10px;
+}
+
+.settingsPageText {
+    display: inline-block;
+    width: 100px;
+    margin-right: 10px;
+}
+
+.settingsUpdateButton {
+    margin-right: 10px;
 }

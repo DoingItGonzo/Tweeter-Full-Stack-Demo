@@ -368,4 +368,20 @@ function ($rootScope, $location, $window, stateService, $stateParams, state, glo
     }
 
 
+}]).directive('ngConfirmClick', [
+    function(){
+        return {
+            link: function (scope, element, attr) {
+                // Puts the message in the alert
+                var msg = attr.ngConfirmClick || "Are you sure?"
+                // Set what the html binding for the function will be
+                var clickAction = attr.confirmedClick
+                // Binds the clickAction to the button if the OK button is clicked
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction)
+                    }
+                });
+            }
+        };
 }])

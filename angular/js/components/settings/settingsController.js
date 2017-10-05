@@ -20,7 +20,7 @@ angular.module('tweetApp').controller('settingsController', ['userService', '$st
     this.deactivateProfile = () => {
         this.userService.deleteUser(this.updatedUser.credentials.username, this.updatedUser.credentials)
             .then((done) => {
-                this.globalService.primaryUser = {}
+                this.globalService.logout()
                 return done.data
         })
     }
