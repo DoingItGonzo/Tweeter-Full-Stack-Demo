@@ -1,3 +1,20 @@
+.navbar { 
+    border-radius: 0; 
+    min-width: 960px !important;
+}
+
+ul.navbar-nav { 
+    white-space: nowrap;
+}
+.otherOnBar{
+    float: left;
+    margin: 0;
+}
+
+.searchBar {
+    display: inline-block;
+}
+
 .flexColumn {
     display: flex;
     flex-direction: column;

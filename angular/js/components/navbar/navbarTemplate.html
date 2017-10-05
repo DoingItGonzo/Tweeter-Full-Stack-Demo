@@ -1,10 +1,11 @@
 <!-- NAVIGATION -->
 <nav class="navbar navbar-inverse" role="navigation">
-    <div class="navbar-header">
-        <div class="navbar-brand"><a ui-sref="signIn"><span class="glyphicon glyphicon-send"></span><font size="5" face="cursive"><em>Tweeter </em></font></a></div>
-    </div>
+    
     <ul class="nav navbar-nav">
-        <li>
+        <li class="navbar-header otherOnBar">
+            <div class="navbar-brand"><a ui-sref="signIn"><span class="glyphicon glyphicon-send"></span><font size="5" face="cursive"><em>Tweeter </em></font></a></div>
+        </li>
+        <li class="otherOnBar">
             <div class="dropdown">
                 <button class="btn btn-primary navbar-btn dropdown-toggle" type="button" data-toggle="dropdown">
                     Profile
@@ -16,24 +17,26 @@
                 </ul>
             </div>
         </li>
-        <li>
+        <li class="otherOnBar">
             <div class="navbar-brand"><a ui-sref="allTweets">All Tweets</a></div>
         </li>
-        <li>
+        <li class="otherOnBar">
             <div class="navbar-brand"><a ui-sref="allHashtags">All Hashtags</a></div>
         </li>
-        <li>
+        <li class="otherOnBar">
             <div class="navbar-brand"><a ui-sref="allUsers">All Users</a></div>
         </li>
-
-        <form class="navbar-form navbar-right" role="search">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="$ctrl.userSearch"></input>
-                <div class="input-group-btn">
-                    <button ng-click="$ctrl.search()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+        <li class="searchBar">
+            <form class="navbar-form navbar-right" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term" ng-model="$ctrl.userSearch"></input>
+                    <div class="input-group-btn">
+                        <button ng-click="$ctrl.search()" class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </li>
+    </li>
             
     </ul>
 </nav>
