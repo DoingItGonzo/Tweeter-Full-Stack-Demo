@@ -25,6 +25,7 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
                     state.go('userPage', {
                         username: this.userSearch.substring(1)
                     })
+                    this.userSearch = ''
                 }
                 else {
                     state.go('userNotFoundPage')
@@ -40,6 +41,7 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
                     state.go('tweetsWithTag', {
                         label: this.userSearch.substring(1)
                     })
+                    this.userSearch = ''
                 }
                 else {
                     state.go('hashtagNotFoundPage')
@@ -58,12 +60,8 @@ angular.module('tweetApp').controller('navbarController', ['validateService', 'g
             state.go('signIn')
         }
         else {
-            globalService.userService.getUser(globalService.primaryUser.credentials.username).then((done) => {
-                console.log(done)
-                this.searchedUser = done.data
-                state.go('userPage', {
-                    username: this.searchedUser.username
-                })
+            state.go('userPage', {
+                username: globalService.primaryUser.credentials.username
             })
         }
     }
