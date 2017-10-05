@@ -13,7 +13,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/angular-linkify@2.0.0/angular-linkify.min.js"></script>
     
 
     <script src="/js/app.js"></script>
@@ -75,17 +74,20 @@
     <script src="/js/components/tweetList/tweetsWithTagController.js"></script>
 
     <script src="/js/components/state/stateService.js"></script>
+<script src="/js/components/user/userNotFoundComponent.js">
+</script>
+<script src="/js/components/hashtag/hashtagNotFoundComponent.js"></script>
+<script src="/js/components/tweetsComponent/allTweetsComponent.js"></script>
+<script src="/js/components/usersComponent/allUsersComponent.js"></script>
 
-    <script src="/js/components/user/userNotFoundComponent.js"></script>
-    <script src="/js/components/hashtag/hashtagNotFoundComponent.js"></script>
-    <script src="/js/components/tweetsComponent/allTweetsComponent.js"></script>
-    <script src="/js/components/usersComponent/allUsersComponent.js"></script>
-    
 
 </head>
 
 <body ng-app="tweetApp">
-    <div class="container">
+    <div>
+        <navbar-component></navbar-component>
+    </div>
+    <div>
         <ui-view></ui-view>
     </div>
 </body>

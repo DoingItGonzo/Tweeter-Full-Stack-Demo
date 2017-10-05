@@ -1,45 +1,59 @@
-<div>
-    <navbar-component></navbar-component>
-</div>
-<div>
-    <p>@{{ $ctrl.user.username }} </p>
-    <p ng-if=$ctrl.globalService.loggedIn>
-            <input ng-if=!$ctrl.isFollowing type="button" value="Follow" ng-click="$ctrl.followUser()"></input>
-            <input ng-if=$ctrl.isFollowing type="button" value="Unfollow" ng-click="$ctrl.unfollowUser()"></input>
-    </p>
-    <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
-    <p>Phone: {{ $ctrl.user.profile.phone }}</p>
-    <p>Email: {{ $ctrl.user.profile.email }}</p>
-    <p ng-if=$ctrl.password>
-        <input type="text" size="20" ng-model="$ctrl.content"></input>
-        <input type="button" value="Post Tweet" ng-click="$ctrl.createTweet()"></input>
-    </p>
-    <p>
-        <a ui-sref=".followers">
-            <input type="button" value="Followers"></input>
-        </a>
-    </p>
-    <p>
-        <a ui-sref=".following">
-            <input type="button" value="Following"></input>
-        </a>
-    </p>
-    <p>
-        <a ui-sref=".mentions">
-            <input type="button" value="Mentions"></input>
-        </a>
-    </p>
-    <p>
-        <a ui-sref=".tweets">
-            <input type="button" value="Tweets"></input>
-        </a>
-    </p>
-    <p>
-        <a ui-sref=".feed">
-            <input type="button" value="Feed"></input>
-        </a>
-    </p>
-</div>
-<div>
-    <ui-view></ui-view>
+<div class="flexColumn userPage">
+    <div class="flexRow userPageUsername lead">@{{ $ctrl.user.username }}</div>
+    <div class="flexRow">
+        <div ng-if=$ctrl.canDoFollow>
+                <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
+                <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
+                
+        </div>
+        <div>    
+            <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
+            <p>Phone: {{ $ctrl.user.profile.phone }}</p>
+            <p>Email: {{ $ctrl.user.profile.email }}</p>
+        </div>  
+    </div>
+    <div class="flexRow">
+        <div class="flexColumn userPageLeftSide">
+            <p>
+                <a ui-sref=".followers">
+                    <button type="button" ng-class=$ctrl.buttonClasses.followersButtonClass ng-click=$ctrl.activateButton(&quot;followersButtonClass&quot;)>Followers</button>
+                </a>
+            </p>
+            <p>
+                <a ui-sref=".following">
+                    <button type="button" ng-class=$ctrl.buttonClasses.followingButtonClass ng-click=$ctrl.activateButton(&quot;followingButtonClass&quot;)>Following</button>
+                </a>
+            </p>
+            <p>
+                <a ui-sref=".mentions">
+                    <button type="button" ng-class=$ctrl.buttonClasses.mentionsButtonClass ng-click=$ctrl.activateButton(&quot;mentionsButtonClass&quot;)>Mentions</button>
+                </a>
+            </p>
+            <p>
+                <a ui-sref=".tweets">
+                    <button type="button" ng-class=$ctrl.buttonClasses.tweetsButtonClass ng-click=$ctrl.activateButton(&quot;tweetsButtonClass&quot;)>Tweets</button>
+                </a>
+            </p>
+            <p>
+                <a ui-sref=".feed">
+                    <button type="button" ng-class=$ctrl.buttonClasses.feedButtonClass ng-click=$ctrl.activateButton(&quot;feedButtonClass&quot;)>Feed</button>
+                </a>
+            </p>
+        </div>
+        <div class="userPageRightSide panel panel-primary">
+            <div class="flexColumn insideUserPageRightSide">
+                <div ng-if=$ctrl.password class="flexColumn postTweet"> 
+                    <div>
+                        <textArea class="contentBox" ng-model="$ctrl.content"></textArea>
+                    </div>
+                    <div>
+                        <button class="btn-primary" ng-click="$ctrl.createTweet()">Post Tweet</button>
+                    </div>
+                </div>   
+                <div>
+                    <ui-view></ui-view>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

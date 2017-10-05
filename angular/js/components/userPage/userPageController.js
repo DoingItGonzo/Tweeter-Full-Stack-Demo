@@ -1,6 +1,6 @@
 angular.module('tweetApp').controller('userPageController', ['userService', 'tweetService', 'globalService', '$state', '$stateParams', 
 function(userService, tweetService, globalService, state, stateParams){
-    
+
     this.getUser = () => {
         userService.getUser(this.username).then((done) => {
             this.user = done.data
@@ -54,16 +54,52 @@ function(userService, tweetService, globalService, state, stateParams){
         })
     }
 
+    this.buttonClasses = {
+        followersButtonClass: 'btn btn-block',
+        followingButtonClass: 'btn btn-block',
+        mentionsButtonClass: 'btn btn-block',
+        tweetsButtonClass: 'btn btn-block',
+        feedButtonClass: 'btn btn-block'
+    }
+
+    this.activateButton = (buttonPressed) => {
+        console.log(buttonPressed)
+        for (let key in this.buttonClasses)
+        {
+            if (this.buttonClasses.hasOwnProperty(key))
+            {
+                if (key === buttonPressed)
+                {
+                    this.buttonClasses[key] = 'btn active btn-block buttonUserPageLeft'
+                }
+                else
+                {
+                    this.buttonClasses[key] = 'btn btn-block'
+                }
+            }
+        }
+        
+    }
+
 
 
     this.username = stateParams.username
     this.isPrimaryUser = false
-    if (globalService.loggedIn === true && this.username === globalService.primaryUser.credentials.username)
+    this.canDoFollow = false
+    if (globalService.loggedIn === true)
     {
-        this.password = globalService.primaryUser.credentials.password
-        this.getFollowing()
-        this.isPrimaryUser == true
+        if (this.username === globalService.primaryUser.credentials.username)
+        {
+            this.password = globalService.primaryUser.credentials.password
+        }
+        else
+        {
+            this.getFollowing()
+            this.canDoFollow = true
+
+        }
     }
+    
     this.user = this.getUser()
 
      
