@@ -261,7 +261,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     stateProvider.state(hashtagNotFoundState)
 
 
-    urlRouter.otherwise('/signInSignUp')
+    urlRouter.otherwise('/signIn')
 }]).directive('dir', ['$compile', '$parse', function ($compile, $parse) {
     return {
         restrict: 'E',

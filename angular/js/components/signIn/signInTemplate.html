@@ -1,8 +1,11 @@
 <div>
-    <label>TheUser: {{$ctrl.globalService.primaryUser.credentials.username}} </label>
     <p>Username: <input type="text" size="20" ng-model="$ctrl.credentials.username"></input>
     </p>
     <p>Password: <input type="text" size="20" ng-model="$ctrl.credentials.password"></input>
     </p>
-    <label ng-click="$ctrl.userLogin()">Log-in</label>
+    <button ng-click="$ctrl.userLogin()">Let's Tweet!</button>
+
+    <a ui-sref="signUp">
+        <input type="button" value="Sign Up"></input>
+    </a>
 </div>
