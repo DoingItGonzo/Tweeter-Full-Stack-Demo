@@ -5,6 +5,8 @@ function (tweetService, globalService, state) {
 
     this.user = globalService.primaryUser
 
+    let canGoToContext = true
+
     if (this.sentTweet.repostOf !== undefined) {
         this.tweet = {
             id: this.sentTweet.id,
@@ -41,6 +43,7 @@ function (tweetService, globalService, state) {
     }
 
     this.deleteTweet = () => {
+        canGoToContext = false
         tweetService.deleteTweet(this.tweet.id, this.user.credentials).then((done) => {
             state.go('userPage.feed', {
                 username: this.user.credentials.username
@@ -51,6 +54,7 @@ function (tweetService, globalService, state) {
     }
 
     this.createRepost = () => {
+        canGoToContext = false
         tweetService.createRepost(this.tweet.id, this.user.credentials).then((done) => {
             state.go('userPage.feed', {
                 username: this.user.credentials.username
@@ -61,6 +65,7 @@ function (tweetService, globalService, state) {
     }
 
     this.createReply = () => {
+        canGoToContext = false
         this.isReplying = !this.isReplying
     }
 
@@ -86,7 +91,6 @@ function (tweetService, globalService, state) {
 
     this.getDirectReplies = () => {
         tweetService.getDirectReplies(this.tweet.id).then((done) => {
-            //return done.data
             alert("getting replies")
             state.go('direct_replies',{
                 tweetId: this.tweet.id
@@ -95,7 +99,6 @@ function (tweetService, globalService, state) {
     }
     this.getDirectReposts = () => {
         return tweetService.getDirectReposts(this.tweet.id).then((done) => {
-            //return done.data
             state.go('direct_reposts',{
                 tweetId: this.tweet.id
             })  
@@ -103,9 +106,13 @@ function (tweetService, globalService, state) {
     }
 
     this.getContext = () => {
-        state.go('context', {
-            id: this.tweet.id
-        })
+        if(canGoToContext)
+        {
+            state.go('context', {
+                id: this.tweet.id
+            })
+        }
+        canGoToContext = true
     }
 
     this.getUsersWhoLiked = () => {
@@ -117,9 +124,9 @@ function (tweetService, globalService, state) {
     }
 
     this.likeTweet = () => {
-        alert(this.user.credentials.username +" liked tweet #"+ this.tweet.id)
+        canGoToContext=false
         return tweetService.likeTweet(this.tweet.id, this.user.credentials).then((done) => {
-            
+            canGoToContext=true
         })
     }
 
