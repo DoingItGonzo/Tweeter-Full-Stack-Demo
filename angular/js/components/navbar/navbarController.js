@@ -23,7 +23,6 @@ angular.module('tweetApp').controller('navbarController', ['validateService','gl
                  
                 if(done.data)
                     {
-                        console.log("getting")
                         globalService.userService.getUser(this.userSearch.substring(1)).then((done) => {
                         console.log(done)
                         this.searchedUser = done.data
@@ -39,9 +38,20 @@ angular.module('tweetApp').controller('navbarController', ['validateService','gl
             })   
         }
         else if (this.userSearch.startsWith("#")) {
-            console.log(this.userSearch)
-            state.go('tweetsWithTag', {
-                label: this.userSearch.substring(1)
+
+            validateService.getLabelExists(this.userSearch.substring(1)).then((done) => {
+
+                if(done.data)
+                    {
+                        console.log(this.userSearch)
+                        state.go('tweetsWithTag', {
+                            label: this.userSearch.substring(1)
+                        })
+                    }
+                else
+                    {
+                        state.go('hashtagNotFoundPage')
+                    }
             })
         }
     }

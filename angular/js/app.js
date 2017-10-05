@@ -229,6 +229,12 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         component:  'userNotFoundComponent'
     }
 
+    const hashtagNotFoundState = {
+        name:   'hashtagNotFoundPage',
+        url:    '/hashtagNotFound',
+        component:  'hashtagNotFoundComponent'
+    }
+
     stateProvider.state(allUsersState)
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
@@ -252,6 +258,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     stateProvider.state(directRepostsState)
     stateProvider.state(usersWhoLikedState)
     stateProvider.state(userNotFoundState)
+    stateProvider.state(hashtagNotFoundState)
 
 
     urlRouter.otherwise('/signInSignUp')
