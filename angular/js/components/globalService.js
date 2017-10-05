@@ -4,6 +4,8 @@ function (hashtagService, userService, state, cookies) {
 this.hashtagService = hashtagService
 this.userService = userService
 
+this.loggedIn = false
+
 this.primaryUser = {}
 this.primaryUser.credentials = {}
 this.primaryUser.profile = {}
@@ -21,6 +23,7 @@ this.login = (username) => {
         console.log(done)
         cookies.put('username', this.primaryUser.credentials.username)
         cookies.put('password', this.primaryUser.credentials.password)
+        this.loggedIn = true
         this.primaryUser.profile = done.data.profile
         state.go('userPage', {
             username: this.primaryUser.credentials.username

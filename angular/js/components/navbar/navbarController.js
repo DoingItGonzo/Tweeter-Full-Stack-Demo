@@ -1,4 +1,4 @@
-angular.module('tweetApp').controller('navbarController', ['validateService','globalService', '$state', function (validateService,globalService, state) {
+angular.module('tweetApp').controller('navbarController', ['validateService', 'globalService', '$state', function (validateService, globalService, state) {
 
     this.globalService = globalService
 
@@ -20,23 +20,22 @@ angular.module('tweetApp').controller('navbarController', ['validateService','gl
         if (this.userSearch.startsWith("@")) {
 
             validateService.getUsernameExists(this.userSearch.substring(1)).then((done) => {
-                 
-                if(done.data)
-                    {
-                        console.log("getting")
-                        globalService.userService.getUser(this.userSearch.substring(1)).then((done) => {
+
+                if (done.data) {
+                    console.log("getting")
+                    globalService.userService.getUser(this.userSearch.substring(1)).then((done) => {
                         console.log(done)
                         this.searchedUser = done.data
                         state.go('userPage', {
                             username: this.searchedUser.username
-                            })
                         })
+                    })
 
-                    }
-                else{
+                }
+                else {
                     state.go('userNotFoundPage')
                 }
-            })   
+            })
         }
         else if (this.userSearch.startsWith("#")) {
             console.log(this.userSearch)
@@ -46,13 +45,17 @@ angular.module('tweetApp').controller('navbarController', ['validateService','gl
         }
     }
     this.homePage = () => {
-        globalService.userService.getUser(globalService.primaryUser.credentials.username).then((done) => {
-            console.log(done)
-            this.searchedUser = done.data
-            state.go('userPage', {
-                username: this.searchedUser.username
+        if (!globalService.loggedIn) {
+            state.go('signInSignUp')
+        }
+        else {
+            globalService.userService.getUser(globalService.primaryUser.credentials.username).then((done) => {
+                console.log(done)
+                this.searchedUser = done.data
+                state.go('userPage', {
+                    username: this.searchedUser.username
+                })
             })
-        })
+        }
     }
-
 }])
