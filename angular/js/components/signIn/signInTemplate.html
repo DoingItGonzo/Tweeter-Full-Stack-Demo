@@ -7,7 +7,9 @@
         </p>
         <div class="logInButtons">
             <button class="btn" ng-click="$ctrl.userLogin()">Let's Tweet!</button>
-            <button class="btn" ng-click="$ctrl.globalService.signUpPage()">Sign Up</button>
+            <button class="btn" ng-click="$ctrl.signUpPage()">Sign Up</button>
+            <button class="btn" ng-click="$ctrl.reactivateAccount()">Sign Up</button>
+
             <p ng-if=$ctrl.failedSignIn>User not found</p>
         </div>
         <!-- </div> -->
