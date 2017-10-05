@@ -19,5 +19,11 @@ angular.module('tweetApp').controller('signInController', ['validateService', 'g
                 this.failedSignIn = true
         })
     }
+    this.signUpPage = () => {
+        this.globalService.signUpPage()
+    }
+    this.reactivateAccountPage = () => {
+        
+    }
 
 }])
