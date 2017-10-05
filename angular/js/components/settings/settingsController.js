@@ -21,6 +21,7 @@ angular.module('tweetApp').controller('settingsController', ['userService', '$st
         this.userService.deleteUser(this.updatedUser.credentials.username, this.updatedUser.credentials)
             .then((done) => {
                 this.globalService.primaryUser = {}
+                state.go('signIn')
                 return done.data
         })
     }

@@ -1,4 +1,4 @@
-angular.module('tweetApp').controller('signInController', ['validateService', 'globalService', function (validateService, globalService) {
+angular.module('tweetApp').controller('signInController', ['validateService', 'globalService', '$state', function (validateService, globalService, state) {
     this.globalService = globalService
 
     this.credentials = {}
@@ -20,10 +20,10 @@ angular.module('tweetApp').controller('signInController', ['validateService', 'g
         })
     }
     this.signUpPage = () => {
-        this.globalService.signUpPage()
+        state.go('signUp')
     }
     this.reactivateAccountPage = () => {
-        
+        state.go('reactivate')
     }
 
 }])

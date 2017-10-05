@@ -25,6 +25,11 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         url: '/signUp',
         component: 'signUpComponent'
     }
+    const reactivateState = {
+        name: 'reactivate',
+        url: '/reactivate',
+        component: 'reactivateComponent'
+    }
     const settingState = {
         name: 'settings',
         url: '/settings',
@@ -235,6 +240,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         component:  'hashtagNotFoundComponent'
     }
 
+    stateProvider.state(reactivateState)
     stateProvider.state(allUsersState)
     stateProvider.state(testUserState)
     stateProvider.state(settingState)
