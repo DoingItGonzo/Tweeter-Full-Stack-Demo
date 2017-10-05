@@ -157,7 +157,7 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
     const allUsersState = {
         name: 'allUsers',
         url: '/allUsers',
-        component: 'usersComponent',
+        component: 'allUsersComponent',
         resolve: {
             users: ['userService', function (userService) {
                 return userService.getAllUsers().then((done) => {
@@ -183,7 +183,7 @@ angular.module('tweetApp', ['ui.router', 'ngRoute']).config(['$stateProvider', '
     const allTweetState = {
         name: 'allTweets',
         url: '/allTweets',
-        component: 'tweetsComponent',
+        component: 'allTweetsComponent',
         resolve: {
             tweets: ['tweetService', function (tweetService) {
                 return tweetService.getAllTweets().then((done) => {
