@@ -91,7 +91,11 @@ ul.navbar-nav {
 }
 
 .settingsPage {
-    margin-left: 10px;
+    margin: 10px;
+}
+
+.signUpPage {
+    margin: 10px;
 }
 
 .settingsPageText {
