@@ -1,15 +1,15 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <div ng-if="$ctrl.repostTweet === true"><a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)">@{{ $ctrl.tweet.reposter.username }} </a>
+        <div ng-if="$ctrl.repostTweet === true"><a ng-click="$ctrl.goToUser($ctrl.tweet.reposter.username)">@{{ $ctrl.tweet.reposter.username }}</a>
             <span class="repostedText"> reposted:</div></div>
-        <a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)" ng-if="$ctrl.replyTweet === true">@{{ $ctrl.tweet.repliedTo.username }} </a>
+        <a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)" ng-if="$ctrl.replyTweet === true">@{{ $ctrl.tweet.repliedTo.username }}</a>
     </div>
 
     <div class="panel-body">
         <div ng-click="$ctrl.getContext()">
-            <a ng-click="$ctrl.goToUser($ctrl.tweet.repliedTo.username)">@{{ $ctrl.tweet.author.username }}</a>
-            <dir id="dir" content="$ctrl.tweet.content | createAnchors"></dir>
+            <a ng-click="$ctrl.goToUser($ctrl.tweet.author.username)">@{{ $ctrl.tweet.author.username }}</a>
+            <dir class="contentInTweet" id="dir" content="$ctrl.tweet.content | createAnchors"></dir>
             <p>
                 {{ $ctrl.tweet.posted | date:"MM/dd/yyyy 'at' h:mma" }}
                 <button ng-if=$ctrl.globalService.loggedIn class="btn btn-default" ng-click="$ctrl.likeTweet(tweet.id)">

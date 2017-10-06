@@ -3,17 +3,17 @@
         <div class="lead">@{{ $ctrl.user.username }}</div>
         <div>
             <div ng-if=$ctrl.canDoFollow>
-                    <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
-                    <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
+                <button class="followUnfollowbtn" ng-if=!$ctrl.isFollowing ng-click="$ctrl.followUser()">Follow</button>
+                <button class="followUnfollowbtn" ng-if=$ctrl.isFollowing type="button" ng-click="$ctrl.unfollowUser()">Unfollow</button>
             </div>
         </div>
     </div>
     <div class="flexRow profileInfo">
-        <div class="flexColumn">    
+        <div class="flexColumn">
             <p>Name: {{ $ctrl.user.profile.firstName }} {{ $ctrl.user.profile.lastName }}</p>
             <p>Phone: {{ $ctrl.user.profile.phone }}</p>
             <p>Email: {{ $ctrl.user.profile.email }}</p>
-        </div>  
+        </div>
     </div>
     <div class="flexRow">
         <div class="flexColumn userPageLeftSide">
@@ -45,14 +45,14 @@
         </div>
         <div class="userPageRightSide panel panel-primary">
             <div class="flexColumn insideUserPageRightSide">
-                <div ng-if=$ctrl.password class="flexColumn postTweet"> 
+                <div ng-if=$ctrl.password class="flexColumn postTweet">
                     <div>
                         <textArea class="contentBox" ng-model="$ctrl.content"></textArea>
                     </div>
                     <div>
                         <button class="btn btn-primary" ng-click="$ctrl.createTweet()">Post Tweet</button>
                     </div>
-                </div>   
+                </div>
                 <div>
                     <ui-view></ui-view>
                 </div>

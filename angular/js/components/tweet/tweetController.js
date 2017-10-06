@@ -126,6 +126,7 @@ angular.module('tweetApp').controller('tweetController', ['tweetService', 'globa
         }
 
         this.goToUser = (username) => {
+            console.log(username)
             canGoToContext = false
             validateService.getUsernameExists(username).then((done) => {
                 if (done.data) {

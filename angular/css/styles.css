@@ -1,6 +1,6 @@
 .navbar { 
     border-radius: 0; 
-    min-width: 960px !important;
+    min-width: 100% !important;
 }
 
 ul.navbar-nav { 
@@ -117,10 +117,15 @@ a {
 }
 
 .width100 {
-    width: 100%;
+    width: 100% !important;
 }
 
 .signButton {
     border-radius: 0;
     border: 1px solid black;
+}
+
+.contentInTweet {
+    overflow-wrap: break-word;
+    width: 50vw;
 }

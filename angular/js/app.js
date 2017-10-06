@@ -5,37 +5,25 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         url: '/signIn',
         component: 'signInComponent'
     }
+
     const signUp = {
         name: 'signUp',
         url: '/signUp',
         component: 'signUpComponent'
     }
+
     const reactivateState = {
         name: 'reactivate',
         url: '/reactivate',
         component: 'reactivateComponent'
     }
+
     const settingState = {
         name: 'settings',
         url: '/settings',
         component: 'settingsComponent'
     }
-    const tweetState = {
-        name: 'tweets',
-        url: '/tweets',
-        component: 'tweetComponent'
-    }
 
-    const tweetListState = {
-        name: 'tweetList',
-        url: '/tweetList',
-        component: 'tweetListComponent'
-    }
-    const userListState = {
-        name: 'userList',
-        url: '/userList',
-        component: 'userListComponent'
-    }
     const contextState = {
         name: 'context',
         url: '/context/{id}',
@@ -51,7 +39,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const userPageState = {
         name: 'userPage',
-        url: '/userPage/{username}',
+        url: '/user/{username}',
         component: 'userPageComponent'
     }
 
@@ -84,7 +72,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const userPageMentionsState = {
         name: 'userPage.mentions',
         url: '/mentions',
-        component: 'tweetsListComponent',
+        component: 'tweetListComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
                 return userService.getMentions(stateParams.username).then((done) => {
@@ -97,7 +85,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const userPageFollowersState = {
         name: 'userPage.followers',
         url: '/followers',
-        component: 'usersComponent',
+        component: 'userListComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
                 return userService.getFollowers(stateParams.username).then((done) => {
@@ -110,7 +98,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const userPageFollowingState = {
         name: 'userPage.following',
         url: '/following',
-        component: 'usersComponent',
+        component: 'userListComponent',
         resolve: {
             users: ['userService', '$stateParams', function (userService, stateParams) {
                 return userService.getFollowing(stateParams.username).then((done) => {
@@ -122,13 +110,11 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const tweetsWithTagState = {
         name: 'tweetsWithTag',
-        url: '/tweetsWithTag/{label}',
+        url: '/hashtag/{label}',
         component: 'tweetListComponent',
         resolve: {
             tweets: ['hashtagService', '$stateParams', function (hashtagService, stateParams) {
-                console.log(stateParams.label)
                 return hashtagService.getTaggedTweets(stateParams.label).then((done) => {
-                    console.log(done.data)
                     return done.data
                 })
             }]
@@ -137,8 +123,8 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const allUsersState = {
         name: 'allUsers',
-        url: '/allUsers',
-        component: 'allUsersComponent',
+        url: '/users',
+        component: 'userListComponent',
         resolve: {
             users: ['userService', function (userService) {
                 return userService.getAllUsers().then((done) => {
@@ -150,7 +136,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const hashtagState = {
         name: 'allHashtags',
-        url: '/allHashtags',
+        url: '/hashtags',
         component: 'hashtagListComponent',
         resolve: {
             hashtags: ['hashtagService', function (hashtagService) {
@@ -163,8 +149,8 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const allTweetState = {
         name: 'allTweets',
-        url: '/allTweets',
-        component: 'allTweetsComponent',
+        url: '/tweets',
+        component: 'tweetListComponent',
         resolve: {
             tweets: ['tweetService', function (tweetService) {
                 return tweetService.getAllTweets().then((done) => {
@@ -176,7 +162,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const directRepliesState = {
         name: 'direct_replies',
-        url: '/direct_replies{tweetId}',
+        url: '/replies/{tweetId}',
         component: 'tweetListComponent',
         resolve: {
             tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
@@ -189,7 +175,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const directRepostsState = {
         name: 'direct_reposts',
-        url: '/direct_reposts/{tweetId}',
+        url: '/reposts/{tweetId}',
         component: 'tweetListComponent',
         resolve: {
             tweets: ['tweetService', '$stateParams', function (tweetService, stateParams) {
@@ -202,8 +188,8 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     const usersWhoLikedState = {
         name: 'who_liked',
-        url: '/who_liked/{tweetId}',
-        component: 'usersComponent',
+        url: '/liked/{tweetId}',
+        component: 'userListComponent',
         resolve: {
             users: ['tweetService', '$stateParams', function (tweetService, stateParams) {
                 return tweetService.getUsersWhoLiked(stateParams.tweetId).then((done) => {
@@ -214,15 +200,15 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     }
 
     const userNotFoundState = {
-        name:   'userNotFoundPage',
-        url:    '/userNotFound',
-        component:  'userNotFoundComponent'
+        name: 'userNotFoundPage',
+        url: '/userNotFound',
+        component: 'userNotFoundComponent'
     }
 
     const hashtagNotFoundState = {
-        name:   'hashtagNotFoundPage',
-        url:    '/hashtagNotFound',
-        component:  'hashtagNotFoundComponent'
+        name: 'hashtagNotFoundPage',
+        url: '/hashtagNotFound',
+        component: 'hashtagNotFoundComponent'
     }
 
     stateProvider.state(reactivateState)
@@ -231,14 +217,12 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     stateProvider.state(hashtagState)
     stateProvider.state(signIn)
     stateProvider.state(signUp)
-    stateProvider.state(tweetListState)
     stateProvider.state(userPageState)
     stateProvider.state(userPageTweetsState)
     stateProvider.state(userPageFeedState)
     stateProvider.state(userPageMentionsState)
     stateProvider.state(userPageFollowersState)
     stateProvider.state(userPageFollowingState)
-    stateProvider.state(userListState)
     stateProvider.state(contextState)
     stateProvider.state(tweetsWithTagState)
     stateProvider.state(allTweetState)
@@ -302,39 +286,38 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         return sce.trustAsHtml(newString)
     }
 }]).run(['$rootScope', '$location', 'globalService', '$cookies',
-function ($rootScope, $location, globalService, $cookies) {
-    //Bind the `$locationChangeSuccess` event on the rootScope, so that we dont need to 
-    //bind in induvidual controllers.
+    function ($rootScope, $location, globalService, $cookies) {
+        //Bind the `$locationChangeSuccess` event on the rootScope, so that we dont need to 
+        //bind in induvidual controllers.
 
-    $rootScope.$on('$locationChangeSuccess', function () {
-        $rootScope.actualLocation = $location.path();
-    });
+        $rootScope.$on('$locationChangeSuccess', function () {
+            $rootScope.actualLocation = $location.path();
+        });
 
-    this.username = $cookies.get('username')
-    this.password = $cookies.get('password')
+        this.username = $cookies.get('username')
+        this.password = $cookies.get('password')
 
-    if (this.username !== undefined && this.password !== undefined)
-    {
-        globalService.primaryUser.credentials.username = this.username
-        globalService.primaryUser.credentials.password = this.password
-        globalService.login(this.username)
-    }
+        if (this.username !== undefined && this.password !== undefined) {
+            globalService.primaryUser.credentials.username = this.username
+            globalService.primaryUser.credentials.password = this.password
+            globalService.login(this.username)
+        }
 
 
-}]).directive('ngConfirmClick', [
-    function(){
-        return {
-            link: function (scope, element, attr) {
-                // Puts the message in the alert
-                var msg = attr.ngConfirmClick || "Are you sure?"
-                // Set what the html binding for the function will be
-                var clickAction = attr.confirmedClick
-                // Binds the clickAction to the button if the OK button is clicked
-                element.bind('click',function (event) {
-                    if ( window.confirm(msg) ) {
-                        scope.$eval(clickAction)
-                    }
-                });
-            }
-        };
-}])
+    }]).directive('ngConfirmClick', [
+        function () {
+            return {
+                link: function (scope, element, attr) {
+                    // Puts the message in the alert
+                    var msg = attr.ngConfirmClick || "Are you sure?"
+                    // Set what the html binding for the function will be
+                    var clickAction = attr.confirmedClick
+                    // Binds the clickAction to the button if the OK button is clicked
+                    element.bind('click', function (event) {
+                        if (window.confirm(msg)) {
+                            scope.$eval(clickAction)
+                        }
+                    });
+                }
+            };
+        }])

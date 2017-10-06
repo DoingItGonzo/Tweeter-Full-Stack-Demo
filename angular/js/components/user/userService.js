@@ -13,12 +13,10 @@ angular.module('tweetApp').service('userService', ['$http', function (http) {
     }
 
     this.editProfile = (username, credentialsProfile) => {
-        console.log(username)
         return http.patch('http://localhost:8888/api/users/@' + username, credentialsProfile)
     }
 
     this.deleteUser = (username, credentials) => {
-        console.log(credentials)
         return http({
             url: 'http://localhost:8888/api/users/@' + username,
             method: 'DELETE',
