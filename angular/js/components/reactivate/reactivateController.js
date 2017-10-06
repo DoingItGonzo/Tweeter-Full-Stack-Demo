@@ -10,20 +10,17 @@ angular.module('tweetApp').controller('reactivateController', ['userService', 'g
 
     this.userAlreadyActive = false
     this.userNotFound = false
- 
+
     this.reactivate = () => {
         validateService.getUsernameAvailable(this.reactivatedUser.credentials.username).then((done) => {
-            console.log(done.data)
             if (done.data) {
                 this.userNotFound = true
-                return null
             }
         })
         validateService.getUsernameExists(this.reactivatedUser.credentials.username).then((done) => {
             console.log(done.data)
-            if (done.data === true) {
+            if (done.data) {
                 this.userAlreadyActive = true
-                return null
             } else {
                 this.userAlreadyActive = false
                 this.userNotFound = false
@@ -31,7 +28,8 @@ angular.module('tweetApp').controller('reactivateController', ['userService', 'g
             }
         })
     }
-this.returnToLogin = () => {
-    this.globalService.reactivatePageSignInReturn()
-}
+    this.returnToLogin = () => {
+        this.globalService.reactivatePageSignInReturn()
+    }
+
 }])

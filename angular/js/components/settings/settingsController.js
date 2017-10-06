@@ -1,4 +1,4 @@
-angular.module('tweetApp').controller('settingsController', ['userService', '$state', 'globalService', function(userService, state, globalService) {
+angular.module('tweetApp').controller('settingsController', ['userService', '$state', 'globalService', function (userService, state, globalService) {
 
     this.userService = userService
     this.globalService = globalService
@@ -8,12 +8,9 @@ angular.module('tweetApp').controller('settingsController', ['userService', '$st
     if (!globalService.loggedIn) state.go('signIn')
 
     this.updateProfile = () => {
-        console.log(this.updatedUser.credentials.username)
-        console.log(this.updatedUser.credentials.password)
         this.userService.editProfile(this.updatedUser.credentials.username, this.updatedUser)
             .then((done) => {
                 this.globalService.primaryUser.profile = this.updatedProfile
-                return done.data
             })
     }
 
@@ -21,8 +18,7 @@ angular.module('tweetApp').controller('settingsController', ['userService', '$st
         this.userService.deleteUser(this.updatedUser.credentials.username, this.updatedUser.credentials)
             .then((done) => {
                 this.globalService.logout()
-                return done.data
-        })
+            })
     }
 
 }])

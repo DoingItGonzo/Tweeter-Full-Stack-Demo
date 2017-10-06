@@ -1,20 +1,5 @@
 angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouter) {
 
-    const testUserState = {
-        name: 'testUser',
-        url: '/testUser',
-        component: 'testUserComponent'
-    }
-    const validateState = {
-        name: 'validate',
-        url: '/validate',
-        component: 'validateComponent'
-    }
-    const signInSignUp = {
-        name: 'signInSignUp',
-        url: '/signInSignUp',
-        component: 'signInSignUpComponent'
-    }
     const signIn = {
         name: 'signIn',
         url: '/signIn',
@@ -73,7 +58,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const userPageTweetsState = {
         name: 'userPage.tweets',
         url: '/tweets',
-        component: 'tweetsComponent',
+        component: 'tweetListComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
                 return userService.getTweets(stateParams.username).then((done) => {
@@ -86,7 +71,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const userPageFeedState = {
         name: 'userPage.feed',
         url: '/feed',
-        component: 'tweetsComponent',
+        component: 'tweetListComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
                 return userService.getFeed(stateParams.username).then((done) => {
@@ -99,7 +84,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const userPageMentionsState = {
         name: 'userPage.mentions',
         url: '/mentions',
-        component: 'tweetsComponent',
+        component: 'tweetsListComponent',
         resolve: {
             tweets: ['userService', '$stateParams', function (userService, stateParams) {
                 return userService.getMentions(stateParams.username).then((done) => {
@@ -138,7 +123,7 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
     const tweetsWithTagState = {
         name: 'tweetsWithTag',
         url: '/tweetsWithTag/{label}',
-        component: 'tweetsWithTagComponent',
+        component: 'tweetListComponent',
         resolve: {
             tweets: ['hashtagService', '$stateParams', function (hashtagService, stateParams) {
                 console.log(stateParams.label)
@@ -242,11 +227,8 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
 
     stateProvider.state(reactivateState)
     stateProvider.state(allUsersState)
-    stateProvider.state(testUserState)
     stateProvider.state(settingState)
-    stateProvider.state(validateState)
     stateProvider.state(hashtagState)
-    stateProvider.state(signInSignUp)
     stateProvider.state(signIn)
     stateProvider.state(signUp)
     stateProvider.state(tweetListState)
@@ -319,49 +301,14 @@ angular.module('tweetApp', ['ui.router', 'ngCookies']).config(['$stateProvider',
         const newString = stringArray.join(' ')
         return sce.trustAsHtml(newString)
     }
-}]).run(['$rootScope', '$location', '$window', 'stateService', '$stateParams', '$state', 'globalService', '$cookies',
-function ($rootScope, $location, $window, stateService, $stateParams, state, globalService, $cookies) {
+}]).run(['$rootScope', '$location', 'globalService', '$cookies',
+function ($rootScope, $location, globalService, $cookies) {
     //Bind the `$locationChangeSuccess` event on the rootScope, so that we dont need to 
     //bind in induvidual controllers.
 
     $rootScope.$on('$locationChangeSuccess', function () {
         $rootScope.actualLocation = $location.path();
     });
-
-
-    /*$rootScope.$watch(function () { return $location.path() }, function (newLocation, oldLocation) {
-
-        
-
-        //true only for onPopState
-        if ($rootScope.actualLocation === newLocation) {
-            // Pressed an arrow
-            if (stateService.stateHistoryIndex - 1 >= 0 && stateService.stateHistory[stateService.stateHistoryIndex - 1].name === newLocation)
-            {
-                //Press back arrow
-                stateService.stateHistoryIndex--
-                
-            }
-            else if (stateService.stateHistoryIndex + 1 < stateService.stateHistory.length && stateService.stateHistory[stateService.stateHistoryIndex + 1].name === newLocation)
-            {
-                //Press forward arrow
-                stateService.stateHistoryIndex++
-            }
-            console.log(stateService.stateHistory)
-            console.log(stateService.stateHistoryIndex)
-
-            const stateHistoryObj = stateService.stateHistory[stateService.stateHistoryIndex]
-            const stateGoName = stateHistoryObj.name.substring(1).replace(/\//g, '.')
-            const stateGoParams = stateHistoryObj.stateParams
-
-            state.go(stateGoName, stateGoParams, {reload:true})
-
-        } else {
-            // Pressed a link
-            stateService.addToHistory(newLocation, Object.assign({}, $stateParams))
-        }
-
-    })*/
 
     this.username = $cookies.get('username')
     this.password = $cookies.get('password')

@@ -27,14 +27,12 @@ angular.module('tweetApp').controller('signUpController', ['userService', 'globa
     this.createUser = () => {
         if (!this.newUser.profile.email) {
             this.emailLeftBlank = true
-            return null
         } else {
             this.emailLeftBlank = false
         }
         this.validateService.getUsernameAvailable(this.newUser.credentials.username).then((done) => {
             if (!done.data) {
                 this.usernameTaken = true
-                return null
             } else {
                 this.usernameTaken = false
             }
@@ -44,7 +42,6 @@ angular.module('tweetApp').controller('signUpController', ['userService', 'globa
                 this.globalService.primaryUser.credentials = this.newUser.credentials
                 this.globalService.login(this.newUser.credentials.username)
                 this.accountCreationFailed = false
-                return done.data
             } else
                 this.accountCreationFailed = true
         })

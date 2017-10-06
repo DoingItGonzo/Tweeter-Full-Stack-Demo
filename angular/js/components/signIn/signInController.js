@@ -9,12 +9,10 @@ angular.module('tweetApp').controller('signInController', ['validateService', 'g
 
     this.userLogin = () => {
         validateService.getCheckCredentials(this.credentials.username, this.credentials).then((done) => {
-            if (done.data) { 
+            if (done.data) {
                 this.globalService.primaryUser.credentials = this.credentials
-                console.log(this.credentials)
                 globalService.login(this.credentials.username)
                 this.failedSignIn = false
-                return done.data
             } else
                 this.failedSignIn = true
         })
